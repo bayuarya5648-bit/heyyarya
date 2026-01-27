@@ -1,424 +1,741 @@
-/* Reset & Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameTopUp - Topup Game Resmi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-}
+        :root {
+            --primary-color: #0a0a0a;
+            --secondary-color: #1a1a1a;
+            --accent-color: #ff6600;
+            --text-color: #ffffff;
+            --text-secondary: #cccccc;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
 
-/* Header */
-.header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 0;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-.header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        /* Header Styles */
+        header {
+            background-color: var(--secondary-color);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--accent-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ff6b6b;
-}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.brand h1 {
-    color: #ff6b6b;
-    font-size: 1.5rem;
-    margin-bottom: 0.2rem;
-}
+        .logo i {
+            color: var(--accent-color);
+            font-size: 28px;
+        }
 
-.brand p {
-    color: #666;
-    font-size: 0.9rem;
-}
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
 
-.contact-info {
-    display: flex;
-    align-items: center;
-}
+        .logo span {
+            color: var(--accent-color);
+        }
 
-.wa-button {
-    background: #25D366;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
 
-.wa-button:hover {
-    background: #128C7E;
-    transform: translateY(-2px);
-}
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
 
-/* Hero Section */
-.hero {
-    padding: 150px 0 80px;
-    text-align: center;
-    color: white;
-}
+        nav a:hover {
+            color: var(--accent-color);
+        }
 
-.hero h2 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
 
-.cta-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
 
-/* Buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 30px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-}
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
 
-.btn-primary {
-    background: #ff6b6b;
-    color: white;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
+        /* Login Form Styles */
+        .login-container {
+            background-color: var(--secondary-color);
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
 
-.btn-primary:hover {
-    background: #ff5252;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
-}
+        .login-container h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: var(--accent-color);
+        }
 
-.btn-secondary {
-    background: #25D366;
-    color: white;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.btn-secondary:hover {
-    background: #128C7E;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
 
-.btn-product {
-    background: #ff6b6b;
-    color: white;
-    width: 100%;
-    justify-content: center;
-    margin-top: auto;
-}
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: var(--text-color);
+            font-size: 16px;
+        }
 
-.btn-product:hover {
-    background: #ff5252;
-    transform: translateY(-2px);
-}
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
 
-.btn-whatsapp {
-    background: #25D366;
-    color: white;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-}
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
 
-.btn-whatsapp:hover {
-    background: #128C7E;
-    transform: translateY(-3px);
-}
+        .login-btn:hover {
+            background-color: #e55a00;
+        }
 
-/* Products Section */
-.products {
-    padding: 80px 0;
-    background: rgba(255, 255, 255, 0.95);
-}
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
 
-.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-    color: #ff6b6b;
-}
+        .login-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
 
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 2rem;
-}
+        /* Products Section */
+        .products {
+            padding: 80px 0;
+            background-color: var(--primary-color);
+        }
 
-.product-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
 
-.product-card:hover {
-    transform: translateY(-10px);
-    border-color: #ff6b6b;
-    box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
-}
+        .section-title h2 {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
 
-.product-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-}
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-.product-icon i {
-    font-size: 2rem;
-    color: white;
-}
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
 
-.product-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #333;
-}
+        .product-card {
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #333;
+        }
 
-.price {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ff6b6b;
-    margin-bottom: 0.5rem;
-}
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 102, 0, 0.2);
+        }
 
-.price-sub {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 1rem;
-}
+        .product-img {
+            height: 180px;
+            background-color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: var(--accent-color);
+        }
 
-.product-card p {
-    color: #666;
-    margin-bottom: 1.5rem;
-    flex-grow: 1;
-}
+        .product-info {
+            padding: 20px;
+        }
 
-/* Features Section */
-.features {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
+        .product-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
 
-.features .section-title {
-    color: white;
-}
+        .product-info p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
 
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 2rem;
-}
+        .product-price {
+            color: var(--accent-color);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
 
-.feature {
-    text-align: center;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.feature i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #ff6b6b;
-}
+        .buy-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
 
-.feature h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-}
+        /* Tutorial Section */
+        .tutorial {
+            padding: 80px 0;
+            background-color: var(--secondary-color);
+        }
 
-/* Contact Section */
-.contact {
-    padding: 80px 0;
-    background: white;
-}
+        .tutorial-steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-.contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    max-width: 800px;
-    margin: 0 auto;
-}
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
 
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 2rem;
-}
+        .step-number {
+            background-color: var(--accent-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
 
-.contact-item i {
-    font-size: 2rem;
-    color: #ff6b6b;
-}
+        .step-content h3 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
 
-.contact-item h3 {
-    margin-bottom: 0.5rem;
-    color: #333;
-}
+        .step-content p {
+            color: var(--text-secondary);
+        }
 
-.contact-button {
-    text-align: center;
-}
+        .step-content code {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #ff9966;
+            margin-top: 10px;
+            display: inline-block;
+        }
 
-/* Footer */
-.footer {
-    background: #333;
-    color: white;
-    padding: 40px 0 20px;
-}
+        /* Footer */
+        footer {
+            background-color: #0a0a0a;
+            padding: 40px 0 20px;
+            border-top: 1px solid #333;
+        }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
 
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
 
-.footer-contact p {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 0.5rem;
-}
+        .footer-column h4 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
 
-.footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #555;
-    color: #aaa;
-}
+        .footer-column ul {
+            list-style: none;
+        }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .header .container {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .hero h2 {
-        font-size: 2rem;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .footer-content {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-    
-    .hero {
-        padding: 120px 0 60px;
-    }
-}
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
 
-/* Animation */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
 
-.product-card, .feature {
-    animation: fadeInUp 0.6s ease-out;
-}
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
 
-/* Hover Effects */
-.product-card:nth-child(1) { animation-delay: 0.1s; }
-.product-card:nth-child(2) { animation-delay: 0.2s; }
-.product-card:nth-child(3) { animation-delay: 0.3s; }
-.product-card:nth-child(4) { animation-delay: 0.4s; }
-.product-card:nth-child(5) { animation-delay: 0.5s; }
-.product-card:nth-child(6) { animation-delay: 0.6s; }
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+
+            .login-container {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 40px 0;
+            }
+
+            .hero h2 {
+                font-size: 24px;
+            }
+
+            .section-title h2 {
+                font-size: 26px;
+            }
+
+            .product-card {
+                margin-bottom: 20px;
+            }
+
+            .footer-column {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>Game<span>TopUp</span></h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#products">Produk</a></li>
+                    <li><a href="#tutorial">Tutorial</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section with Login -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Top Up Game Resmi & Terpercaya</h2>
+            <p>Top up game favoritmu dengan mudah, aman, dan cepat. Dukung pengembang game dengan membeli melalui saluran resmi.</p>
+            
+            <div class="login-container">
+                <h3>Masuk ke Akun Anda</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username atau Email</label>
+                        <input type="text" id="username" placeholder="Masukkan username atau email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="login-btn">MASUK</button>
+                    <div class="login-links">
+                        <a href="#">Lupa password?</a>
+                        <a href="#">Buat akun baru</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Produk Game Populer</h2>
+                <p>Pilih game favoritmu dan lakukan top up dengan mudah</p>
+            </div>
+            
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Mobile Legends</h3>
+                        <p>Diamond MLBB resmi dengan proses instan</p>
+                        <div class="product-price">Rp 10.000 - Rp 500.000</div>
+                        <button class="buy-btn">BELI SEKARANG</button>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fab fa-steam"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Steam Wallet</h3>
+                        <p>Saldo Steam untuk beli game & item</p>
+                        <div class="product-price">Rp 25.000 - Rp 1.000.000</div>
+                        <button class="buy-btn">BELI SEKARANG</button>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Valorant</h3>
+                        <p>Points Valorant resmi dari Riot Games</p>
+                        <div class="product-price">Rp 50.000 - Rp 750.000</div>
+                        <button class="buy-btn">BELI SEKARANG</button>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Free Fire</h3>
+                        <p>Diamond Free Fire dengan proses cepat</p>
+                        <div class="product-price">Rp 5.000 - Rp 300.000</div>
+                        <button class="buy-btn">BELI SEKARANG</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial Deploy Section -->
+    <section class="tutorial" id="tutorial">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tutorial Deploy Website</h2>
+                <p>Berikut panduan lengkap untuk mendeploy website ini dengan mudah</p>
+            </div>
+            
+            <div class="tutorial-steps">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Pilih Platform Hosting</h3>
+                        <p>Pilih platform hosting yang mudah digunakan dan gratis untuk memulai. Rekomendasi:</p>
+                        <ul>
+                            <li><strong>Netlify</strong> - Mudah digunakan dengan drag & drop</li>
+                            <li><strong>Vercel</strong> - Baik untuk proyek frontend</li>
+                            <li><strong>GitHub Pages</strong> - Gratis untuk proyek open source</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Persiapkan File Website</h3>
+                        <p>Simpan kode website ini dalam satu file HTML atau pisahkan menjadi file terpisah:</p>
+                        <code>index.html</code> (file utama)<br>
+                        <code>style.css</code> (file stylesheet)<br>
+                        <code>script.js</code> (file JavaScript)<br>
+                        <p>Untuk kemudahan, gunakan file HTML tunggal seperti kode ini.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Deploy ke Netlify (Paling Mudah)</h3>
+                        <p>Ikuti langkah-langkah berikut:</p>
+                        <ol>
+                            <li>Kunjungi <a href="https://netlify.com" target="_blank">netlify.com</a> dan buat akun gratis</li>
+                            <li>Klik "Add new site" → "Deploy manually"</li>
+                            <li>Drag & drop folder berisi file website Anda</li>
+                            <li>Tunggu proses deploy selesai (1-2 menit)</li>
+                            <li>Website Anda sudah online dengan URL dari Netlify</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Deploy ke Vercel</h3>
+                        <p>Alternatif cepat lainnya:</p>
+                        <ol>
+                            <li>Kunjungi <a href="https://vercel.com" target="_blank">vercel.com</a> dan buat akun</li>
+                            <li>Klik "Import Project" → "Deploy"</li>
+                            <li>Upload file ZIP atau hubungkan dengan GitHub</li>
+                            <li>Klik deploy dan tunggu hingga selesai</li>
+                            <li>Website Anda akan live dengan URL dari Vercel</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Tambahkan Domain Kustom (Opsional)</h3>
+                        <p>Jika ingin menggunakan domain sendiri:</p>
+                        <ol>
+                            <li>Beli domain dari provider seperti Niagahoster, Domain.com, dll</li>
+                            <li>Di dashboard Netlify/Vercel, buka pengaturan domain</li>
+                            <li>Tambahkan domain kustom Anda</li>
+                            <li>Atur DNS records sesuai petunjuk dari platform</li>
+                            <li>Tunggu propagasi DNS (bisa beberapa jam)</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>GameTopUp</h4>
+                    <p>Platform top up game resmi dan terpercaya di Indonesia. Mendukung pengembang game dengan transaksi legal.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Game Populer</h4>
+                    <ul>
+                        <li><a href="#">Mobile Legends</a></li>
+                        <li><a href="#">Free Fire</a></li>
+                        <li><a href="#">Valorant</a></li>
+                        <li><a href="#">Steam Wallet</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Kontak Kami</h4>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> support@gametopup.com</li>
+                        <li><i class="fas fa-phone"></i> +62 812-3456-7890</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 GameTopUp. Semua hak dilindungi. | Website ini hanya untuk tujuan demonstrasi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulasi login sederhana
+            if(username && password) {
+                alert(`Login berhasil! Selamat datang, ${username}.`);
+                // Redirect ke dashboard atau halaman lain
+                // window.location.href = "dashboard.html";
+            } else {
+                alert("Silakan isi username dan password.");
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav ul');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        // Update nav display on window resize
+        window.addEventListener('resize', function() {
+            if(window.innerWidth > 768) {
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        });
+        
+        // Initialize nav display based on screen size
+        if(window.innerWidth <= 768) {
+            nav.style.display = 'none';
+        }
+        
+        // Buy Button Handler
+        const buyButtons = document.querySelectorAll('.buy-btn');
+        buyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.parentElement.querySelector('h3').textContent;
+                alert(`Anda akan membeli produk: ${productName}. Untuk transaksi lengkap, backend diperlukan.`);
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if(window.innerWidth <= 768) {
+                        nav.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
