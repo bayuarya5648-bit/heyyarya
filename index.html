@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameTopUp - Topup Game Resmi</title>
+    <title>GameTopUp - Topup Game Semua Provider</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,36 +14,42 @@
         }
 
         :root {
-            --primary-color: #0a0a0a;
-            --secondary-color: #1a1a1a;
-            --accent-color: #ff6600;
-            --text-color: #ffffff;
-            --text-secondary: #cccccc;
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff4081;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
         }
 
         body {
-            background-color: var(--primary-color);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
         }
 
         /* Header Styles */
         header {
-            background-color: var(--secondary-color);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
             padding: 20px 0;
-            border-bottom: 2px solid var(--accent-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        .header-content {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -53,20 +59,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .logo i {
-            color: var(--accent-color);
-            font-size: 28px;
-        }
-
-        .logo h1 {
-            font-size: 24px;
+            font-size: 1.8rem;
             font-weight: 700;
         }
 
-        .logo span {
-            color: var(--accent-color);
+        .logo i {
+            color: var(--accent);
         }
 
         nav ul {
@@ -76,289 +74,280 @@
         }
 
         nav a {
-            color: var(--text-color);
+            color: white;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 16px;
+            font-weight: 600;
             transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
         }
 
         nav a:hover {
-            color: var(--accent-color);
+            color: #ffdd40;
         }
 
-        .mobile-menu-btn {
-            display: none;
-            background: none;
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ffdd40;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
             border: none;
-            color: var(--text-color);
-            font-size: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .btn-register {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-register:hover {
+            background: #e91e63;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
             cursor: pointer;
         }
 
         /* Hero Section */
         .hero {
-            padding: 60px 0;
-            background: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            padding: 80px 0;
+            background: linear-gradient(rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            text-align: center;
+            color: white;
+            border-radius: 0 0 40px 40px;
+            margin-bottom: 40px;
         }
 
-        .hero h2 {
-            font-size: 36px;
-            margin-bottom: 15px;
+        .hero-content {
+            max-width: 700px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-
-        /* Login Form Styles */
-        .login-container {
-            background-color: var(--secondary-color);
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .login-container h3 {
-            text-align: center;
+            font-size: 1.2rem;
             margin-bottom: 30px;
-            font-size: 24px;
-            color: var(--accent-color);
+            opacity: 0.9;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid #333;
-            border-radius: 5px;
-            color: var(--text-color);
-            font-size: 16px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--accent-color);
+        .btn-hero {
+            background: var(--accent);
             color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
         }
 
-        .login-btn:hover {
-            background-color: #e55a00;
+        .btn-hero:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 64, 129, 0.6);
         }
 
-        .login-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-
-        .login-links a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        /* Products Section */
-        .products {
-            padding: 80px 0;
-            background-color: var(--primary-color);
-        }
-
+        /* Game Providers Section */
         .section-title {
             text-align: center;
             margin-bottom: 50px;
+            position: relative;
         }
 
         .section-title h2 {
-            font-size: 32px;
-            color: var(--accent-color);
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            color: var(--dark);
+            display: inline-block;
         }
 
-        .section-title p {
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
         }
 
-        .products-grid {
+        .providers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
+            margin-bottom: 60px;
         }
 
-        .product-card {
-            background-color: var(--secondary-color);
-            border-radius: 10px;
+        .provider-card {
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .product-card:hover {
+        .provider-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(255, 102, 0, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
 
-        .product-img {
-            height: 180px;
-            background-color: #222;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            color: var(--accent-color);
-        }
-
-        .product-info {
+        .provider-header {
             padding: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
         }
 
-        .product-info h3 {
-            font-size: 20px;
+        .provider-header i {
+            font-size: 2.5rem;
             margin-bottom: 10px;
         }
 
-        .product-info p {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-            font-size: 14px;
+        .provider-header h3 {
+            font-size: 1.5rem;
         }
 
-        .product-price {
-            color: var(--accent-color);
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
+        .provider-content {
+            padding: 25px;
         }
 
-        .buy-btn {
+        .provider-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .provider-content li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .provider-content li:last-child {
+            border-bottom: none;
+        }
+
+        .btn-provider {
             width: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
             padding: 12px;
-            background-color: transparent;
-            color: var(--accent-color);
-            border: 2px solid var(--accent-color);
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            border-radius: 8px;
+            margin-top: 10px;
         }
 
-        .buy-btn:hover {
-            background-color: var(--accent-color);
-            color: white;
+        .btn-provider:hover {
+            opacity: 0.9;
         }
 
         /* Tutorial Section */
         .tutorial {
-            padding: 80px 0;
-            background-color: var(--secondary-color);
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 60px;
         }
 
         .tutorial-steps {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
         }
 
         .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            background-color: rgba(255, 255, 255, 0.05);
+            flex: 1;
+            min-width: 250px;
             padding: 25px;
-            border-radius: 10px;
-            border-left: 4px solid var(--accent-color);
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .step:hover {
+            background: #e9ecef;
+            transform: translateY(-5px);
         }
 
         .step-number {
-            background-color: var(--accent-color);
-            color: white;
+            display: inline-block;
             width: 40px;
             height: 40px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            margin-right: 20px;
-            flex-shrink: 0;
-        }
-
-        .step-content h3 {
-            margin-bottom: 10px;
-            color: var(--accent-color);
-        }
-
-        .step-content p {
-            color: var(--text-secondary);
-        }
-
-        .step-content code {
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-family: monospace;
-            color: #ff9966;
-            margin-top: 10px;
-            display: inline-block;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
 
         /* Footer */
         footer {
-            background-color: #0a0a0a;
-            padding: 40px 0 20px;
-            border-top: 1px solid #333;
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
         }
 
         .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .footer-column {
-            flex: 1;
-            min-width: 250px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h4 {
-            color: var(--accent-color);
+        .footer-column h3 {
+            font-size: 1.3rem;
             margin-bottom: 20px;
-            font-size: 18px;
+            color: #ffdd40;
         }
 
         .footer-column ul {
@@ -370,64 +359,107 @@
         }
 
         .footer-column ul li a {
-            color: var(--text-secondary);
+            color: #bbb;
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .footer-column ul li a:hover {
-            color: var(--accent-color);
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #444;
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
         }
 
         .copyright {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #333;
-            color: var(--text-secondary);
-            font-size: 14px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 0.9rem;
         }
 
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
             }
+            
+            nav ul {
+                gap: 15px;
+            }
+        }
 
-            .mobile-menu-btn {
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+            
+            .mobile-toggle {
                 display: block;
             }
-
-            .hero h2 {
-                font-size: 28px;
+            
+            nav {
+                display: none;
+                width: 100%;
+                margin-top: 20px;
             }
-
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            
+            nav.active {
+                display: block;
             }
-
-            .login-container {
-                padding: 30px 20px;
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .auth-buttons {
+                width: 100%;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             .hero {
-                padding: 40px 0;
+                padding: 60px 0;
             }
-
-            .hero h2 {
-                font-size: 24px;
+            
+            .tutorial {
+                padding: 25px;
             }
-
-            .section-title h2 {
-                font-size: 26px;
-            }
-
-            .product-card {
-                margin-bottom: 20px;
-            }
-
-            .footer-column {
+            
+            .step {
                 min-width: 100%;
             }
         }
@@ -436,285 +468,287 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="container header-content">
+        <div class="container header-container">
             <div class="logo">
                 <i class="fas fa-gamepad"></i>
-                <h1>Game<span>TopUp</span></h1>
+                <span>GameTopUp</span>
             </div>
-            <nav>
+            
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav id="mainNav">
                 <ul>
-                    <li><a href="#home">Beranda</a></li>
-                    <li><a href="#products">Produk</a></li>
-                    <li><a href="#tutorial">Tutorial</a></li>
-                    <li><a href="#contact">Kontak</a></li>
+                    <li><a href="#"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#providers"><i class="fas fa-layer-group"></i> Provider</a></li>
+                    <li><a href="#tutorial"><i class="fas fa-book"></i> Tutorial</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Bantuan</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> Kontak</a></li>
                 </ul>
             </nav>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-login"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+                <button class="btn btn-register"><i class="fas fa-user-plus"></i> Daftar</button>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section with Login -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h2>Top Up Game Resmi & Terpercaya</h2>
-            <p>Top up game favoritmu dengan mudah, aman, dan cepat. Dukung pengembang game dengan membeli melalui saluran resmi.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Topup Game Favoritmu dengan Mudah</h1>
+            <p>Dukung permainanmu dengan topup cepat dan aman. Kami mendukung berbagai provider game resmi dengan proses instan dan harga terbaik di pasaran.</p>
+            <button class="btn btn-hero"><i class="fas fa-bolt"></i> Topup Sekarang</button>
+        </div>
+    </section>
+
+    <!-- Game Providers Section -->
+    <section class="container" id="providers">
+        <div class="section-title">
+            <h2>Provider Game Resmi</h2>
+        </div>
+        
+        <div class="providers-grid">
+            <!-- Provider 1 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Legends</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>Diamond 86 <span>Rp 20.000</span></li>
+                        <li>Diamond 172 <span>Rp 40.000</span></li>
+                        <li>Diamond 257 <span>Rp 60.000</span></li>
+                        <li>Diamond 344 <span>Rp 80.000</span></li>
+                        <li>Diamond 429 <span>Rp 100.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
+            </div>
             
-            <div class="login-container">
-                <h3>Masuk ke Akun Anda</h3>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="username">Username atau Email</label>
-                        <input type="text" id="username" placeholder="Masukkan username atau email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="Masukkan password" required>
-                    </div>
-                    <button type="submit" class="login-btn">MASUK</button>
-                    <div class="login-links">
-                        <a href="#">Lupa password?</a>
-                        <a href="#">Buat akun baru</a>
-                    </div>
-                </form>
+            <!-- Provider 2 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fab fa-steam"></i>
+                    <h3>Steam Wallet</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>Steam 15.000 <span>Rp 15.000</span></li>
+                        <li>Steam 30.000 <span>Rp 30.000</span></li>
+                        <li>Steam 60.000 <span>Rp 60.000</span></li>
+                        <li>Steam 120.000 <span>Rp 120.000</span></li>
+                        <li>Steam 250.000 <span>Rp 250.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
+            </div>
+            
+            <!-- Provider 3 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fab fa-playstation"></i>
+                    <h3>PlayStation Network</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>PSN 50.000 <span>Rp 50.000</span></li>
+                        <li>PSN 100.000 <span>Rp 100.000</span></li>
+                        <li>PSN 200.000 <span>Rp 200.000</span></li>
+                        <li>PSN 300.000 <span>Rp 300.000</span></li>
+                        <li>PSN 500.000 <span>Rp 500.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
+            </div>
+            
+            <!-- Provider 4 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fab fa-xbox"></i>
+                    <h3>Xbox Live</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>Xbox 50.000 <span>Rp 50.000</span></li>
+                        <li>Xbox 100.000 <span>Rp 100.000</span></li>
+                        <li>Xbox 150.000 <span>Rp 150.000</span></li>
+                        <li>Xbox 300.000 <span>Rp 300.000</span></li>
+                        <li>Xbox 500.000 <span>Rp 500.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
+            </div>
+            
+            <!-- Provider 5 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Garena Shells</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>33 Shells <span>Rp 10.000</span></li>
+                        <li>66 Shells <span>Rp 20.000</span></li>
+                        <li>165 Shells <span>Rp 50.000</span></li>
+                        <li>330 Shells <span>Rp 100.000</span></li>
+                        <li>825 Shells <span>Rp 250.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
+            </div>
+            
+            <!-- Provider 6 -->
+            <div class="provider-card">
+                <div class="provider-header">
+                    <i class="fab fa-google-play"></i>
+                    <h3>Google Play</h3>
+                </div>
+                <div class="provider-content">
+                    <ul>
+                        <li>Google Play 20.000 <span>Rp 20.000</span></li>
+                        <li>Google Play 50.000 <span>Rp 50.000</span></li>
+                        <li>Google Play 100.000 <span>Rp 100.000</span></li>
+                        <li>Google Play 200.000 <span>Rp 200.000</span></li>
+                        <li>Google Play 500.000 <span>Rp 500.000</span></li>
+                    </ul>
+                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="products" id="products">
-        <div class="container">
-            <div class="section-title">
-                <h2>Produk Game Populer</h2>
-                <p>Pilih game favoritmu dan lakukan top up dengan mudah</p>
-            </div>
-            
-            <div class="products-grid">
-                <!-- Product 1 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Mobile Legends</h3>
-                        <p>Diamond MLBB resmi dengan proses instan</p>
-                        <div class="product-price">Rp 10.000 - Rp 500.000</div>
-                        <button class="buy-btn">BELI SEKARANG</button>
-                    </div>
-                </div>
-                
-                <!-- Product 2 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <i class="fab fa-steam"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Steam Wallet</h3>
-                        <p>Saldo Steam untuk beli game & item</p>
-                        <div class="product-price">Rp 25.000 - Rp 1.000.000</div>
-                        <button class="buy-btn">BELI SEKARANG</button>
-                    </div>
-                </div>
-                
-                <!-- Product 3 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <i class="fas fa-crosshairs"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Valorant</h3>
-                        <p>Points Valorant resmi dari Riot Games</p>
-                        <div class="product-price">Rp 50.000 - Rp 750.000</div>
-                        <button class="buy-btn">BELI SEKARANG</button>
-                    </div>
-                </div>
-                
-                <!-- Product 4 -->
-                <div class="product-card">
-                    <div class="product-img">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <div class="product-info">
-                        <h3>Free Fire</h3>
-                        <p>Diamond Free Fire dengan proses cepat</p>
-                        <div class="product-price">Rp 5.000 - Rp 300.000</div>
-                        <button class="buy-btn">BELI SEKARANG</button>
-                    </div>
-                </div>
-            </div>
+    <!-- Tutorial Section -->
+    <section class="container" id="tutorial">
+        <div class="section-title">
+            <h2>Tutorial Deploy Website</h2>
         </div>
-    </section>
-
-    <!-- Tutorial Deploy Section -->
-    <section class="tutorial" id="tutorial">
-        <div class="container">
-            <div class="section-title">
-                <h2>Tutorial Deploy Website</h2>
-                <p>Berikut panduan lengkap untuk mendeploy website ini dengan mudah</p>
-            </div>
+        
+        <div class="tutorial">
+            <p>Berikut adalah langkah-langkah untuk mendeploy website topup game ini ke server online:</p>
             
             <div class="tutorial-steps">
-                <!-- Step 1 -->
                 <div class="step">
                     <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Pilih Platform Hosting</h3>
-                        <p>Pilih platform hosting yang mudah digunakan dan gratis untuk memulai. Rekomendasi:</p>
-                        <ul>
-                            <li><strong>Netlify</strong> - Mudah digunakan dengan drag & drop</li>
-                            <li><strong>Vercel</strong> - Baik untuk proyek frontend</li>
-                            <li><strong>GitHub Pages</strong> - Gratis untuk proyek open source</li>
-                        </ul>
-                    </div>
+                    <h3>Persiapan File</h3>
+                    <p>Simpan file HTML ini dengan nama <code>index.html</code>. Anda juga bisa menambahkan file CSS dan JavaScript terpisah jika diperlukan.</p>
                 </div>
                 
-                <!-- Step 2 -->
                 <div class="step">
                     <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Persiapkan File Website</h3>
-                        <p>Simpan kode website ini dalam satu file HTML atau pisahkan menjadi file terpisah:</p>
-                        <code>index.html</code> (file utama)<br>
-                        <code>style.css</code> (file stylesheet)<br>
-                        <code>script.js</code> (file JavaScript)<br>
-                        <p>Untuk kemudahan, gunakan file HTML tunggal seperti kode ini.</p>
-                    </div>
+                    <h3>Pilih Hosting</h3>
+                    <p>Pilih penyedia hosting yang sesuai. Beberapa opsi populer: Hostinger, Niagahoster, atau layanan cloud seperti Vercel/Netlify untuk deployment gratis.</p>
                 </div>
                 
-                <!-- Step 3 -->
                 <div class="step">
                     <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Deploy ke Netlify (Paling Mudah)</h3>
-                        <p>Ikuti langkah-langkah berikut:</p>
-                        <ol>
-                            <li>Kunjungi <a href="https://netlify.com" target="_blank">netlify.com</a> dan buat akun gratis</li>
-                            <li>Klik "Add new site" → "Deploy manually"</li>
-                            <li>Drag & drop folder berisi file website Anda</li>
-                            <li>Tunggu proses deploy selesai (1-2 menit)</li>
-                            <li>Website Anda sudah online dengan URL dari Netlify</li>
-                        </ol>
-                    </div>
+                    <h3>Upload File</h3>
+                    <p>Upload file website ke server hosting menggunakan FTP (FileZilla) atau melalui panel kontrol hosting (cPanel).</p>
                 </div>
                 
-                <!-- Step 4 -->
                 <div class="step">
                     <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Deploy ke Vercel</h3>
-                        <p>Alternatif cepat lainnya:</p>
-                        <ol>
-                            <li>Kunjungi <a href="https://vercel.com" target="_blank">vercel.com</a> dan buat akun</li>
-                            <li>Klik "Import Project" → "Deploy"</li>
-                            <li>Upload file ZIP atau hubungkan dengan GitHub</li>
-                            <li>Klik deploy dan tunggu hingga selesai</li>
-                            <li>Website Anda akan live dengan URL dari Vercel</li>
-                        </ol>
-                    </div>
+                    <h3>Domain dan SSL</h3>
+                    <p>Atur domain Anda dan aktifkan SSL untuk keamanan. Kebanyakan hosting modern menyediakan SSL gratis (Let's Encrypt).</p>
                 </div>
                 
-                <!-- Step 5 -->
                 <div class="step">
                     <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>Tambahkan Domain Kustom (Opsional)</h3>
-                        <p>Jika ingin menggunakan domain sendiri:</p>
-                        <ol>
-                            <li>Beli domain dari provider seperti Niagahoster, Domain.com, dll</li>
-                            <li>Di dashboard Netlify/Vercel, buka pengaturan domain</li>
-                            <li>Tambahkan domain kustom Anda</li>
-                            <li>Atur DNS records sesuai petunjuk dari platform</li>
-                            <li>Tunggu propagasi DNS (bisa beberapa jam)</li>
-                        </ol>
-                    </div>
+                    <h3>Konfigurasi Database</h3>
+                    <p>Jika website memerlukan database (untuk fitur user/login), buat database MySQL melalui cPanel dan hubungkan dengan website.</p>
                 </div>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h3>Testing dan Launch</h3>
+                    <p>Uji website secara menyeluruh, pastikan semua fitur berfungsi. Setelah yakin, website siap diluncurkan dan dipromosikan.</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid var(--secondary);">
+                <h3><i class="fas fa-lightbulb"></i> Tips Penting:</h3>
+                <ul style="list-style-position: inside; margin-top: 10px;">
+                    <li>Ganti placeholder harga dengan harga aktual dari supplier Anda</li>
+                    <li>Tambahkan metode pembayaran yang populer di Indonesia (OVO, Gopay, Dana, dll)</li>
+                    <li>Integrasikan dengan API pembayaran untuk proses otomatis</li>
+                    <li>Optimasi kecepatan website dengan kompresi gambar dan caching</li>
+                    <li>Pastikan website responsive di semua perangkat</li>
+                </ul>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h4>GameTopUp</h4>
-                    <p>Platform top up game resmi dan terpercaya di Indonesia. Mendukung pengembang game dengan transaksi legal.</p>
+                    <h3>GameTopUp</h3>
+                    <p>Platform topup game terpercaya dengan proses cepat dan aman. Dukung permainan favoritmu dengan harga terbaik.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
+                
                 <div class="footer-column">
-                    <h4>Game Populer</h4>
+                    <h3>Provider Game</h3>
                     <ul>
                         <li><a href="#">Mobile Legends</a></li>
                         <li><a href="#">Free Fire</a></li>
+                        <li><a href="#">PUBG Mobile</a></li>
                         <li><a href="#">Valorant</a></li>
                         <li><a href="#">Steam Wallet</a></li>
                     </ul>
                 </div>
+                
                 <div class="footer-column">
-                    <h4>Kontak Kami</h4>
+                    <h3>Metode Pembayaran</h3>
                     <ul>
-                        <li><i class="fas fa-envelope"></i> support@gametopup.com</li>
-                        <li><i class="fas fa-phone"></i> +62 812-3456-7890</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                        <li><a href="#">OVO</a></li>
+                        <li><a href="#">Gopay</a></li>
+                        <li><a href="#">Dana</a></li>
+                        <li><a href="#">LinkAja</a></li>
+                        <li><a href="#">Bank Transfer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Bantuan</h3>
+                    <ul>
+                        <li><a href="#">Cara Topup</a></li>
+                        <li><a href="#">Status Pesanan</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
                     </ul>
                 </div>
             </div>
+            
             <div class="copyright">
-                <p>&copy; 2023 GameTopUp. Semua hak dilindungi. | Website ini hanya untuk tujuan demonstrasi.</p>
+                <p>&copy; 2023 GameTopUp. Semua hak dilindungi. | Website topup game terpercaya</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Login Form Handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Simulasi login sederhana
-            if(username && password) {
-                alert(`Login berhasil! Selamat datang, ${username}.`);
-                // Redirect ke dashboard atau halaman lain
-                // window.location.href = "dashboard.html";
-            } else {
-                alert("Silakan isi username dan password.");
-            }
+        // Mobile Navigation Toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            mobileToggle.innerHTML = mainNav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
         });
         
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const nav = document.querySelector('nav ul');
-        
-        mobileMenuBtn.addEventListener('click', function() {
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-        });
-        
-        // Update nav display on window resize
-        window.addEventListener('resize', function() {
-            if(window.innerWidth > 768) {
-                nav.style.display = 'flex';
-            } else {
-                nav.style.display = 'none';
-            }
-        });
-        
-        // Initialize nav display based on screen size
-        if(window.innerWidth <= 768) {
-            nav.style.display = 'none';
-        }
-        
-        // Buy Button Handler
-        const buyButtons = document.querySelectorAll('.buy-btn');
-        buyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productName = this.parentElement.querySelector('h3').textContent;
-                alert(`Anda akan membeli produk: ${productName}. Untuk transaksi lengkap, backend diperlukan.`);
-            });
-        });
-        
-        // Smooth scrolling for anchor links
+        // Smooth scroll untuk anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -729,12 +763,29 @@
                         behavior: 'smooth'
                     });
                     
-                    // Close mobile menu if open
-                    if(window.innerWidth <= 768) {
-                        nav.style.display = 'none';
+                    // Tutup mobile menu jika terbuka
+                    if(mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
                     }
                 }
             });
+        });
+        
+        // Simulasi tombol topup
+        document.querySelectorAll('.btn-provider, .btn-hero').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('Fitur pembelian akan diarahkan ke halaman checkout. Untuk implementasi nyata, integrasikan dengan sistem pembayaran.');
+            });
+        });
+        
+        // Simulasi tombol login/register
+        document.querySelector('.btn-login').addEventListener('click', function() {
+            alert('Halaman login akan muncul di sini. Untuk implementasi nyata, buat form login dengan validasi.');
+        });
+        
+        document.querySelector('.btn-register').addEventListener('click', function() {
+            alert('Halaman pendaftaran akan muncul di sini. Untuk implementasi nyata, buat form registrasi dengan validasi.');
         });
     </script>
 </body>
