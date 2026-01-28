@@ -1,792 +1,277 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameTopUp - Topup Game Semua Provider</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arya Payment Store</title>
 
-        :root {
-            --primary: #6a11cb;
-            --secondary: #2575fc;
-            --accent: #ff4081;
-            --light: #f8f9fa;
-            --dark: #343a40;
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
+<style>
+* {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  overflow: hidden;
+}
 
-        /* Header Styles */
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+/* LOADING SCREEN */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #020617;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.loader-circle {
+  width: 70px;
+  height: 70px;
+  border: 5px solid #1e293b;
+  border-top: 5px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
-        .logo i {
-            color: var(--accent);
-        }
+/* BACKGROUND ANIMATION */
+.bg-anim {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(270deg, #2563eb, #7c3aed, #22d3ee);
+  opacity: 0.07;
+  animation: bgmove 8s infinite alternate;
+}
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-        }
+@keyframes bgmove {
+  from { filter: blur(60px); }
+  to { filter: blur(120px); }
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            padding: 5px 0;
-            position: relative;
-        }
+/* CONTAINER */
+.container {
+  position: relative;
+  z-index: 2;
+  width: 380px;
+  background: rgba(2,6,23,0.92);
+  border-radius: 18px;
+  padding: 20px;
+  margin: auto;
+  margin-top: 50px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.9);
+  border: 1px solid #1e293b;
+}
 
-        nav a:hover {
-            color: #ffdd40;
-        }
+/* LOGO */
+.logo {
+  display: flex;
+  justify-content: center;
+}
 
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: #ffdd40;
-            transition: width 0.3s;
-        }
+.logo img {
+  width: 90px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #2563eb;
+}
 
-        nav a:hover::after {
-            width: 100%;
-        }
+/* TITLE */
+h2 {
+  text-align: center;
+  margin: 10px 0 15px;
+}
 
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
+/* CARD */
+.card {
+  background: #020617;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #1e293b;
+}
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
+/* GLOW BUTTON */
+.glow-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #020617;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
 
-        .btn-login {
-            background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
+.glow-btn::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(45deg, #2563eb, #7c3aed, #22d3ee);
+  animation: rotate 4s linear infinite;
+  opacity: 0.7;
+}
 
-        .btn-login:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: white;
-        }
+.glow-btn span {
+  position: relative;
+  z-index: 2;
+}
 
-        .btn-register {
-            background: var(--accent);
-            color: white;
-        }
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #020617;
+  border-radius: 10px;
+}
 
-        .btn-register:hover {
-            background: #e91e63;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
-        }
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-        .mobile-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+/* QRIS */
+.qris img {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+}
 
-        /* Hero Section */
-        .hero {
-            padding: 80px 0;
-            background: linear-gradient(rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            border-radius: 0 0 40px 40px;
-            margin-bottom: 40px;
-        }
+/* SPOTIFY */
+.spotify {
+  margin-top: 15px;
+}
 
-        .hero-content {
-            max-width: 700px;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        .btn-hero {
-            background: var(--accent);
-            color: white;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            box-shadow: 0 8px 20px rgba(255, 64, 129, 0.4);
-        }
-
-        .btn-hero:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(255, 64, 129, 0.6);
-        }
-
-        /* Game Providers Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border-radius: 2px;
-        }
-
-        .providers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .provider-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .provider-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .provider-header {
-            padding: 20px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            text-align: center;
-        }
-
-        .provider-header i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .provider-header h3 {
-            font-size: 1.5rem;
-        }
-
-        .provider-content {
-            padding: 25px;
-        }
-
-        .provider-content ul {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .provider-content li {
-            padding: 8px 0;
-            border-bottom: 1px dashed #eee;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .provider-content li:last-child {
-            border-bottom: none;
-        }
-
-        .btn-provider {
-            width: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .btn-provider:hover {
-            opacity: 0.9;
-        }
-
-        /* Tutorial Section */
-        .tutorial {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            margin-bottom: 60px;
-        }
-
-        .tutorial-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 250px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 5px solid var(--primary);
-            transition: all 0.3s;
-        }
-
-        .step:hover {
-            background: #e9ecef;
-            transform: translateY(-5px);
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 50px 0 20px;
-            margin-top: 60px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: #ffdd40;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            color: #bbb;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-column ul li a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: #444;
-            color: white;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            background: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            color: #bbb;
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            nav ul {
-                gap: 15px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-container {
-                flex-wrap: wrap;
-            }
-            
-            .mobile-toggle {
-                display: block;
-            }
-            
-            nav {
-                display: none;
-                width: 100%;
-                margin-top: 20px;
-            }
-            
-            nav.active {
-                display: block;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .auth-buttons {
-                width: 100%;
-                justify-content: center;
-                margin-top: 20px;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero {
-                padding: 60px 0;
-            }
-            
-            .tutorial {
-                padding: 25px;
-            }
-            
-            .step {
-                min-width: 100%;
-            }
-        }
-    </style>
+/* FOOTER */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 10px;
+}
+</style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <i class="fas fa-gamepad"></i>
-                <span>GameTopUp</span>
-            </div>
-            
-            <div class="mobile-toggle" id="mobileToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            
-            <nav id="mainNav">
-                <ul>
-                    <li><a href="#"><i class="fas fa-home"></i> Beranda</a></li>
-                    <li><a href="#providers"><i class="fas fa-layer-group"></i> Provider</a></li>
-                    <li><a href="#tutorial"><i class="fas fa-book"></i> Tutorial</a></li>
-                    <li><a href="#"><i class="fas fa-question-circle"></i> Bantuan</a></li>
-                    <li><a href="#"><i class="fas fa-envelope"></i> Kontak</a></li>
-                </ul>
-            </nav>
-            
-            <div class="auth-buttons">
-                <button class="btn btn-login"><i class="fas fa-sign-in-alt"></i> Masuk</button>
-                <button class="btn btn-register"><i class="fas fa-user-plus"></i> Daftar</button>
-            </div>
-        </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container hero-content">
-            <h1>Topup Game Favoritmu dengan Mudah</h1>
-            <p>Dukung permainanmu dengan topup cepat dan aman. Kami mendukung berbagai provider game resmi dengan proses instan dan harga terbaik di pasaran.</p>
-            <button class="btn btn-hero"><i class="fas fa-bolt"></i> Topup Sekarang</button>
-        </div>
-    </section>
+<!-- LOADING -->
+<div id="loader">
+  <div class="loader-circle"></div>
+</div>
 
-    <!-- Game Providers Section -->
-    <section class="container" id="providers">
-        <div class="section-title">
-            <h2>Provider Game Resmi</h2>
-        </div>
-        
-        <div class="providers-grid">
-            <!-- Provider 1 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>Mobile Legends</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>Diamond 86 <span>Rp 20.000</span></li>
-                        <li>Diamond 172 <span>Rp 40.000</span></li>
-                        <li>Diamond 257 <span>Rp 60.000</span></li>
-                        <li>Diamond 344 <span>Rp 80.000</span></li>
-                        <li>Diamond 429 <span>Rp 100.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-            
-            <!-- Provider 2 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fab fa-steam"></i>
-                    <h3>Steam Wallet</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>Steam 15.000 <span>Rp 15.000</span></li>
-                        <li>Steam 30.000 <span>Rp 30.000</span></li>
-                        <li>Steam 60.000 <span>Rp 60.000</span></li>
-                        <li>Steam 120.000 <span>Rp 120.000</span></li>
-                        <li>Steam 250.000 <span>Rp 250.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-            
-            <!-- Provider 3 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fab fa-playstation"></i>
-                    <h3>PlayStation Network</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>PSN 50.000 <span>Rp 50.000</span></li>
-                        <li>PSN 100.000 <span>Rp 100.000</span></li>
-                        <li>PSN 200.000 <span>Rp 200.000</span></li>
-                        <li>PSN 300.000 <span>Rp 300.000</span></li>
-                        <li>PSN 500.000 <span>Rp 500.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-            
-            <!-- Provider 4 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fab fa-xbox"></i>
-                    <h3>Xbox Live</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>Xbox 50.000 <span>Rp 50.000</span></li>
-                        <li>Xbox 100.000 <span>Rp 100.000</span></li>
-                        <li>Xbox 150.000 <span>Rp 150.000</span></li>
-                        <li>Xbox 300.000 <span>Rp 300.000</span></li>
-                        <li>Xbox 500.000 <span>Rp 500.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-            
-            <!-- Provider 5 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fas fa-gamepad"></i>
-                    <h3>Garena Shells</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>33 Shells <span>Rp 10.000</span></li>
-                        <li>66 Shells <span>Rp 20.000</span></li>
-                        <li>165 Shells <span>Rp 50.000</span></li>
-                        <li>330 Shells <span>Rp 100.000</span></li>
-                        <li>825 Shells <span>Rp 250.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-            
-            <!-- Provider 6 -->
-            <div class="provider-card">
-                <div class="provider-header">
-                    <i class="fab fa-google-play"></i>
-                    <h3>Google Play</h3>
-                </div>
-                <div class="provider-content">
-                    <ul>
-                        <li>Google Play 20.000 <span>Rp 20.000</span></li>
-                        <li>Google Play 50.000 <span>Rp 50.000</span></li>
-                        <li>Google Play 100.000 <span>Rp 100.000</span></li>
-                        <li>Google Play 200.000 <span>Rp 200.000</span></li>
-                        <li>Google Play 500.000 <span>Rp 500.000</span></li>
-                    </ul>
-                    <button class="btn btn-provider"><i class="fas fa-shopping-cart"></i> Beli Sekarang</button>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- BACKGROUND -->
+<div class="bg-anim"></div>
 
-    <!-- Tutorial Section -->
-    <section class="container" id="tutorial">
-        <div class="section-title">
-            <h2>Tutorial Deploy Website</h2>
-        </div>
-        
-        <div class="tutorial">
-            <p>Berikut adalah langkah-langkah untuk mendeploy website topup game ini ke server online:</p>
-            
-            <div class="tutorial-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Persiapan File</h3>
-                    <p>Simpan file HTML ini dengan nama <code>index.html</code>. Anda juga bisa menambahkan file CSS dan JavaScript terpisah jika diperlukan.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Pilih Hosting</h3>
-                    <p>Pilih penyedia hosting yang sesuai. Beberapa opsi populer: Hostinger, Niagahoster, atau layanan cloud seperti Vercel/Netlify untuk deployment gratis.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Upload File</h3>
-                    <p>Upload file website ke server hosting menggunakan FTP (FileZilla) atau melalui panel kontrol hosting (cPanel).</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Domain dan SSL</h3>
-                    <p>Atur domain Anda dan aktifkan SSL untuk keamanan. Kebanyakan hosting modern menyediakan SSL gratis (Let's Encrypt).</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <h3>Konfigurasi Database</h3>
-                    <p>Jika website memerlukan database (untuk fitur user/login), buat database MySQL melalui cPanel dan hubungkan dengan website.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <h3>Testing dan Launch</h3>
-                    <p>Uji website secara menyeluruh, pastikan semua fitur berfungsi. Setelah yakin, website siap diluncurkan dan dipromosikan.</p>
-                </div>
-            </div>
-            
-            <div style="margin-top: 30px; padding: 20px; background: #f0f8ff; border-radius: 10px; border-left: 5px solid var(--secondary);">
-                <h3><i class="fas fa-lightbulb"></i> Tips Penting:</h3>
-                <ul style="list-style-position: inside; margin-top: 10px;">
-                    <li>Ganti placeholder harga dengan harga aktual dari supplier Anda</li>
-                    <li>Tambahkan metode pembayaran yang populer di Indonesia (OVO, Gopay, Dana, dll)</li>
-                    <li>Integrasikan dengan API pembayaran untuk proses otomatis</li>
-                    <li>Optimasi kecepatan website dengan kompresi gambar dan caching</li>
-                    <li>Pastikan website responsive di semua perangkat</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+<!-- SOUND EFFECT -->
+<audio id="clickSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3">
+</audio>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>GameTopUp</h3>
-                    <p>Platform topup game terpercaya dengan proses cepat dan aman. Dukung permainan favoritmu dengan harga terbaik.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Provider Game</h3>
-                    <ul>
-                        <li><a href="#">Mobile Legends</a></li>
-                        <li><a href="#">Free Fire</a></li>
-                        <li><a href="#">PUBG Mobile</a></li>
-                        <li><a href="#">Valorant</a></li>
-                        <li><a href="#">Steam Wallet</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Metode Pembayaran</h3>
-                    <ul>
-                        <li><a href="#">OVO</a></li>
-                        <li><a href="#">Gopay</a></li>
-                        <li><a href="#">Dana</a></li>
-                        <li><a href="#">LinkAja</a></li>
-                        <li><a href="#">Bank Transfer</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Bantuan</h3>
-                    <ul>
-                        <li><a href="#">Cara Topup</a></li>
-                        <li><a href="#">Status Pesanan</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Syarat & Ketentuan</a></li>
-                        <li><a href="#">Kebijakan Privasi</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 GameTopUp. Semua hak dilindungi. | Website topup game terpercaya</p>
-            </div>
-        </div>
-    </footer>
+<!-- CONTAINER -->
+<div class="container">
 
-    <script>
-        // Mobile Navigation Toggle
-        const mobileToggle = document.getElementById('mobileToggle');
-        const mainNav = document.getElementById('mainNav');
-        
-        mobileToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-            mobileToggle.innerHTML = mainNav.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-        
-        // Smooth scroll untuk anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Tutup mobile menu jika terbuka
-                    if(mainNav.classList.contains('active')) {
-                        mainNav.classList.remove('active');
-                        mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                    }
-                }
-            });
-        });
-        
-        // Simulasi tombol topup
-        document.querySelectorAll('.btn-provider, .btn-hero').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Fitur pembelian akan diarahkan ke halaman checkout. Untuk implementasi nyata, integrasikan dengan sistem pembayaran.');
-            });
-        });
-        
-        // Simulasi tombol login/register
-        document.querySelector('.btn-login').addEventListener('click', function() {
-            alert('Halaman login akan muncul di sini. Untuk implementasi nyata, buat form login dengan validasi.');
-        });
-        
-        document.querySelector('.btn-register').addEventListener('click', function() {
-            alert('Halaman pendaftaran akan muncul di sini. Untuk implementasi nyata, buat form registrasi dengan validasi.');
-        });
-    </script>
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="https://files.catbox.moe/dpi561.jpeg">
+  </div>
+
+  <h2>ARYA PAYMENT</h2>
+
+  <!-- PAYMENT -->
+  <div class="card">
+    <b>DANA</b><br>
+    083851270439
+    <button class="glow-btn" onclick="copyText('083851270439')">
+      <span>Copy Dana</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <b>OVO</b><br>
+    083805385608
+    <button class="glow-btn" onclick="copyText('083805385608')">
+      <span>Copy OVO</span>
+    </button>
+  </div>
+
+  <div class="card">
+    <b>GOPAY</b><br>
+    083805385608
+    <button class="glow-btn" onclick="copyText('083805385608')">
+      <span>Copy Gopay</span>
+    </button>
+  </div>
+
+  <!-- QRIS -->
+  <div class="card qris">
+    <b>QRIS PAYMENT</b>
+    <img src="https://files.catbox.moe/z6fk9n.jpeg">
+  </div>
+
+  <!-- ORDER WHATSAPP -->
+  <div class="card">
+    <button class="glow-btn" onclick="orderWA()">
+      <span>ORDER VIA WHATSAPP</span>
+    </button>
+  </div>
+
+  <!-- SPOTIFY -->
+  <div class="spotify">
+    <iframe style="border-radius:12px"
+      src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+      width="100%" height="80"
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
+  </div>
+
+  <div class="footer">
+    © 2026 Arya Payment Store
+  </div>
+
+</div>
+
+<script>
+const sound = document.getElementById("clickSound");
+
+// LOADING
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.body.style.overflow = "auto";
+  }, 1500);
+}
+
+// COPY FUNCTION
+function copyText(text) {
+  sound.play();
+  navigator.clipboard.writeText(text);
+  alert("Berhasil disalin: " + text);
+}
+
+// WHATSAPP ORDER
+function orderWA() {
+  sound.play();
+  const number = "6283805385608";
+  const message = encodeURIComponent("Halo Admin, saya mau order payment.");
+  window.open(`https://wa.me/${number}?text=${message}`, "_blank");
+}
+</script>
+
 </body>
 </html>
