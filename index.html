@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Nestara | Sewa Nokos + Stok & OTP Otomatis</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fc;
+      color: #1e2a3e;
+      scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #e2e8f0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2c7da0;
+      border-radius: 12px;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 20px 30px;
+    }
+
+    /* navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border-radius: 2rem;
+      margin: 20px 30px 0 30px;
+      padding: 12px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+      border: 1px solid rgba(255,255,255,0.6);
+      position: sticky;
+      top: 20px;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1f6e8c, #0e4b6e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      background: none;
+      color: #2c7da0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #1e2a3e;
+      transition: 0.2s;
+    }
+    .nav-links a:hover {
+      color: #2c7da0;
+    }
+    .btn-outline-light {
+      background: transparent;
+      border: 1.5px solid #2c7da0;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .btn-outline-light:hover {
+      background: #2c7da0;
+      color: white;
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin: 40px 0 60px;
+      gap: 30px;
+    }
+    .hero-text {
+      flex: 1.2;
+    }
+    .hero-text h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(to right, #0f4c5f, #1f6e8c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      margin: 20px 0;
+      color: #2c3e50;
+      max-width: 500px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .stat {
+      background: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    .stat h3 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #1e6f5c;
+    }
+    .hero-img {
+      flex: 1;
+      background: linear-gradient(125deg, #cbdde6 0%, #eef2f5 100%);
+      border-radius: 32px;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #2c7da0;
+      font-size: 1.4rem;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+    }
+
+    /* filter */
+    .filter-section {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 48px;
+      margin: 30px 0 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+    }
+    .filter-group {
+      display: flex;
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 5px 12px;
+      border-radius: 60px;
+    }
+    select, .price-range {
+      border: none;
+      background: transparent;
+      font-weight: 500;
+      padding: 8px 0;
+      font-family: 'Inter',sans-serif;
+      outline: none;
+      cursor: pointer;
+    }
+    .search-btn {
+      background: #2c7da0;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 30px 0 20px;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 28px;
+      margin-bottom: 50px;
+    }
+    .kos-card {
+      background: white;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s;
+      cursor: pointer;
+    }
+    .kos-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 28px 32px -12px rgba(0,0,0,0.15);
+    }
+    .card-img {
+      height: 180px;
+      background: #cbdde6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      padding: 4px 12px;
+      border-radius: 40px;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .stock-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #2c7da0;
+      padding: 4px 10px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.7rem;
+    }
+    .stock-low {
+      background: #e67e22;
+    }
+    .stock-habis {
+      background: #c0392b;
+    }
+    .card-content {
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+    }
+    .price {
+      color: #2c7da0;
+      font-weight: 800;
+    }
+    .details {
+      display: flex;
+      gap: 15px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      color: #4a627a;
+    }
+    .btn-buy {
+      background: #eef2ff;
+      width: 100%;
+      border: none;
+      padding: 12px;
+      border-radius: 28px;
+      font-weight: 700;
+      margin-top: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      color: #1f6e8c;
+    }
+    .btn-buy:disabled {
+      background: #e0e7ef;
+      color: #94a3b8;
+      cursor: not-allowed;
+    }
+    .btn-buy:hover:not(:disabled) {
+      background: #2c7da0;
+      color: white;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-card {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 48px;
+      padding: 28px 32px;
+      text-align: center;
+      animation: fadeUp 0.25s;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .input-group {
+      margin: 20px 0;
+      text-align: left;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 60px;
+      border: 1px solid #cbd5e1;
+      font-family: 'Inter',sans-serif;
+      margin-top: 6px;
+    }
+    .confirm-btn {
+      background: #2c7da0;
+      color: white;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 60px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .close-modal {
+      margin-top: 15px;
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1e2a3e;
+      color: white;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 500;
+      z-index: 1100;
+      opacity: 0;
+      transition: 0.2s;
+      pointer-events: none;
+    }
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #5b6e8c;
+      border-top: 1px solid #e2edf2;
+      margin-top: 40px;
+    }
+    @media (max-width: 760px) {
+      .navbar { margin: 10px 15px; padding: 12px 20px;}
+      .hero-text h1 { font-size: 2.3rem;}
+      .filter-section { flex-direction: column; align-items: stretch; border-radius: 32px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="logo">nestara<span>.</span></div>
+  <div class="nav-links">
+    <a href="#">Beranda</a>
+    <a href="#">Nokos</a>
+    <a href="#" class="btn-outline-light">Masuk</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Cari & Sewa Nokos<br>Stok Real-time + OTP WA</h1>
+      <p>Sistem otomatis dengan verifikasi OTP via WhatsApp. Stok langsung berkurang setelah booking sukses.</p>
+      <div class="hero-stats">
+        <div class="stat"><h3 id="totalNokosStat">0</h3><span>Kosan</span></div>
+        <div class="stat"><h3 id="tersediaStat">0</h3><span>Tersedia</span></div>
+        <div class="stat"><h3>98%</h3><span>Kepuasan</span></div>
+      </div>
+    </div>
+    <div class="hero-img">
+      <i class="fas fa-database" style="margin-right: 8px;"></i> Stok & OTP Aktif
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-group">
+      <i class="fas fa-location-dot"></i>
+      <select id="filterLokasi">
+        <option value="all">Semua Lokasi</option>
+        <option value="Jakpus">Jakpus - Menteng</option>
+        <option value="Jaktim">Jaktim - Casablanca</option>
+        <option value="Bandung">Bandung - Dago</option>
+        <option value="Surabaya">Surabaya - Ubaya</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <i class="fas fa-rupiah-sign"></i>
+      <select id="filterHarga">
+        <option value="all">Semua Harga</option>
+        <option value="0-1500000">Rp 0 - 1,5jt</option>
+        <option value="1500000-2500000">Rp 1,5jt - 2,5jt</option>
+        <option value="2500000-4000000">Rp 2,5jt - 4jt</option>
+      </select>
+    </div>
+    <button class="search-btn" id="applyFilterBtn"><i class="fas fa-magnifying-glass"></i> Terapkan Filter</button>
+  </div>
+
+  <div class="section-title">
+    <span>✨ Hunian Rekomendasi (Stok Real-time)</span>
+  </div>
+  <div id="cardContainer" class="card-grid"></div>
+</div>
+
+<footer>
+  <p>© 2025 nestara — sistem stok & OTP otomatis terintegrasi Supabase + Fonnte</p>
+</footer>
+
+<!-- Modal OTP & Data Diri -->
+<div id="bookingModal" class="modal">
+  <div class="modal-card">
+    <i class="fas fa-key" style="font-size: 2.4rem; color: #2c7da0;"></i>
+    <h3 id="modalKosName">Nama Kos</h3>
+    <p id="modalPriceDisplay"></p>
+    <p id="modalStokDisplay" style="font-size: 0.9rem; margin-bottom: 10px;"></p>
+    <div class="input-group">
+      <label>👤 Nama Lengkap</label>
+      <input type="text" id="customerName" placeholder="Masukkan nama Anda" required>
+    </div>
+    <div class="input-group">
+      <label>📱 Nomor WhatsApp (untuk OTP)</label>
+      <input type="tel" id="customerPhone" placeholder="contoh: 628123456789" required>
+    </div>
+    <div class="input-group" id="otpGroup" style="display: none;">
+      <label>🔐 Kode OTP</label>
+      <input type="text" id="otpCode" placeholder="6 digit kode dari WhatsApp">
+    </div>
+    <button class="confirm-btn" id="requestOtpBtn">Kirim OTP & Verifikasi</button>
+    <button class="confirm-btn" id="verifyOtpBtn" style="background: #27ae60; display: none;">Verifikasi & Booking</button>
+    <button class="close-modal" id="closeModalBtn">Batal</button>
+  </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">✨ Pesan sistem</div>
+
+<script>
+  // ======================= KONFIGURASI SUPABASE =======================
+  // GANTI DENGAN CREDENTIAL SUPABASE KAMU (Daftar gratis di supabase.com)
+  const SUPABASE_URL = 'https://contoh.supabase.co';    // ganti dengan URL project mu
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIs...';   // ganti dengan anon key public
+  
+  // Jika belum punya, sistem akan jalan dalam mode demo (local storage)
+  let supabase = null;
+  let useSupabase = false;
+  try {
+    if (SUPABASE_URL !== 'https://contoh.supabase.co' && SUPABASE_ANON_KEY !== 'eyJhbGciOiJIUzI1NiIs...') {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      useSupabase = true;
+      console.log("✅ Supabase terhubung! Stok & OTP aktif.");
+    } else {
+      console.warn("⚠️ Supabase belum dikonfigurasi. Gunakan mode demo (stok default).");
+    }
+  } catch(e) { console.warn("Supabase error, mode demo", e); }
+
+  // Data lokal awal (fallback jika tanpa supabase)
+  let kosData = [
+    { id: 1, name: "Kost Elysian", price: 1800000, location: "Jakpus", facility: "AC, WiFi, Kamar Mandi Dalam", imgLabel: "🌿", type: "Putri", stok: 3 },
+    { id: 2, name: "Nokos Casablanca", price: 2500000, location: "Jaktim", facility: "AC, Smart TV, Dapur Umum", imgLabel: "🏙️", type: "Campur", stok: 2 },
+    { id: 3, name: "Dago Suites", price: 3200000, location: "Bandung", facility: "Full Furnished, Kolam Renang", imgLabel: "⛰️", type: "Putra", stok: 5 },
+    { id: 4, name: "Kost Ubaya Indah", price: 1400000, location: "Surabaya", facility: "WiFi, Listrik termasuk", imgLabel: "📚", type: "Putri", stok: 1 },
+    { id: 5, name: "Menteng House", price: 3900000, location: "Jakpus", facility: "AC, Satpam, Laundry", imgLabel: "🏛️", type: "Campur", stok: 0 },
+    { id: 6, name: "Kost Garden", price: 980000, location: "Bandung", facility: "Kipas, WiFi", imgLabel: "🌻", type: "Putri", stok: 4 },
+    { id: 7, name: "Surabaya Timur", price: 1700000, location: "Surabaya", facility: "AC, Parkir Luas", imgLabel: "🚗", type: "Putra", stok: 2 },
+    { id: 8, name: "Kemang Village", price: 2800000, location: "Jaktim", facility: "Mini Market, Gym", imgLabel: "🏋️", type: "Campur", stok: 3 }
+  ];
+
+  let currentKosList = [];
+  let selectedKosForBooking = null;
+  let generatedOtp = null;
+  let otpExpiry = null;
+
+  // Helper showToast
+  function showToast(msg, isError = false) {
+    const toast = document.getElementById('toastMsg');
+    toast.innerText = msg;
+    toast.style.background = isError ? '#c0392b' : '#1e2a3e';
+    toast.style.opacity = '1';
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.background = '#1e2a3e'; }, 3000);
+  }
+
+  // fetch stok dari supabase (real-time)
+  async function syncStokFromSupabase() {
+    if (!useSupabase) return;
+    try {
+      const { data, error } = await supabase.from('nokos').select('*');
+      if (error) throw error;
+      if (data && data.length) {
+        kosData = data.map(item => ({
+          id: item.id,
+          name: item.nama,
+          price: item.harga,
+          location: item.lokasi,
+          facility: item.fasilitas,
+          imgLabel: item.icon || '🏠',
+          type: item.tipe,
+          stok: item.stok
+        }));
+      }
+      updateStats();
+      renderCards(currentKosList.length ? currentKosList : kosData);
+    } catch(e) { console.warn("Gagal sync stok", e); }
+  }
+
+  async function updateStokDB(kosId, newStok) {
+    if (!useSupabase) return;
+    try {
+      await supabase.from('nokos').update({ stok: newStok }).eq('id', kosId);
+    } catch(e) { console.error("Update stok gagal", e); }
+  }
+
+  function updateStats() {
+    const total = kosData.length;
+    const tersedia = kosData.filter(k => k.stok > 0).length;
+    document.getElementById('totalNokosStat').innerText = total;
+    document.getElementById('tersediaStat').innerText = tersedia;
+  }
+
+  // Kirim OTP via Fonnte API (WA Gateway Indonesia)
+  async function sendOTPWa(phoneNumber, otp) {
+    // Ganti dengan token Fonnte kamu dari https://fonnte.com
+    const FONNTE_TOKEN = 'YOUR_FONNTE_TOKEN'; // daftar gratis dapat 1000 credit
+    if (FONNTE_TOKEN === 'YOUR_FONNTE_TOKEN') {
+      console.log("[DEMO OTP] Token tidak diisi, simulasi OTP:", otp);
+      showToast(`[DEMO] Kode OTP: ${otp} (simulasi, cek console)`);
+      return true;
+    }
+    try {
+      const response = await fetch('https://api.fonnte.com/send', {
+        method: 'POST',
+        headers: { 'Authorization': FONNTE_TOKEN, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `target=${phoneNumber}&message=Halo, kode OTP Anda untuk booking Nokos Nestara adalah ${otp}. Jangan berikan ke siapa pun.`
+      });
+      const result = await response.json();
+      if (result.status) return true;
+      else throw new Error(result.reason);
+    } catch(e) { console.error("Gagal kirim OTP", e); showToast("Gagal kirim OTP, cek nomor WA", true); return false; }
+  }
+
+  // Cek stok terbaru saat booking
+  async function getLatestStok(kosId) {
+    if (!useSupabase) {
+      const found = kosData.find(k => k.id === kosId);
+      return found ? found.stok : 0;
+    }
+    const { data, error } = await supabase.from('nokos').select('stok').eq('id', kosId).single();
+    if (error) return 0;
+    return data.stok;
+  }
+
+  // Kurangi stok setelah booking sukses
+  async function decrementStok(kosId) {
+    if (!useSupabase) {
+      const index = kosData.findIndex(k => k.id === kosId);
+      if (index !== -1 && kosData[index].stok > 0) {
+        kosData[index].stok--;
+        renderCards(currentKosList);
+        updateStats();
+      }
+      return;
+    }
+    const { data } = await supabase.from('nokos').select('stok').eq('id', kosId).single();
+    if (data && data.stok > 0) {
+      const newStok = data.stok - 1;
+      await supabase.from('nokos').update({ stok: newStok }).eq('id', kosId);
+      await syncStokFromSupabase();
+      renderCards(currentKosList);
+      updateStats();
+    }
+  }
+
+  // Render cards dengan stok
+  function renderCards(data) {
+    const container = document.getElementById('cardContainer');
+    if (!container) return;
+    if (data.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding: 60px;">😢 Tidak ada nokos sesuai filter.</div>`;
+      return;
+    }
+    container.innerHTML = data.map(kos => {
+      let stockClass = '';
+      let stockText = `Stok: ${kos.stok}`;
+      if (kos.stok === 0) stockClass = 'stock-habis';
+      else if (kos.stok <= 2) stockClass = 'stock-low';
+      else stockClass = '';
+      return `
+      <div class="kos-card" data-id="${kos.id}">
+        <div class="card-img">
+          ${kos.imgLabel || '🏠'}
+          <div class="badge">${kos.type}</div>
+          <div class="stock-badge ${stockClass}">📦 ${stockText}</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">
+            ${kos.name}
+            <span class="price">Rp ${kos.price.toLocaleString('id-ID')}</span>
+          </div>
+          <div class="details">
+            <span><i class="fas fa-map-marker-alt"></i> ${kos.location}</span>
+            <span><i class="fas fa-wifi"></i> Wi-Fi</span>
+          </div>
+          <div class="details">${kos.facility.substring(0, 45)}</div>
+          <button class="btn-buy book-trigger" data-id="${kos.id}" ${kos.stok === 0 ? 'disabled' : ''}>
+            <i class="fas fa-bolt"></i> ${kos.stok === 0 ? 'Habis' : 'Sewa Otomatis'}
+          </button>
+        </div>
+      </div>
+    `}).join('');
+
+    document.querySelectorAll('.book-trigger').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (btn.disabled) return;
+        const cardDiv = btn.closest('.kos-card');
+        const id = parseInt(cardDiv.dataset.id);
+        const kosItem = currentKosList.find(k => k.id === id);
+        if (kosItem && kosItem.stok > 0) openBookingModal(kosItem);
+        else showToast("Maaf stok sudah habis!", true);
+      });
+    });
+  }
+
+  // Filter lokal
+  function filterKos() {
+    const locFilter = document.getElementById('filterLokasi').value;
+    const priceFilter = document.getElementById('filterHarga').value;
+    let filtered = [...kosData];
+    if (locFilter !== 'all') filtered = filtered.filter(k => k.location === locFilter);
+    if (priceFilter !== 'all') {
+      const [min, max] = priceFilter.split('-').map(Number);
+      filtered = filtered.filter(k => k.price >= min && k.price <= max);
+    }
+    currentKosList = filtered;
+    renderCards(currentKosList);
+  }
+
+  // Modal OTP flow
+  const modal = document.getElementById('bookingModal');
+  const modalKosName = document.getElementById('modalKosName');
+  const modalPriceDisplay = document.getElementById('modalPriceDisplay');
+  const modalStokDisplay = document.getElementById('modalStokDisplay');
+  const customerNameInput = document.getElementById('customerName');
+  const customerPhoneInput = document.getElementById('customerPhone');
+  const otpGroup = document.getElementById('otpGroup');
+  const otpCodeInput = document.getElementById('otpCode');
+  const requestOtpBtn = document.getElementById('requestOtpBtn');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const closeModalBtn = document.getElementById('closeModalBtn');
+
+  function resetModalUi() {
+    otpGroup.style.display = 'none';
+    requestOtpBtn.style.display = 'block';
+    verifyOtpBtn.style.display = 'none';
+    otpCodeInput.value = '';
+    generatedOtp = null;
+  }
+
+  async function openBookingModal(kos) {
+    const currentStok = await getLatestStok(kos.id);
+    if (currentStok <= 0) {
+      showToast("Stok kos ini sudah habis, pilih yang lain.", true);
+      return;
+    }
+    selectedKosForBooking = kos;
+    selectedKosForBooking.stok = currentStok;
+    modalKosName.innerText = kos.name;
+    modalPriceDisplay.innerText = `💰 Rp ${kos.price.toLocaleString('id-ID')} / bulan`;
+    modalStokDisplay.innerText = `📦 Stok tersedia: ${currentStok}`;
+    customerNameInput.value = '';
+    customerPhoneInput.value = '';
+    resetModalUi();
+    modal.style.display = 'flex';
+  }
+
+  requestOtpBtn.onclick = async () => {
+    const nama = customerNameInput.value.trim();
+    const phone = customerPhoneInput.value.trim();
+    if (!nama) { showToast("Masukkan nama lengkap", true); return; }
+    if (!phone || !phone.match(/^62[0-9]{9,13}$/)) { showToast("Nomor WA harus format 62xxxxxxxx (contoh: 628123456789)", true); return; }
+    // cek stok realtime lagi
+    const stokNow = await getLatestStok(selectedKosForBooking.id);
+    if (stokNow <= 0) { showToast("Maaf stok habis saat memproses.", true); closeModal(); return; }
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    generatedOtp = otp.toString();
+    otpExpiry = Date.now() + 5 * 60000;
+    const sent = await sendOTPWa(phone, otp);
+    if (sent || !useSupabase) {
+      showToast("Kode OTP telah dikirim ke WhatsApp kamu.");
+      otpGroup.style.display = 'block';
+      requestOtpBtn.style.display = 'none';
+      verifyOtpBtn.style.display = 'block';
+    } else {
+      showToast("Gagal kirim OTP, coba lagi.", true);
+    }
+  };
+
+  verifyOtpBtn.onclick = async () => {
+    const userOtp = otpCodeInput.value.trim();
+    if (!userOtp) { showToast("Masukkan kode OTP", true); return; }
+    if (Date.now() > otpExpiry) { showToast("Kode OTP sudah kadaluarsa, ulangi pesan.", true); resetModalUi(); return; }
+    if (userOtp !== generatedOtp) { showToast("Kode OTP salah!", true); return; }
+    // Final booking: cek stok terbaru sekali lagi
+    const finalStok = await getLatestStok(selectedKosForBooking.id);
+    if (finalStok <= 0) { showToast("Stok telah habis oleh pengguna lain. Booking gagal.", true); closeModal(); return; }
+    await decrementStok(selectedKosForBooking.id);
+    showToast(`✅ Booking sukses! ${selectedKosForBooking.name} telah dipesan. Cek WA/email untuk detail.`);
+    closeModal();
+    // refresh tampilan
+    await syncStokFromSupabase();
+    filterKos();
+  };
+
+  function closeModal() {
+    modal.style.display = 'none';
+    selectedKosForBooking = null;
+    resetModalUi();
+  }
+
+  document.getElementById('applyFilterBtn').addEventListener('click', filterKos);
+  window.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  closeModalBtn.addEventListener('click', closeModal);
+
+  // Inisialisasi
+  if (useSupabase) {
+    syncStokFromSupabase();
+    // subscribe realtime perubahan stok (opsional)
+    supabase.channel('stok-updates').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'nokos' }, () => {
+      syncStokFromSupabase();
+    }).subscribe();
+  } else {
+    updateStats();
+    currentKosList = [...kosData];
+    renderCards(kosData);
+  }
+  filterKos();
+</script>
+</body>
+</html>
