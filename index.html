@@ -3,394 +3,594 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Nokos OTP | Provider API Premium</title>
-    <!-- Google Fonts + Tailwind + FontAwesome -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>Felix Pedia | Dashboard Modern + API Hub</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js CDN untuk visualisasi -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); min-height: 100vh; }
-        .glass-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 2rem;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
-        .btn-glow:hover {
-            box-shadow: 0 0 12px rgba(99,102,241,0.6);
-            transition: all 0.2s ease;
+
+        body {
+            background: #f0f2f8;
+            color: #1e293b;
+            padding-bottom: 80px;
         }
-        .active-tab {
-            background: linear-gradient(105deg, #4f46e5, #7c3aed);
-            box-shadow: 0 8px 20px -6px #4f46e5;
+
+        /* SIDEBAR KIRI (seperti gaya kanan modern) */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
         }
-        .card-hover {
-            transition: transform 0.2s, box-shadow 0.2s;
+
+        /* Sidebar premium */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #0f172a 0%, #111827 100%);
+            backdrop-filter: blur(2px);
+            color: #e2e8f0;
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            z-index: 20;
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.4);
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e1e2f; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .logo-icon {
+            background: #3b82f6;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.3);
+        }
+        .logo-text h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        .logo-text p {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+        }
+        .nav-item.active {
+            background: #1e293b;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .nav-item:hover:not(.active) {
+            background: #1e293b;
+            color: #f1f5f9;
+        }
+
+        /* main content area */
+        .main-content {
+            flex: 1;
+            padding: 1.8rem 2rem 2rem;
+            background: #f8fafc;
+        }
+
+        /* header cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.3rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #eef2ff;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-3px);}
+        .stat-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #5b6e8c; }
+        .stat-value { font-size: 2rem; font-weight: 800; color: #0f172a; margin-top: 8px; word-break: break-word; }
+        .stat-sub { font-size: 0.75rem; color: #4b5563; margin-top: 6px;}
+
+        /* panel modern */
+        .card-modern {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            border: 1px solid #eef2ff;
+            margin-bottom: 1.8rem;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid #eef2ff;
+            padding-bottom: 0.75rem;
+        }
+        .badge-api {
+            background: #eef2ff;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        .btn {
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #f1f5f9;
+        }
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 2px 6px rgba(59,130,246,0.3);
+        }
+        .btn-primary:hover { background: #2563eb; transform: scale(0.98);}
+        .btn-outline {
+            border: 1px solid #cbd5e1;
+            background: white;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .api-key-area {
+            background: #f1f5f9;
+            padding: 12px 18px;
+            border-radius: 60px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .service-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 1rem;
+        }
+        .service-tag {
+            background: linear-gradient(135deg, #f1f5f9, #ffffff);
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 8px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .service-tag:hover { background: #3b82f6; color: white; border-color:#3b82f6;}
+
+        .webhook-preview {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 780px) {
+            .sidebar { width: 80px; padding: 1rem 0.5rem; }
+            .sidebar .logo-text, .sidebar .nav-item span:not(i) { display: none; }
+            .nav-item i { margin: 0 auto; font-size: 1.5rem; }
+            .nav-item { justify-content: center; }
+            .main-content { padding: 1rem; }
+        }
+        .footer-menu-mobile {
+            display: none;
+        }
+        @media (max-width: 680px) {
+            .footer-menu-mobile {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                border-top: 1px solid #e2e8f0;
+                justify-content: space-around;
+                padding: 12px 0;
+                z-index: 30;
+                backdrop-filter: blur(8px);
+            }
+            .sidebar { display: none; }
+            body { padding-bottom: 70px; }
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #1f2937;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        textarea, input {
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            outline: none;
+        }
+        hr { margin: 1rem 0; }
     </style>
 </head>
-<body class="text-gray-200">
-
-    <div class="max-w-7xl mx-auto px-4 py-6 md:py-8">
-        <!-- Header dengan Logo & Judul -->
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-            <div class="flex items-center gap-3">
-                <div class="bg-gradient-to-tr from-indigo-500 to-purple-600 p-3 rounded-2xl shadow-xl">
-                    <i class="fas fa-mobile-alt text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-purple-300">Nokos<span class="text-white"> OTP</span></h1>
-                    <p class="text-sm text-indigo-200/70">Provider API Terpercaya · Layanan Produk Lengkap</p>
-                </div>
-            </div>
-            <div class="flex gap-3">
-                <button id="telegramBtn" class="bg-[#26A5E4] hover:bg-[#1e8bc0] px-5 py-2 rounded-xl font-semibold flex items-center gap-2 transition shadow-lg"><i class="fab fa-telegram"></i> Telegram Bot</button>
-                <button id="whatsappBtn" class="bg-[#25D366] hover:bg-[#20b859] px-5 py-2 rounded-xl font-semibold flex items-center gap-2 transition shadow-lg"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+<body>
+<div class="app-container">
+    <!-- Sidebar kiri modern -->
+    <div class="sidebar">
+        <div class="logo-area">
+            <div class="logo-icon"><i class="fas fa-crown"></i></div>
+            <div class="logo-text">
+                <h2>Felix Pedia</h2>
+                <p>Digital Mudah</p>
             </div>
         </div>
-
-        <!-- Dashboard Tabs: Produk & Provider terpisah via Button -->
-        <div class="flex flex-wrap gap-4 mb-8 border-b border-white/10 pb-2">
-            <button id="tabProdukBtn" class="tab-btn px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all text-white/80 hover:text-white"><i class="fas fa-boxes"></i> Daftar Produk</button>
-            <button id="tabProviderBtn" class="tab-btn px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all text-white/80 hover:text-white"><i class="fas fa-network-wired"></i> Kelola Provider</button>
-            <button id="tabApiDocsBtn" class="tab-btn px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all text-white/80 hover:text-white"><i class="fas fa-code"></i> API & Koneksi</button>
+        <div class="nav-menu">
+            <div class="nav-item active" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></div>
+            <div class="nav-item" data-tab="api-integration"><i class="fas fa-plug"></i> <span>API & Koneksi</span></div>
+            <div class="nav-item" data-tab="services"><i class="fas fa-mobile-alt"></i> <span>Layanan OTP</span></div>
+            <div class="nav-item" data-tab="bot-webhook"><i class="fab fa-telegram"></i> <span>Bot & Webhook</span></div>
+            <div class="nav-item" data-tab="profile"><i class="fas fa-user-circle"></i> <span>Profil</span></div>
         </div>
-
-        <!-- Panel 1: PRODUK (beli Nokos, layanan OTP) -->
-        <div id="produkPanel" class="tab-panel">
-            <div class="glass-card p-5 md:p-7 mb-6">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <h2 class="text-2xl font-bold"><i class="fas fa-shopping-cart text-indigo-400 mr-2"></i> Beli Nokos / Layanan OTP</h2>
-                        <p class="text-indigo-200/70 text-sm">Pilih produk, isi data, pesan akan langsung diproses via API Provider.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="searchProduk" placeholder="Cari produk..." class="bg-black/30 rounded-xl px-4 py-2 border border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <button id="refreshProdukBtn" class="bg-indigo-600/50 hover:bg-indigo-600 px-4 rounded-xl"><i class="fas fa-sync-alt"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grid produk dinamis -->
-            <div id="produkGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Loading state -->
-                <div class="col-span-full flex justify-center py-12"><i class="fas fa-spinner fa-pulse text-4xl text-indigo-400"></i></div>
-            </div>
-        </div>
-
-        <!-- Panel 2: PROVIDER API (manajemen koneksi provider) -->
-        <div id="providerPanel" class="tab-panel hidden">
-            <div class="glass-card p-5 md:p-7">
-                <div class="flex justify-between items-center flex-wrap gap-4 mb-6">
-                    <h2 class="text-2xl font-bold"><i class="fas fa-plug text-purple-400 mr-2"></i> API Provider & Kredensial</h2>
-                    <button id="tambahProviderBtn" class="bg-emerald-600 hover:bg-emerald-500 px-5 py-2 rounded-xl flex gap-2 items-center shadow"><i class="fas fa-plus"></i> Tambah Provider</button>
-                </div>
-                <div id="providerList" class="space-y-4">
-                    <!-- Provider cards akan di render js -->
-                </div>
-                <div class="mt-8 p-4 bg-black/20 rounded-xl">
-                    <p class="text-sm text-indigo-200"><i class="fas fa-info-circle"></i> API endpoint internal: <code class="bg-black/40 px-2 py-1 rounded">/api/nokos</code> & <code class="bg-black/40 px-2 py-1 rounded">/api/providers</code> (simulasi localStorage + mock). Integrasi Telegram/WhatsApp gunakan link custom.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Panel 3: API & Koneksi Bot Telegram/WhatsApp -->
-        <div id="apiDocsPanel" class="tab-panel hidden">
-            <div class="glass-card p-5 md:p-7">
-                <h2 class="text-2xl font-bold mb-3"><i class="fab fa-telegram mr-2 text-sky-400"></i> <i class="fab fa-whatsapp mr-2 text-green-400"></i> Koneksi Bot & Webhook</h2>
-                <div class="grid md:grid-cols-2 gap-6 mt-4">
-                    <div class="bg-black/30 p-5 rounded-2xl border border-white/10">
-                        <div class="flex items-center gap-3 mb-3"><i class="fab fa-telegram text-3xl text-sky-400"></i><h3 class="text-xl font-bold">Telegram Integration</h3></div>
-                        <p class="text-sm text-gray-300 mb-3">Kirim notifikasi order / produk via Bot Telegram. Masukkan Bot Token & Chat ID.</p>
-                        <input type="text" id="telegramToken" placeholder="Bot Token" class="w-full bg-white/10 rounded-xl px-4 py-2 mb-2 border border-white/20">
-                        <input type="text" id="telegramChatId" placeholder="Chat ID" class="w-full bg-white/10 rounded-xl px-4 py-2 mb-3 border border-white/20">
-                        <button id="saveTelegramBtn" class="bg-sky-600 w-full py-2 rounded-xl font-semibold"><i class="fas fa-save"></i> Simpan & Test Kirim</button>
-                        <div id="telegramStatus" class="text-xs mt-2 text-sky-300"></div>
-                    </div>
-                    <div class="bg-black/30 p-5 rounded-2xl border border-white/10">
-                        <div class="flex items-center gap-3 mb-3"><i class="fab fa-whatsapp text-3xl text-green-400"></i><h3 class="text-xl font-bold">WhatsApp API (WhatsApp Business)</h3></div>
-                        <p class="text-sm text-gray-300 mb-3">Gunakan API Gateway seperti Fonnte, WATI, atau link API custom. Isi endpoint dan API Key.</p>
-                        <input type="text" id="whatsappApiUrl" placeholder="API Endpoint (contoh: https://api.fonnte.com/send)" class="w-full bg-white/10 rounded-xl px-4 py-2 mb-2">
-                        <input type="text" id="whatsappApiKey" placeholder="API Key / Token" class="w-full bg-white/10 rounded-xl px-4 py-2 mb-3">
-                        <button id="saveWhatsappBtn" class="bg-green-600 w-full py-2 rounded-xl font-semibold"><i class="fas fa-plug"></i> Simpan & Kirim Pesan Uji</button>
-                        <div id="whatsappStatus" class="text-xs mt-2 text-green-300"></div>
-                    </div>
-                </div>
-                <div class="mt-6 text-center text-xs text-indigo-300/80 border-t border-white/10 pt-4">
-                    <i class="fas fa-globe"></i> Untuk deploy ke Vercel + Cloudflare: gunakan file `index.html` statis + vercel.json, lalu deploy dan hubungkan domain Cloudflare. Semua data tersimpan di localStorage (simulasi backend). Untuk production sebenarnya hubungkan ke API nyata.
-                </div>
-            </div>
+        <div style="margin-top: 2rem; font-size: 0.7rem; text-align: center; opacity: 0.5;">
+            <i class="fas fa-shield-alt"></i> API Ready v2
         </div>
     </div>
 
-    <!-- Modal untuk beli produk & tambah provider -->
-    <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all">
-        <div class="bg-gray-900 rounded-2xl max-w-md w-full mx-4 p-6 border border-indigo-500/30 shadow-2xl">
-            <div class="flex justify-between items-center mb-4"><h3 id="modalTitle" class="text-xl font-bold"></h3><button id="closeModalBtn" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button></div>
-            <div id="modalBody"></div>
-            <div class="flex justify-end gap-3 mt-6"><button id="modalActionBtn" class="bg-indigo-600 px-5 py-2 rounded-xl font-semibold">Konfirmasi</button><button id="modalCancelBtn" class="bg-gray-700 px-4 py-2 rounded-xl">Batal</button></div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- TAB DASHBOARD -->
+        <div id="dashboardTab" class="tab-content">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-title"><i class="fas fa-wallet"></i> SALDO</div><div class="stat-value" id="saldoAmount">Rp0</div><div class="stat-sub">+ Top up via API</div></div>
+                <div class="stat-card"><div class="stat-title"><i class="fas fa-exchange-alt"></i> TOTAL TRANSAKSI</div><div class="stat-value" id="totalTransaksi">0</div><div class="stat-sub">Sukses / Gagal</div></div>
+                <div class="stat-card"><div class="stat-title"><i class="fas fa-shopping-cart"></i> TOTAL BELANJA</div><div class="stat-value" id="totalBelanja">Rp0</div><div class="stat-sub">OTP & Virtual</div></div>
+                <div class="stat-card"><div class="stat-title"><i class="fas fa-coins"></i> TOTAL DEPOSIT</div><div class="stat-value" id="totalDeposit">Rp0</div><div class="stat-sub">Riwayat deposit</div></div>
+            </div>
+            <div class="card-modern">
+                <div class="card-header"><h3><i class="fas fa-chart-simple"></i> Statistik Aktivitas</h3><span class="badge-api">update realtime</span></div>
+                <canvas id="activityChart" width="400" height="200" style="max-height: 220px; width:100%"></canvas>
+            </div>
+            <div class="card-modern">
+                <div class="flex-between"><h3><i class="fas fa-bolt"></i> Server Status & Produk</h3><button id="refreshServerBtn" class="btn btn-outline"><i class="fas fa-sync-alt"></i> Refresh</button></div>
+                <div id="serverStatusArea" class="flex-between" style="margin-top: 15px; gap: 12px;">
+                    <span>Server 1: <span id="server1Status" class="badge-api" style="background:#fee2e2;">MAINTENANCE</span></span>
+                    <span>Server 2: <span id="server2Status" class="badge-api" style="background:#dcfce7;">ONLINE</span></span>
+                </div>
+                <div style="margin-top: 20px;"><strong>Layanan Populer:</strong> WhatsApp, Telegram, Google, Social Media, Tiktok</div>
+                <button id="demoOrderBtn" class="btn btn-primary" style="margin-top: 15px;"><i class="fas fa-shopping-cart"></i> Beli Nomor Virtual (Demo)</button>
+            </div>
+        </div>
+
+        <!-- TAB API & KONEKSI (support generate API, create) -->
+        <div id="apiIntegrationTab" class="tab-content" style="display: none;">
+            <div class="card-modern">
+                <div class="card-header"><h3><i class="fas fa-key"></i> API Key Management (Generate / Create)</h3><button id="generateApiKeyBtn" class="btn btn-primary"><i class="fas fa-sync"></i> Generate API Key Baru</button></div>
+                <div class="api-key-area" style="background:#eef2ff; justify-content: space-between;">
+                    <span><i class="fas fa-code"></i> API KEY ANDA : </span>
+                    <strong id="apiKeyDisplay">fp_1723282_example</strong>
+                    <button id="copyApiKeyBtn" class="btn btn-outline" style="padding: 4px 14px;"><i class="far fa-copy"></i> Salin</button>
+                </div>
+                <p class="stat-sub" style="margin: 12px 0;">Gunakan API Key untuk mengakses endpoint integrasi. Simpan dengan aman. Endpoint: <code>https://api.felixpedia.my.id/v1/order</code></p>
+                <hr>
+                <h4><i class="fas fa-network-wired"></i> Integrasi & Endpoint Contoh</h4>
+                <div class="webhook-preview">
+                    POST /api/v1/create-order<br>
+                    Headers: { "X-API-Key": "your_key", "Content-Type": "application/json" }<br>
+                    Body: { "service": "whatsapp", "quantity": 1 }<br>
+                    Response: { "status": "success", "order_id": "FP789", "nomor": "+628123456789" }
+                </div>
+                <div style="margin-top: 20px;">
+                    <label>🔌 Test API Call (Create Order Simulasi):</label>
+                    <div class="flex-between" style="margin-top: 8px;">
+                        <select id="testServiceSelect" style="border-radius: 40px; padding: 8px;">
+                            <option value="whatsapp">WhatsApp OTP</option>
+                            <option value="telegram">Telegram OTP</option>
+                            <option value="google">Google Voice</option>
+                        </select>
+                        <button id="testApiCreateBtn" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Create Order (API)</button>
+                    </div>
+                    <div id="apiResponseMsg" style="margin-top: 12px; background:#f1f5f9; padding: 10px; border-radius: 20px; font-size: 0.8rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB LAYANAN OTP -->
+        <div id="servicesTab" class="tab-content" style="display: none;">
+            <div class="card-modern">
+                <h3><i class="fas fa-list-ul"></i> Layanan Nomor Virtual (OTP Fast Murah)</h3>
+                <div class="service-grid" id="serviceListContainer">
+                    <!-- akan diisi dinamis -->
+                </div>
+                <div style="margin-top: 20px;">
+                    <label>Pilih aplikasi & beli nomor:</label>
+                    <div class="flex-between"><input type="text" id="customServiceInput" placeholder="Cth: WhatsApp, Telegram" style="flex:1"><button id="beliNomorCustomBtn" class="btn btn-primary">Beli Sekarang</button></div>
+                    <div id="orderResultPreview" class="stat-sub" style="margin-top: 12px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB BOT & WEBHOOK TELEGRAM -->
+        <div id="botWebhookTab" class="tab-content" style="display: none;">
+            <div class="card-modern">
+                <h3><i class="fab fa-telegram"></i> Telegram Integration</h3>
+                <p>Kirim notifikasi order/produk via Bot Telegram. Masukkan Bot Token & Chat ID.</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; max-width: 500px;">
+                    <input type="text" id="botTokenInput" placeholder="Bot Token: 123456:ABC-DEF" value="7890123456:AAHdemoTokenFelix">
+                    <input type="text" id="chatIdInput" placeholder="Chat ID: 123456789" value="-100123456789">
+                    <button id="saveTelegramBtn" class="btn btn-primary">Simpan & Test Webhook</button>
+                </div>
+                <div id="telegramStatusMsg" class="stat-sub" style="margin-top: 12px;"></div>
+                <div class="webhook-preview" style="margin-top: 18px;">
+                    <i class="fas fa-bell"></i> Webhook aktif: Notifikasi akan dikirim saat order berhasil dibuat.
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB PROFIL (dengan informasi akun & logout) -->
+        <div id="profileTab" class="tab-content" style="display: none;">
+            <div class="card-modern">
+                <div class="flex-between"><h3><i class="fas fa-user-astronaut"></i> Profil Saya</h3><span class="badge-api">ID: #1779661357351</span></div>
+                <div><strong>Username:</strong> arya &nbsp;|&nbsp; <strong>Email:</strong> udinnnganteng42@gmail.com</div>
+                <div><strong>Status Akun:</strong> Aktif / Member &nbsp; <i class="fas fa-check-circle" style="color:#22c55e;"></i></div>
+                <hr>
+                <h4>Keamanan Akun</h4>
+                <input type="password" id="oldPass" placeholder="Password Lama" style="width:100%; margin-bottom: 10px;">
+                <input type="password" id="newPass" placeholder="Password Baru (min 4 karakter)" style="width:100%;">
+                <button id="updatePasswordBtn" class="btn btn-primary" style="margin-top: 5px;">Perbarui Password</button>
+                <hr>
+                <button id="logoutBtn" class="btn" style="background:#fee2e2; color:#b91c1c;"><i class="fas fa-sign-out-alt"></i> Keluar Sekarang</button>
+            </div>
         </div>
     </div>
+</div>
+<div class="footer-menu-mobile">
+    <i class="fas fa-home" data-tab="dashboard"></i>
+    <i class="fas fa-plug" data-tab="api-integration"></i>
+    <i class="fas fa-mobile-alt" data-tab="services"></i>
+    <i class="fas fa-robot" data-tab="bot-webhook"></i>
+    <i class="fas fa-user" data-tab="profile"></i>
+</div>
 
-    <script>
-        // ---------- DATA MOCK (PRODUK & PROVIDER) ----------
-        let products = [
-            { id: "p1", name: "Nokos Telkomsel OTP", category: "Telkomsel", price: 2500, desc: "SMS OTP untuk semua layanan Telkomsel", icon: "fas fa-sim-card" },
-            { id: "p2", name: "Nokos Indosat OTP", category: "Indosat", price: 2200, desc: "Valid untuk OTP e-commerce & bank", icon: "fas fa-sim-card" },
-            { id: "p3", name: "Nokos XL/Axis OTP", category: "XL/Axis", price: 2000, desc: "Aktifasi & kode verifikasi cepat", icon: "fas fa-sim-card" },
-            { id: "p4", name: "Nokos Tri (3) OTP", category: "Tri", price: 1900, desc: "Support semua SMS OTP", icon: "fas fa-sim-card" },
-            { id: "p5", name: "Paket OTP Premium", category: "Multi", price: 5500, desc: "Multi provider + prioritas", icon: "fas fa-crown" },
-            { id: "p6", name: "Nokos Smartfren OTP", category: "Smartfren", price: 2100, desc: "Cocok untuk verifikasi akun", icon: "fas fa-sim-card" }
-        ];
-
-        let providers = [
-            { id: "prov1", name: "OTPPrime API", endpoint: "https://api.otpprime.com/v1/order", apiKey: "demo-key-123", status: "active" },
-            { id: "prov2", name: "SMSCenter", endpoint: "https://smscenter.id/api", apiKey: "key_sms_xyz", status: "active" }
-        ];
-
-        // Telegram & WA config (localStorage)
-        let telegramConfig = { token: "", chatId: "" };
-        let waConfig = { apiUrl: "", apiKey: "" };
-
-        function loadConfigs() {
-            const storedTel = localStorage.getItem("telegram_config");
-            if(storedTel) telegramConfig = JSON.parse(storedTel);
-            const storedWa = localStorage.getItem("whatsapp_config");
-            if(storedWa) waConfig = JSON.parse(storedWa);
-            document.getElementById("telegramToken").value = telegramConfig.token || "";
-            document.getElementById("telegramChatId").value = telegramConfig.chatId || "";
-            document.getElementById("whatsappApiUrl").value = waConfig.apiUrl || "";
-            document.getElementById("whatsappApiKey").value = waConfig.apiKey || "";
+<script>
+    // -------------------- MOCK STATE (data support create/generate API)
+    let appState = {
+        apiKey: "fp_1723282_gen_" + Math.random().toString(36).substring(2,10),
+        balance: 125000,      // saldo demo
+        totalTransaksi: 12,
+        totalBelanja: 87500,
+        totalDeposit: 125000,
+        orders: [],
+        telegramConfig: { botToken: "7890123456:AAHdemoTokenFelix", chatId: "-100123456789" },
+        services: ["WhatsApp", "Telegram", "Google Voice", "TikTok", "Social Media", "LINE", "WeChat"]
+    };
+    
+    // Update UI numbers
+    function updateStatsUI() {
+        document.getElementById('saldoAmount').innerHTML = `Rp${appState.balance.toLocaleString()}`;
+        document.getElementById('totalTransaksi').innerText = appState.totalTransaksi;
+        document.getElementById('totalBelanja').innerHTML = `Rp${appState.totalBelanja.toLocaleString()}`;
+        document.getElementById('totalDeposit').innerHTML = `Rp${appState.totalDeposit.toLocaleString()}`;
+        if(document.getElementById('apiKeyDisplay')) document.getElementById('apiKeyDisplay').innerText = appState.apiKey;
+    }
+    
+    // Generate API Key baru (Create)
+    function regenerateApiKey() {
+        let newKey = "fp_key_" + Math.random().toString(36).substring(2,15) + "_" + Date.now().toString(36);
+        appState.apiKey = newKey;
+        updateStatsUI();
+        showToast("API Key baru berhasil dibuat! Simpan dengan aman.");
+        if(document.getElementById('apiKeyDisplay')) document.getElementById('apiKeyDisplay').innerText = appState.apiKey;
+    }
+    
+    // Simulasi create order via API support
+    function createOrderViaAPI(serviceName) {
+        if(appState.balance < 2000) {
+            showToast("Saldo tidak mencukupi (min Rp2000), silakan deposit demo.");
+            return { success: false, msg: "Saldo rendah" };
         }
-        function saveTelegramConfig() {
-            telegramConfig.token = document.getElementById("telegramToken").value;
-            telegramConfig.chatId = document.getElementById("telegramChatId").value;
-            localStorage.setItem("telegram_config", JSON.stringify(telegramConfig));
-            showToast("Telegram config saved!", "success");
+        let harga = 1800; // harga simulasi
+        appState.balance -= harga;
+        appState.totalBelanja += harga;
+        appState.totalTransaksi += 1;
+        let orderId = "FP" + Math.floor(Math.random()*10000);
+        let virtualNumber = "+62" + Math.floor(8000000000 + Math.random()*1000000000);
+        let newOrder = { id: orderId, service: serviceName, nomor: virtualNumber, date: new Date().toLocaleString(), harga: harga };
+        appState.orders.unshift(newOrder);
+        updateStatsUI();
+        // Notifikasi Telegram (simulasi)
+        sendTelegramNotif(`🔔 ORDER BARU! Layanan: ${serviceName}\nNomor: ${virtualNumber}\nHarga: Rp${harga}\nID: ${orderId}`);
+        showToast(`Berhasil beli ${serviceName} - Nomor: ${virtualNumber}`);
+        return { success: true, order: newOrder };
+    }
+    
+    function sendTelegramNotif(message) {
+        let { botToken, chatId } = appState.telegramConfig;
+        if(botToken && chatId && botToken !== "") {
+            console.log(`[Telegram Mock] Notif ke ${chatId}: ${message}`);
+            // Simulasi pengiriman (tidak HTTP aktual tapi demo)
+            let statusDiv = document.getElementById('telegramStatusMsg');
+            if(statusDiv) statusDiv.innerHTML = `<i class="fas fa-paper-plane"></i> Notifikasi terkirim (simulasi): ${message.substring(0,40)}...`;
+            setTimeout(()=>{ if(statusDiv) statusDiv.innerHTML = "✅ Terintegrasi dengan Bot Telegram."; }, 1500);
+        } else {
+            console.log("Telegram not configured");
         }
-        function saveWaConfig() {
-            waConfig.apiUrl = document.getElementById("whatsappApiUrl").value;
-            waConfig.apiKey = document.getElementById("whatsappApiKey").value;
-            localStorage.setItem("whatsapp_config", JSON.stringify(waConfig));
-            showToast("WhatsApp config saved!", "success");
-        }
-
-        // Notifikasi simulasi API ke Telegram & WhatsApp (Mock + real fetch jika endpoint ada)
-        async function sendTelegramNotification(message) {
-            if(!telegramConfig.token || !telegramConfig.chatId) return "Token/ChatID belum diisi";
-            const url = `https://api.telegram.org/bot${telegramConfig.token}/sendMessage`;
-            try {
-                const res = await fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ chat_id: telegramConfig.chatId, text: message })
-                });
-                const data = await res.json();
-                return data.ok ? "Telegram terkirim" : "Gagal: " + (data.description || "");
-            } catch(e) { return "Error: " + e.message; }
-        }
-
-        async function sendWhatsAppNotification(message) {
-            if(!waConfig.apiUrl || !waConfig.apiKey) return "API URL / Key belum lengkap";
-            try {
-                const res = await fetch(waConfig.apiUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Authorization": waConfig.apiKey },
-                    body: JSON.stringify({ message: message, number: "6281234567890" }) // contoh nomor tujuan, idealnya dari user
-                });
-                if(res.ok) return "WA notifikasi dikirim (status ok)";
-                else return "Gagal: " + (await res.text()).slice(0,50);
-            } catch(e) { return "Error: " + e.message; }
-        }
-
-        async function notifyChannels(orderDetail) {
-            let text = `🛒 ORDER NOKOS OTP\nProduk: ${orderDetail.productName}\nHarga: Rp ${orderDetail.price}\nStatus: Diproses via provider ${orderDetail.provider}\nWaktu: ${new Date().toLocaleString()}`;
-            const telResult = await sendTelegramNotification(text);
-            const waResult = await sendWhatsAppNotification(text);
-            console.log("Notify:", telResult, waResult);
-            return { telResult, waResult };
-        }
-
-        // Render Produk Grid
-        function renderProducts(filter = "") {
-            const grid = document.getElementById("produkGrid");
-            let filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.category.toLowerCase().includes(filter.toLowerCase()));
-            if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-white/50">Tidak ada produk ditemukan</div>`;
-                return;
-            }
-            grid.innerHTML = filtered.map(prod => `
-                <div class="glass-card p-5 card-hover transition-all cursor-pointer group" data-prod-id="${prod.id}">
-                    <div class="flex items-start justify-between">
-                        <div class="flex gap-3"><i class="${prod.icon} text-2xl text-indigo-300"></i><div><h3 class="text-xl font-bold">${prod.name}</h3><p class="text-xs text-indigo-200/70">${prod.category}</p></div></div>
-                        <span class="bg-indigo-600/30 px-3 py-1 rounded-full text-sm font-mono">Rp ${prod.price.toLocaleString()}</span>
-                    </div>
-                    <p class="text-sm text-gray-300 mt-2">${prod.desc}</p>
-                    <div class="mt-4 flex justify-end"><button class="buy-prod-btn bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 rounded-xl text-sm font-semibold shadow-md hover:scale-105 transition">Beli Sekarang</button></div>
-                </div>
-            `).join("");
-            // attach event listeners to buy buttons
-            document.querySelectorAll('.buy-prod-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const card = btn.closest('[data-prod-id]');
-                    const prodId = card.getAttribute('data-prod-id');
-                    const product = products.find(p => p.id === prodId);
-                    openBuyModal(product);
+    }
+    
+    // load services list UI
+    function renderServices() {
+        let container = document.getElementById('serviceListContainer');
+        if(container){
+            container.innerHTML = appState.services.map(s => `<div class="service-tag" data-srv="${s}">${s} <i class="fas fa-phone"></i></div>`).join('');
+            document.querySelectorAll('.service-tag').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    let srv = el.getAttribute('data-srv');
+                    createOrderViaAPI(srv);
+                    if(document.getElementById('orderResultPreview')) document.getElementById('orderResultPreview').innerHTML = `✅ Order ${srv} diproses. Cek riwayat.`;
                 });
             });
         }
-
-        function openBuyModal(product) {
-            const modal = document.getElementById("modal");
-            document.getElementById("modalTitle").innerHTML = `<i class="fas fa-shopping-cart"></i> Beli ${product.name}`;
-            document.getElementById("modalBody").innerHTML = `
-                <p class="mb-2">Harga: <span class="font-bold text-indigo-300">Rp ${product.price.toLocaleString()}</span></p>
-                <label class="block text-sm mt-2">Nomor Tujuan (opsional):</label>
-                <input type="text" id="targetPhone" placeholder="Nomor HP untuk OTP" class="w-full bg-black/40 rounded-xl p-2 border border-white/20">
-                <label class="block text-sm mt-2">Pilih Provider API:</label>
-                <select id="providerSelect" class="w-full bg-black/40 rounded-xl p-2 border border-white/20">
-                    ${providers.map(prov => `<option value="${prov.id}">${prov.name} (${prov.status})</option>`).join('')}
-                </select>
-                <p class="text-xs text-gray-400 mt-3">*Setelah order, notifikasi akan dikirim ke Telegram & WhatsApp (jika dikonfigurasi)</p>
-            `;
-            modal.classList.remove("hidden");
-            const actionBtn = document.getElementById("modalActionBtn");
-            actionBtn.onclick = async () => {
-                const selectedProviderId = document.getElementById("providerSelect").value;
-                const providerObj = providers.find(p => p.id === selectedProviderId);
-                const targetPhone = document.getElementById("targetPhone").value || "Tidak diisi";
-                // proses order simulasi API
-                const orderData = {
-                    productName: product.name,
-                    price: product.price,
-                    provider: providerObj?.name,
-                    target: targetPhone,
-                    timestamp: Date.now()
-                };
-                // Simulasi panggil API provider (mock)
-                showToast(`Memproses order via ${providerObj.name} ...`, "info");
-                // notifikasi ke channel
-                const notifyResult = await notifyChannels(orderData);
-                showToast(`✅ Order sukses! ${notifyResult.telResult} & ${notifyResult.waResult}`, "success");
-                modal.classList.add("hidden");
-                // Simpan history order (opsional)
-                let orders = JSON.parse(localStorage.getItem("order_history") || "[]");
-                orders.unshift(orderData);
-                localStorage.setItem("order_history", JSON.stringify(orders.slice(0,20)));
-            };
-        }
-
-        // Provider management UI
-        function renderProviders() {
-            const container = document.getElementById("providerList");
-            if(!container) return;
-            if(providers.length === 0) { container.innerHTML = `<div class="text-center text-white/40 py-8">Belum ada provider, klik tambah</div>`; return; }
-            container.innerHTML = providers.map(prov => `
-                <div class="bg-white/5 rounded-2xl p-4 flex flex-wrap justify-between items-center gap-3 border border-white/10">
-                    <div><i class="fas fa-server text-purple-400 mr-2"></i><span class="font-bold">${prov.name}</span><div class="text-xs text-gray-400">Endpoint: ${prov.endpoint}</div></div>
-                    <div class="flex gap-2"><span class="px-3 py-1 rounded-full text-xs ${prov.status === 'active' ? 'bg-green-500/40' : 'bg-red-500/40'}">${prov.status}</span>
-                    <button class="edit-provider text-indigo-300 hover:text-white" data-id="${prov.id}"><i class="fas fa-edit"></i></button>
-                    <button class="delete-provider text-red-400 hover:text-red-300" data-id="${prov.id}"><i class="fas fa-trash-alt"></i></button></div>
-                </div>
-            `).join("");
-            document.querySelectorAll(".edit-provider").forEach(btn => {
-                btn.addEventListener("click", () => editProvider(btn.getAttribute("data-id")));
-            });
-            document.querySelectorAll(".delete-provider").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    if(confirm("Hapus provider?")) providers = providers.filter(p => p.id !== btn.getAttribute("data-id"));
-                    renderProviders();
-                    saveProvidersToLocal();
-                });
+    }
+    
+    function initCharts() {
+        const ctx = document.getElementById('activityChart')?.getContext('2d');
+        if(ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], datasets: [{ label: 'Transaksi OTP', data: [3, 5, 2, 7, 4, 6, 2], borderColor: '#3b82f6', tension: 0.3, fill: false }] },
+                options: { responsive: true, maintainAspectRatio: true }
             });
         }
-
-        function saveProvidersToLocal() { localStorage.setItem("nokos_providers", JSON.stringify(providers)); }
-        function loadProvidersFromLocal() { const stored = localStorage.getItem("nokos_providers"); if(stored) providers = JSON.parse(stored); }
-        function saveProductsLocal() { localStorage.setItem("nokos_products", JSON.stringify(products)); }
-        function loadProductsLocal() { const stored = localStorage.getItem("nokos_products"); if(stored) products = JSON.parse(stored); }
-
-        function editProvider(id) {
-            const prov = providers.find(p => p.id === id);
-            if(!prov) return;
-            document.getElementById("modalTitle").innerHTML = "Edit Provider API";
-            document.getElementById("modalBody").innerHTML = `
-                <input id="editProvName" placeholder="Nama Provider" value="${prov.name}" class="w-full bg-black/40 p-2 rounded mb-2">
-                <input id="editProvEndpoint" placeholder="Endpoint URL" value="${prov.endpoint}" class="w-full bg-black/40 p-2 rounded mb-2">
-                <input id="editProvApiKey" placeholder="API Key" value="${prov.apiKey}" class="w-full bg-black/40 p-2 rounded mb-2">
-                <select id="editProvStatus" class="w-full bg-black/40 p-2 rounded"><option ${prov.status==='active'?'selected':''}>active</option><option ${prov.status==='inactive'?'selected':''}>inactive</option></select>
-            `;
-            const modal = document.getElementById("modal");
-            modal.classList.remove("hidden");
-            document.getElementById("modalActionBtn").onclick = () => {
-                prov.name = document.getElementById("editProvName").value;
-                prov.endpoint = document.getElementById("editProvEndpoint").value;
-                prov.apiKey = document.getElementById("editProvApiKey").value;
-                prov.status = document.getElementById("editProvStatus").value;
-                renderProviders();
-                saveProvidersToLocal();
-                modal.classList.add("hidden");
-                showToast("Provider updated", "success");
-            };
-            document.getElementById("modalCancelBtn").onclick = () => modal.classList.add("hidden");
-        }
-
-        function tambahProvider() {
-            const newId = "prov" + Date.now();
-            providers.push({ id: newId, name: "Provider Baru", endpoint: "https://api.example.com", apiKey: "key", status: "active" });
-            renderProviders();
-            saveProvidersToLocal();
-        }
-
-        // Toast simple
-        function showToast(msg, type="info") {
-            let toastDiv = document.createElement("div");
-            toastDiv.className = `fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-5 py-3 rounded-xl shadow-2xl z-[100] border-l-8 ${type==='success'?'border-green-500':'border-indigo-500'} backdrop-blur`;
-            toastDiv.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'} mr-2"></i>${msg}`;
-            document.body.appendChild(toastDiv);
-            setTimeout(() => toastDiv.remove(), 3000);
-        }
-
-        // Tab Logic
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
-            document.getElementById(`${tabName}Panel`).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active-tab', 'bg-indigo-700/50', 'text-white'));
-            if(tabName === 'produk') document.getElementById('tabProdukBtn').classList.add('active-tab', 'bg-indigo-700/50', 'text-white');
-            if(tabName === 'provider') document.getElementById('tabProviderBtn').classList.add('active-tab', 'bg-indigo-700/50', 'text-white');
-            if(tabName === 'apiDocs') document.getElementById('tabApiDocsBtn').classList.add('active-tab', 'bg-indigo-700/50', 'text-white');
-        }
-
-        // init
-        function init() {
-            loadProductsLocal(); loadProvidersFromLocal(); loadConfigs();
-            renderProducts();
-            renderProviders();
-            document.getElementById("tabProdukBtn").addEventListener("click", () => switchTab("produk"));
-            document.getElementById("tabProviderBtn").addEventListener("click", () => switchTab("provider"));
-            document.getElementById("tabApiDocsBtn").addEventListener("click", () => switchTab("apiDocs"));
-            document.getElementById("refreshProdukBtn").addEventListener("click", () => renderProducts(document.getElementById("searchProduk").value));
-            document.getElementById("searchProduk").addEventListener("input", (e) => renderProducts(e.target.value));
-            document.getElementById("tambahProviderBtn").addEventListener("click", tambahProvider);
-            document.getElementById("saveTelegramBtn").addEventListener("click", saveTelegramConfig);
-            document.getElementById("saveWhatsappBtn").addEventListener("click", saveWaConfig);
-            document.getElementById("telegramBtn").addEventListener("click", () => { switchTab("apiDocs"); document.getElementById("telegramToken").focus(); });
-            document.getElementById("whatsappBtn").addEventListener("click", () => { switchTab("apiDocs"); document.getElementById("whatsappApiUrl").focus(); });
-            document.getElementById("closeModalBtn").addEventListener("click", () => document.getElementById("modal").classList.add("hidden"));
-            document.getElementById("modalCancelBtn").addEventListener("click", () => document.getElementById("modal").classList.add("hidden"));
-            switchTab("produk");
-        }
-        init();
-    </script>
-    <!-- Deploy ke Vercel: cukup letakkan file index.html di folder public/ atau root, lalu vercel --prod. 
-         Cloudflare: arahkan DNS ke Vercel domain dan aktifkan proxy. -->
+    }
+    
+    function showToast(msg) {
+        let toast = document.createElement('div');
+        toast.className = 'toast-msg';
+        toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
+    
+    // Event handlers + Tab switching
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        document.getElementById(tabId + 'Tab').style.display = 'block';
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelectorAll(`.nav-item[data-tab="${tabId}"]`).forEach(el => el.classList.add('active'));
+        if(tabId === 'services') renderServices();
+        if(tabId === 'api-integration') updateStatsUI();
+    }
+    
+    // binding semua event
+    document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            let tab = btn.getAttribute('data-tab');
+            if(tab) switchTab(tab);
+        });
+    });
+    document.querySelectorAll('.footer-menu-mobile i').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            let tab = icon.getAttribute('data-tab');
+            if(tab) switchTab(tab);
+        });
+    });
+    
+    // Initial event listeners
+    document.getElementById('generateApiKeyBtn')?.addEventListener('click', () => regenerateApiKey());
+    document.getElementById('copyApiKeyBtn')?.addEventListener('click', () => {
+        navigator.clipboard.writeText(appState.apiKey);
+        showToast("API Key disalin ke clipboard!");
+    });
+    document.getElementById('testApiCreateBtn')?.addEventListener('click', () => {
+        let service = document.getElementById('testServiceSelect').value;
+        let res = createOrderViaAPI(service);
+        let respDiv = document.getElementById('apiResponseMsg');
+        if(res.success) respDiv.innerHTML = `<span style="color:green;">✅ Sukses: Order ${res.order.id} dibuat. Nomor: ${res.order.nomor}</span>`;
+        else respDiv.innerHTML = `<span style="color:red;">❌ Gagal: ${res.msg}</span>`;
+        switchTab('dashboard'); // redirect ke dashboard agar lihat update saldo
+        setTimeout(()=> switchTab('api-integration'), 800);
+    });
+    document.getElementById('saveTelegramBtn')?.addEventListener('click', () => {
+        let botTok = document.getElementById('botTokenInput').value;
+        let chatIdVal = document.getElementById('chatIdInput').value;
+        appState.telegramConfig = { botToken: botTok, chatId: chatIdVal };
+        showToast("Pengaturan Telegram & Webhook disimpan");
+        sendTelegramNotif("✅ Webhook Felix Pedia aktif! Notifikasi order akan dikirim.");
+    });
+    document.getElementById('beliNomorCustomBtn')?.addEventListener('click', () => {
+        let custom = document.getElementById('customServiceInput').value;
+        if(custom.trim() === "") return showToast("Masukkan nama layanan");
+        createOrderViaAPI(custom);
+    });
+    document.getElementById('demoOrderBtn')?.addEventListener('click', () => {
+        createOrderViaAPI("WhatsApp (Demo)");
+    });
+    document.getElementById('refreshServerBtn')?.addEventListener('click', () => {
+        let rand1 = Math.random() > 0.5 ? "ONLINE" : "MAINTENANCE";
+        let rand2 = "ONLINE";
+        document.getElementById('server1Status').innerText = rand1;
+        document.getElementById('server1Status').style.background = rand1 === "ONLINE" ? "#dcfce7" : "#fee2e2";
+        document.getElementById('server2Status').innerText = rand2;
+        showToast("Server status diperbarui.");
+    });
+    document.getElementById('updatePasswordBtn')?.addEventListener('click', () => {
+        let old = document.getElementById('oldPass').value;
+        let newp = document.getElementById('newPass').value;
+        if(newp.length < 4) return showToast("Password baru minimal 4 karakter");
+        if(old === "") return showToast("Masukkan password lama");
+        showToast("Password berhasil diperbarui! (simulasi)");
+        document.getElementById('oldPass').value = "";
+        document.getElementById('newPass').value = "";
+    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        showToast("Anda telah keluar dari sesi. (Demo logout)");
+        setTimeout(() => location.reload(), 1000);
+    });
+    // set default server status
+    document.getElementById('server1Status').innerText = "MAINTENANCE";
+    document.getElementById('server2Status').innerText = "ONLINE";
+    updateStatsUI();
+    renderServices();
+    initCharts();
+    switchTab('dashboard');
+    // tambahan event untuk riwayat dari order tersimpan
+    console.log("Felix Pedia Dashboard Modern + API ready | Generate & Create");
+</script>
 </body>
 </html>
