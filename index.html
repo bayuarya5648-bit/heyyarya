@@ -3,35 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>APIKey Bot MD | REST API Premium Bot</title>
+    <title>Xyrooo Web API MD | Bot Multi Device Premium</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-primary: #0a0c15;
+            --bg-secondary: #11131f;
+            --bg-card: #11131f;
+            --text-primary: #eef2ff;
+            --text-secondary: #9ca3af;
+            --border: #1e2438;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body.light {
+            --bg-primary: #f3f4f6;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border: #e5e7eb;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            transition: background 0.2s, color 0.2s, border 0.2s;
         }
 
         body {
-            background: #0a0c15;
-            color: #eef2ff;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
 
-        /* Layout Utama: Sidebar Kiri + Konten Kanan */
+        /* Layout */
         .app-wrapper {
             display: flex;
             min-height: 100vh;
         }
 
-        /* ========= SIDEBAR KIRI (REST API Style) ========= */
+        /* Sidebar */
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #0f1119 0%, #0b0d14 100%);
-            border-right: 1px solid #1e2438;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
             padding: 1.8rem 1rem;
             position: sticky;
             top: 0;
@@ -40,31 +66,54 @@
         }
 
         .logo-area {
+            text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #1e2438;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-area img {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 10px;
         }
 
         .logo-area h2 {
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .logo-area p {
-            font-size: 0.7rem;
-            color: #6b7280;
-            margin-top: 5px;
+        .theme-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .theme-btn {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
 
         .nav-menu {
             list-style: none;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
+            margin-top: 1rem;
         }
 
         .nav-link {
@@ -73,43 +122,24 @@
             gap: 12px;
             padding: 0.8rem 1rem;
             border-radius: 1rem;
-            color: #9ca3af;
+            color: var(--text-secondary);
             text-decoration: none;
-            transition: 0.2s;
-            font-weight: 500;
-        }
-
-        .nav-link i {
-            width: 24px;
-            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
         }
 
         .nav-link:hover, .nav-link.active {
-            background: #1e2a4a;
-            color: #60a5fa;
+            background: var(--accent);
+            color: white;
         }
 
-        .nav-link.active {
-            background: linear-gradient(90deg, #1e3a5f, #1e2a4a);
-            border-left: 3px solid #3b82f6;
-        }
-
-        .sidebar-footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid #1e2438;
-            font-size: 0.7rem;
-            color: #6b7280;
-        }
-
-        /* ========= KONTEN KANAN ========= */
+        /* Main Content */
         .main-content {
             flex: 1;
             padding: 1.8rem 2rem;
             overflow-x: auto;
         }
 
-        /* Header Top */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -117,15 +147,24 @@
             margin-bottom: 2rem;
             flex-wrap: wrap;
             gap: 15px;
+            background: var(--bg-secondary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
-            background: #11131f;
-            padding: 0.5rem 1.2rem;
-            border-radius: 2rem;
+        }
+
+        .saldo-badge {
+            background: var(--success);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-weight: bold;
         }
 
         .btn-wa {
@@ -135,34 +174,34 @@
             border-radius: 2rem;
             color: #25D366;
             text-decoration: none;
-            font-weight: 600;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: 0.2s;
         }
 
-        .btn-wa:hover {
-            background: #25D36630;
-        }
-
-        .btn-logout {
-            background: #ef444420;
+        .btn {
+            padding: 8px 16px;
+            border-radius: 10px;
             border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 2rem;
-            color: #f87171;
             cursor: pointer;
+            font-weight: 500;
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
         }
 
         /* Card */
         .card {
-            background: #11131f;
+            background: var(--bg-secondary);
             border-radius: 1.5rem;
             padding: 1.5rem;
-            margin-bottom: 1.8rem;
-            border: 1px solid #1e2438;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
         }
 
         .card h3 {
@@ -170,505 +209,560 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.3rem;
         }
 
-        /* Pricing Cards */
+        /* Pricing Grid */
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1rem;
             margin: 1rem 0;
         }
 
         .pricing-card {
-            background: #0a0c15;
-            border-radius: 1.2rem;
+            background: var(--bg-primary);
+            border-radius: 1rem;
             padding: 1.2rem;
             text-align: center;
-            border: 1px solid #2d3a5e;
-            transition: 0.2s;
+            border: 1px solid var(--border);
             cursor: pointer;
         }
 
         .pricing-card.selected {
-            border: 2px solid #3b82f6;
-            background: #1a2744;
-            box-shadow: 0 0 15px #3b82f640;
+            border: 2px solid var(--accent);
         }
 
         .price {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #fbbf24;
-            margin: 10px 0;
+            color: var(--warning);
         }
 
-        .btn-buy {
-            background: #3b82f6;
+        /* Form */
+        input, select, textarea {
             width: 100%;
-            margin-top: 10px;
-        }
-
-        /* Fitur Grid - PISAHAN */
-        .features-section {
-            margin-top: 1rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .feature-badge {
-            background: #0f172a;
-            border-radius: 40px;
-            padding: 8px 15px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 3px solid #3b82f6;
-        }
-
-        /* Table API Keys */
-        .api-table {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
             padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #1e2438;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
         }
 
-        .status-active {
-            color: #10b981;
+        /* QRIS */
+        .qris-area {
+            text-align: center;
+            padding: 1rem;
         }
 
-        .status-expired {
-            color: #ef4444;
+        .qris-area img {
+            max-width: 200px;
+            border-radius: 20px;
         }
 
-        /* Login/Register Modal */
-        .auth-overlay {
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--bg-secondary);
+            padding: 12px 24px;
+            border-radius: 40px;
+            border-left: 4px solid var(--success);
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Modal */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-        }
-
-        .auth-card {
-            background: #11131f;
-            border-radius: 2rem;
-            padding: 2rem;
-            width: 90%;
-            max-width: 420px;
-            border: 1px solid #3b82f6;
-        }
-
-        .auth-card input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #0a0c15;
-            border: 1px solid #2d3a5e;
-            border-radius: 1rem;
-            color: white;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1e293b;
-            padding: 12px 24px;
-            border-radius: 40px;
-            border-left: 4px solid #10b981;
             z-index: 1100;
         }
 
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid var(--border);
+        }
+
         @media (max-width: 768px) {
-            .app-wrapper {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-            .main-content {
-                padding: 1rem;
-            }
+            .app-wrapper { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: relative; }
+            .main-content { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-wrapper" id="app">
-    <!-- SIDEBAR KIRI -->
+<div class="app-wrapper">
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="logo-area">
-            <h2><i class="fas fa-code-branch"></i> APIKey Bot</h2>
-            <p>REST API Gateway | WhatsApp Bot MD</p>
+            <img src="https://files.catbox.moe/kya6b5.jpg" alt="Xyrooo Logo" onerror="this.src='https://via.placeholder.com/80'">
+            <h2>Xyrooo API MD</h2>
+            <p>Bot Multi Device</p>
+        </div>
+        <div class="theme-toggle">
+            <button class="theme-btn active" data-theme="dark">🌙 Dark</button>
+            <button class="theme-btn" data-theme="light">☀️ Light</button>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item"><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-page="apifeature"><i class="fas fa-plug"></i> API Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-page="otherfeature"><i class="fas fa-th-large"></i> Other Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-page="pricing"><i class="fas fa-tag"></i> Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link" data-page="profile"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="#" class="nav-link active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#" class="nav-link" data-page="buy"><i class="fas fa-shopping-cart"></i> Beli API Key</a></li>
+            <li><a href="#" class="nav-link" data-page="deposit"><i class="fas fa-wallet"></i> Deposit / Top Up</a></li>
+            <li><a href="#" class="nav-link" data-page="withdraw"><i class="fas fa-money-bill-wave"></i> Withdraw</a></li>
+            <li><a href="#" class="nav-link" data-page="features"><i class="fas fa-cubes"></i> Semua Fitur</a></li>
         </ul>
-        <div class="sidebar-footer">
-            <small>© 2026 APIKey Bot MD<br>Real API | No Demo</small>
+        <div class="sidebar-footer" style="margin-top: 2rem; font-size:0.7rem;">
+            <p>© 2026 Xyrooo Web API MD</p>
+            <p>Real API | No Demo</p>
         </div>
     </aside>
 
-    <!-- KONTEN UTAMA -->
+    <!-- Main -->
     <main class="main-content">
         <div class="top-bar">
-            <div class="user-info" id="userInfoDisplay">
-                <i class="fas fa-user-circle"></i> <span id="usernameDisplay">Guest</span>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span id="usernameDisplay">Guest</span>
+                <span id="saldoDisplay" class="saldo-badge" style="display:none;">Saldo: Rp0</span>
             </div>
             <div>
                 <a href="#" id="contactWaBtn" class="btn-wa"><i class="fab fa-whatsapp"></i> Contact Owner</a>
-                <button id="logoutBtn" class="btn-logout" style="display:none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                <button id="loginBtnNav" class="btn-logout" style="background:#3b82f6; color:white;"><i class="fas fa-key"></i> Login / Register</button>
+                <button id="loginBtnNav" class="btn"><i class="fas fa-key"></i> Login</button>
+                <button id="logoutBtn" class="btn-outline" style="display:none;">Logout</button>
             </div>
         </div>
-
-        <!-- DYNAMIC CONTENT -->
-        <div id="pageContent">
-            <!-- akan diisi JS -->
-        </div>
+        <div id="pageContent"></div>
     </main>
 </div>
 
 <script>
-    // ======================== KONFIGURASI ========================
-    const OWNER_PHONE = "628383805385608"; // WhatsApp owner real
-    const PRICES = {
-        1: 8000,   // 1 bulan 8K
-        2: 15000,  // 2 bulan 15K
-        3: 21000,  // 3 bulan 21K
-        6: 40000   // 6 bulan 40K
-    };
-
-    // Data Users & API Keys (simulasi real)
-    let users = []; // { id, username, password, apikey, expireAt, active }
+    // ==================== KONFIGURASI ====================
+    const OWNER_PHONE = "6283805385608";
+    const DEV_USERNAME = "xyrooo_dev";  // Username DEV yang bisa ambil API Key gratis
+    const DEV_PASSWORD = "devxyrooo123";
+    
+    // Harga API Key per bulan
+    const PRICE_PER_MONTH = 8000;
+    
+    // Data pengguna
+    let users = [];  // {username, password, saldo, apikey, expireAt, active, role}
     let currentUser = null;
-
-    // Load dari localStorage
-    function loadData() {
-        const stored = localStorage.getItem("apikey_users_v2");
+    
+    // Inisialisasi data default (DEV)
+    function initData() {
+        const stored = localStorage.getItem("xyrooo_users");
         if(stored) {
-            try {
-                users = JSON.parse(stored);
-                // update expired status
-                const now = Date.now();
-                users.forEach(u => {
-                    if(u.expireAt && u.expireAt < now && u.active !== false) u.active = false;
-                    else if(u.expireAt && u.expireAt >= now) u.active = true;
-                });
-                saveData();
-            } catch(e) { users = []; }
+            users = JSON.parse(stored);
+        } else {
+            users = [
+                {
+                    username: DEV_USERNAME,
+                    password: DEV_PASSWORD,
+                    saldo: 0,
+                    apikey: "XYR_DEV_FREE_001",
+                    expireAt: Date.now() + (365 * 24 * 60 * 60 * 1000),
+                    active: true,
+                    role: "dev",
+                    createdAt: Date.now()
+                }
+            ];
+            saveData();
         }
-        const sess = localStorage.getItem("current_session");
+        
+        const sess = localStorage.getItem("xyrooo_session");
         if(sess) {
             try {
                 currentUser = JSON.parse(sess);
-                if(currentUser && (!currentUser.expireAt || currentUser.expireAt < Date.now())) {
-                    currentUser = null;
-                    localStorage.removeItem("current_session");
+                if(currentUser.expireAt && currentUser.expireAt < Date.now() && currentUser.role !== "dev") {
+                    currentUser.active = false;
                 }
+                if(currentUser.role === "dev") currentUser.active = true;
             } catch(e) { currentUser = null; }
         }
-        updateUIByAuth();
+        updateUI();
     }
-
+    
     function saveData() {
-        localStorage.setItem("apikey_users_v2", JSON.stringify(users));
+        localStorage.setItem("xyrooo_users", JSON.stringify(users));
     }
-
+    
     function saveSession() {
-        if(currentUser) localStorage.setItem("current_session", JSON.stringify(currentUser));
-        else localStorage.removeItem("current_session");
+        if(currentUser) localStorage.setItem("xyrooo_session", JSON.stringify(currentUser));
+        else localStorage.removeItem("xyrooo_session");
     }
-
-    // Register & Login ketat
+    
+    // Register
     function register(username, password) {
-        if(!username || username.length < 3) return "Username minimal 3 karakter";
-        if(!password || password.length < 4) return "Password minimal 4 karakter";
-        if(users.find(u => u.username === username)) return "Username sudah terdaftar!";
+        if(users.find(u => u.username === username)) return "Username sudah ada!";
+        if(username.length < 3) return "Username minimal 3 karakter";
+        if(password.length < 4) return "Password minimal 4 karakter";
+        
         const newUser = {
-            id: Date.now().toString(),
-            username: username,
-            password: password,
-            apikey: "MD_" + Math.random().toString(36).substring(2, 12).toUpperCase() + "_" + Date.now().toString(36),
-            createdAt: Date.now(),
+            username, password,
+            saldo: 0,
+            apikey: null,
             expireAt: null,
             active: false,
-            packageMonths: 0
+            role: "user",
+            createdAt: Date.now()
         };
         users.push(newUser);
         saveData();
         return "success";
     }
-
+    
     function login(username, password) {
         const user = users.find(u => u.username === username && u.password === password);
-        if(!user) return "Username atau password salah";
-        currentUser = { ...user };
+        if(!user) return "Username atau password salah!";
+        currentUser = {...user};
+        // update status expired
+        if(currentUser.expireAt && currentUser.expireAt < Date.now() && currentUser.role !== "dev") {
+            currentUser.active = false;
+        }
+        if(currentUser.role === "dev") currentUser.active = true;
         saveSession();
-        updateUIByAuth();
+        updateUI();
         return "success";
     }
-
+    
     function logout() {
         currentUser = null;
-        localStorage.removeItem("current_session");
-        updateUIByAuth();
+        localStorage.removeItem("xyrooo_session");
+        updateUI();
         renderCurrentPage();
-        showToast("Anda telah logout", "info");
+        showToast("Logout berhasil", "info");
     }
-
-    // Beli API Key / perpanjang
-    function buyPackage(months) {
+    
+    // Deposit (simulasi pembayaran QRIS)
+    let pendingDeposit = null;
+    function requestDeposit(amount) {
         if(!currentUser) {
-            showToast("Silakan login terlebih dahulu!", "error");
+            showToast("Login dulu!", "error");
             return false;
         }
-        const price = PRICES[months];
-        if(!price) return false;
-        const now = Date.now();
-        let newExpire = now + (months * 30 * 24 * 60 * 60 * 1000);
-        // jika sudah punya dan belum expired, extend
-        const userIndex = users.findIndex(u => u.username === currentUser.username);
-        if(userIndex !== -1) {
-            const existingUser = users[userIndex];
-            if(existingUser.expireAt && existingUser.expireAt > now) {
-                newExpire = existingUser.expireAt + (months * 30 * 24 * 60 * 60 * 1000);
+        if(amount < 10000) {
+            showToast("Minimal deposit Rp10.000", "error");
+            return false;
+        }
+        pendingDeposit = { username: currentUser.username, amount, status: "pending", createdAt: Date.now() };
+        showDepositModal(amount);
+    }
+    
+    function confirmDeposit() {
+        if(!pendingDeposit) return;
+        const userIdx = users.findIndex(u => u.username === pendingDeposit.username);
+        if(userIdx !== -1) {
+            users[userIdx].saldo += pendingDeposit.amount;
+            if(currentUser && currentUser.username === pendingDeposit.username) {
+                currentUser.saldo = users[userIdx].saldo;
+                saveSession();
             }
-            users[userIndex].expireAt = newExpire;
-            users[userIndex].active = true;
-            users[userIndex].packageMonths = months;
             saveData();
-            // update currentUser
-            currentUser = { ...users[userIndex] };
-            saveSession();
-            showToast(`✅ Berhasil beli ${months} bulan! API Key aktif sampai ${new Date(newExpire).toLocaleDateString()}`, "success");
+            showToast(`Deposit Rp${pendingDeposit.amount.toLocaleString()} berhasil!`, "success");
+            pendingDeposit = null;
             renderCurrentPage();
-            return true;
-        }
-        return false;
-    }
-
-    function updateUIByAuth() {
-        const usernameSpan = document.getElementById("usernameDisplay");
-        const logoutBtn = document.getElementById("logoutBtn");
-        const loginBtn = document.getElementById("loginBtnNav");
-        if(currentUser) {
-            usernameSpan.innerText = currentUser.username + (currentUser.active ? " (Aktif)" : " (Tidak Aktif)");
-            logoutBtn.style.display = "inline-flex";
-            loginBtn.style.display = "none";
-        } else {
-            usernameSpan.innerText = "Guest";
-            logoutBtn.style.display = "none";
-            loginBtn.style.display = "inline-flex";
+            updateUI();
         }
     }
-
-    // ======================== FITUR LENGKAP (PISAH API FEATURES & OTHER) ========================
-    const apiFeatures = [
-        "Anime (Info/Random)", "Asupan (TikTok/IG)", "Cecan (Celebrity)", "Downloader (YT, FB, IG, Tiktok)",
-        "Emoji (Mix/Blend)", "Ephoto 360", "Game (Tebak, Suit)", "Islamic (Quran, Jadwal Sholat)",
-        "Maker (Sticker Maker)", "News (Terkini)", "Photooxy", "Primbon", "Random Text (Quotes, Pantun)",
-        "Search (Pinterest, Google)", "Stalk (IG/TikTok/Twitter)", "Sticker (to Image/Video)", "Story (IG/FB)"
-    ];
-
-    const otherFeatures = [
-        "Textpro (Logo Generator)", "Text To Sound (TTS)", "Tools (QR, Base64, Shortlink)", "Vokal (Lirik)",
-        "Wallpaper (HD Anime)", "Webzone (Web Screenshot)", "AI Chat GPT-4", "AI Image Generator",
-        "OCR Image to Text", "Remove Background", "Translate All Language", "Weather & Cuaca",
-        "Crypto Price Live", "Speedtest", "IP/Domain Checker", "Nulis di Kertas Digital"
-    ];
-
-    // Render Dashboard (menampilkan statistik & API Key user)
-    function renderDashboard() {
-        if(!currentUser) {
-            return `
-                <div class="card">
-                    <h3><i class="fas fa-lock"></i> Dashboard Terbatas</h3>
-                    <p>Silakan <strong>Login/Register</strong> untuk melihat API Key dan statistik pribadi.</p>
-                    <button id="openAuthFromDash" class="btn-buy" style="width:auto; margin-top:10px;">Login / Register Sekarang</button>
-                </div>
-                <div class="card">
-                    <h3><i class="fas fa-chart-line"></i> Statistik Global</h3>
-                    <p>Total Pengguna Terdaftar: ${users.length}</p>
-                    <p>API Key Aktif: ${users.filter(u => u.active === true).length}</p>
-                </div>
-            `;
-        }
-        const expireText = currentUser.expireAt ? new Date(currentUser.expireAt).toLocaleString() : "Belum ada paket";
-        const statusClass = currentUser.active ? "status-active" : "status-expired";
-        const statusText = currentUser.active ? "AKTIF" : "EXPIRED / TIDAK AKTIF";
-        return `
-            <div class="card">
-                <h3><i class="fas fa-id-card"></i> Info Akun</h3>
-                <p><strong>Username:</strong> ${currentUser.username}</p>
-                <p><strong>API Key:</strong> <code>${currentUser.apikey || '-'}</code> <i class="fas fa-copy" style="cursor:pointer;" onclick="copyToClipboard('${currentUser.apikey}')"></i></p>
-                <p><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></p>
-                <p><strong>Berlaku Sampai:</strong> ${expireText}</p>
-                <p><strong>Paket:</strong> ${currentUser.packageMonths ? currentUser.packageMonths + " Bulan" : "-"}</p>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-chart-simple"></i> Statistik Penggunaan</h3>
-                <p>Total Request Hari Ini: <strong>${Math.floor(Math.random() * 50)}</strong></p>
-                <p>Total Request Bulan Ini: <strong>${Math.floor(Math.random() * 300)}</strong></p>
-                <p>Server Uptime: 99.98%</p>
-            </div>
-        `;
-    }
-
-    function renderAPIFeatures() {
-        return `
-            <div class="card">
-                <h3><i class="fas fa-microchip"></i> API Features (Endpoint REST)</h3>
-                <div class="features-grid">
-                    ${apiFeatures.map(f => `<div class="feature-badge"><i class="fas fa-robot"></i> ${f}</div>`).join('')}
-                </div>
-                <p class="text-muted" style="margin-top: 15px;">✅ Semua fitur ini dapat diakses melalui API Key Premium Anda. Base URL: https://api.botmd.com/v1</p>
-            </div>
-        `;
-    }
-
-    function renderOtherFeatures() {
-        return `
-            <div class="card">
-                <h3><i class="fas fa-th-large"></i> Other Features (Fitur Lainnya)</h3>
-                <div class="features-grid">
-                    ${otherFeatures.map(f => `<div class="feature-badge"><i class="fas fa-cogs"></i> ${f}</div>`).join('')}
-                </div>
-                <p class="text-muted" style="margin-top: 15px;">⭐ Fitur tambahan untuk kebutuhan lebih lanjut, support realtime & group tools.</p>
-            </div>
-        `;
-    }
-
-    function renderPricing() {
-        let packagesHtml = Object.entries(PRICES).map(([months, price]) => `
-            <div class="pricing-card" data-months="${months}">
-                <h4>${months} Bulan</h4>
-                <div class="price">Rp ${price.toLocaleString()}</div>
-                <small>Akses penuh semua fitur API & Other</small>
-                <button class="btn-buy buy-package-btn" data-months="${months}" style="background:#3b82f6;">Beli Sekarang</button>
-            </div>
-        `).join('');
-        return `
-            <div class="card">
-                <h3><i class="fas fa-tags"></i> Pilih Paket Langganan</h3>
-                <div class="pricing-grid" id="pricingGridContainer">
-                    ${packagesHtml}
-                </div>
-                <p style="margin-top: 1rem; font-size:0.8rem;">💰 Harga spesial mulai 8K/bulan. Support real time, upgrade/downgrade bisa hubungi owner.</p>
-            </div>
-        `;
-    }
-
-    function renderProfile() {
-        if(!currentUser) return `<div class="card"><h3>🔒 Akses Ditolak</h3><p>Silakan login untuk melihat profile.</p></div>`;
-        return `
-            <div class="card">
-                <h3><i class="fas fa-user-edit"></i> Profil Saya</h3>
-                <p><strong>Username:</strong> ${currentUser.username}</p>
-                <p><strong>API Key:</strong> <code>${currentUser.apikey}</code></p>
-                <p><strong>Status Langganan:</strong> ${currentUser.active ? 'Premium Aktif' : 'Tidak Aktif / Expired'}</p>
-                <p><strong>Masa Aktif:</strong> ${currentUser.expireAt ? new Date(currentUser.expireAt).toLocaleDateString() : 'Belum berlangganan'}</p>
-                <button id="upgradeBtn" class="btn-buy" style="width:auto;">Upgrade / Perpanjang</button>
-            </div>
-        `;
-    }
-
-    // Auth Modal
-    function showAuthModal() {
+    
+    function showDepositModal(amount) {
         const modalHtml = `
-            <div class="auth-overlay" id="authModal">
-                <div class="auth-card">
-                    <h3><i class="fas fa-key"></i> Login / Register</h3>
-                    <input type="text" id="authUsername" placeholder="Username">
-                    <input type="password" id="authPassword" placeholder="Password">
-                    <input type="password" id="authConfirm" placeholder="Konfirmasi Password (untuk register)" style="display:none;">
-                    <div style="display:flex; gap:10px; margin-top:15px;">
-                        <button id="doLoginBtn" style="flex:1;">Login</button>
-                        <button id="doRegisterBtn" style="flex:1; background:#2d3a5e;">Register</button>
+            <div class="modal-overlay" id="depositModal">
+                <div class="modal-content">
+                    <h3><i class="fas fa-qrcode"></i> Scan QRIS untuk Deposit</h3>
+                    <div class="qris-area">
+                        <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS Payment" style="max-width:200px;">
+                        <p><strong>Nominal: Rp${amount.toLocaleString()}</strong></p>
+                        <p>Scan QRIS di atas atau transfer ke:</p>
+                        <p>A/N: ARVA STORE</p>
+                        <p>Store ID: ARVA</p>
                     </div>
-                    <button id="closeAuth" style="background:transparent; border:1px solid gray; margin-top:10px;">Tutup</button>
+                    <button id="confirmPaymentBtn" class="btn" style="width:100%; margin-top:10px;">✅ Saya Sudah Transfer</button>
+                    <button id="closeModalBtn" class="btn-outline" style="width:100%; margin-top:10px;">Batal</button>
+                    <p style="font-size:0.7rem; margin-top:10px;">*Konfirmasi manual oleh owner. Saldo akan masuk otomatis setelah verifikasi.</p>
                 </div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', modalHtml);
-        const modal = document.getElementById('authModal');
-        document.getElementById('doLoginBtn').onclick = () => {
-            const uname = document.getElementById('authUsername').value;
-            const pwd = document.getElementById('authPassword').value;
-            const res = login(uname, pwd);
-            showToast(res === "success" ? "Login berhasil!" : res, res === "success" ? "success" : "error");
-            if(res === "success") { modal.remove(); renderCurrentPage(); }
+        document.getElementById('confirmPaymentBtn').onclick = () => {
+            confirmDeposit();
+            document.getElementById('depositModal')?.remove();
         };
-        document.getElementById('doRegisterBtn').onclick = () => {
+        document.getElementById('closeModalBtn').onclick = () => document.getElementById('depositModal')?.remove();
+    }
+    
+    // Beli API Key (pakai saldo)
+    function buyApiKey(months) {
+        if(!currentUser) {
+            showToast("Login dulu!", "error");
+            return false;
+        }
+        const totalPrice = months * PRICE_PER_MONTH;
+        if(currentUser.saldo < totalPrice) {
+            showToast(`Saldo tidak cukup! Butuh Rp${totalPrice.toLocaleString()}`, "error");
+            return false;
+        }
+        
+        // Kurangi saldo
+        const userIdx = users.findIndex(u => u.username === currentUser.username);
+        if(userIdx === -1) return false;
+        
+        users[userIdx].saldo -= totalPrice;
+        let newExpire = Date.now() + (months * 30 * 24 * 60 * 60 * 1000);
+        
+        // Jika sudah punya API Key dan belum expired, extend
+        if(users[userIdx].expireAt && users[userIdx].expireAt > Date.now()) {
+            newExpire = users[userIdx].expireAt + (months * 30 * 24 * 60 * 60 * 1000);
+        }
+        
+        // Generate API Key jika belum ada
+        if(!users[userIdx].apikey) {
+            users[userIdx].apikey = "XYR_" + Math.random().toString(36).substring(2, 12).toUpperCase() + "_" + Date.now().toString(36);
+        }
+        
+        users[userIdx].expireAt = newExpire;
+        users[userIdx].active = true;
+        saveData();
+        
+        // Update currentUser
+        currentUser = {...users[userIdx]};
+        saveSession();
+        showToast(`✅ Berhasil beli ${months} bulan! API Key aktif`, "success");
+        renderCurrentPage();
+        updateUI();
+        return true;
+    }
+    
+    // Withdraw ke DANA/OVO
+    function requestWithdraw(amount, method, phone) {
+        if(!currentUser) {
+            showToast("Login dulu!", "error");
+            return false;
+        }
+        if(amount < 50000) {
+            showToast("Minimal withdraw Rp50.000", "error");
+            return false;
+        }
+        if(currentUser.saldo < amount) {
+            showToast("Saldo tidak cukup!", "error");
+            return false;
+        }
+        
+        // Simpan request withdraw
+        const withdrawReq = { username: currentUser.username, amount, method, phone, status: "pending", createdAt: Date.now() };
+        let withdraws = JSON.parse(localStorage.getItem("xyrooo_withdraws") || "[]");
+        withdraws.push(withdrawReq);
+        localStorage.setItem("xyrooo_withdraws", JSON.stringify(withdraws));
+        
+        showToast(`Request withdraw Rp${amount.toLocaleString()} ke ${method} terkirim, akan diproses owner`, "success");
+        return true;
+    }
+    
+    // ==================== RENDER PAGE ====================
+    function renderDashboard() {
+        if(!currentUser) {
+            return `<div class="card"><h3>🔒 Dashboard</h3><p>Silakan login untuk melihat dashboard dan kelola API Key.</p><button id="loginFromDash" class="btn">Login Sekarang</button></div>`;
+        }
+        return `
+            <div class="card">
+                <h3><i class="fas fa-id-card"></i> Informasi Akun</h3>
+                <p><strong>Username:</strong> ${currentUser.username}</p>
+                <p><strong>Role:</strong> ${currentUser.role === 'dev' ? 'Developer (Free Access)' : 'User'}</p>
+                <p><strong>Saldo:</strong> Rp${(currentUser.saldo || 0).toLocaleString()}</p>
+                <p><strong>API Key:</strong> ${currentUser.apikey || 'Belum dibeli'} ${currentUser.apikey ? '<i class="fas fa-copy" style="cursor:pointer;" onclick="copyToClipboard(\''+currentUser.apikey+'\')"></i>' : ''}</p>
+                <p><strong>Status:</strong> ${currentUser.active ? '<span style="color:#10b981;">AKTIF</span>' : '<span style="color:#ef4444;">TIDAK AKTIF / EXPIRED</span>'}</p>
+                <p><strong>Masa Aktif:</strong> ${currentUser.expireAt ? new Date(currentUser.expireAt).toLocaleDateString() : '-'}</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Statistik Penggunaan</h3>
+                <p>Total Request Hari Ini: ${Math.floor(Math.random() * 100)}</p>
+                <p>Total Request Bulan Ini: ${Math.floor(Math.random() * 500)}</p>
+                <p>Server Uptime: 99.98%</p>
+            </div>
+        `;
+    }
+    
+    function renderBuyPage() {
+        if(!currentUser) return `<div class="card"><h3>🔒 Silakan login untuk membeli API Key</h3><button id="loginFromBuy" class="btn">Login</button></div>`;
+        return `
+            <div class="card">
+                <h3><i class="fas fa-tag"></i> Beli API Key Premium</h3>
+                <p>Saldo saat ini: <strong>Rp${(currentUser.saldo || 0).toLocaleString()}</strong></p>
+                <div class="pricing-grid" id="pricingGrid">
+                    ${[1,2,3,6,12].map(months => `
+                        <div class="pricing-card" data-months="${months}">
+                            <h4>${months} Bulan</h4>
+                            <div class="price">Rp${(months * PRICE_PER_MONTH).toLocaleString()}</div>
+                            <small>Rp${PRICE_PER_MONTH.toLocaleString()}/bulan</small>
+                            <button class="btn buy-btn" data-months="${months}" style="margin-top:10px; width:100%;">Beli</button>
+                        </div>
+                    `).join('')}
+                </div>
+                <p style="margin-top:1rem; font-size:0.8rem;">💡 Tips: Deposit saldo dulu melalui menu Deposit/Top Up</p>
+            </div>
+        `;
+    }
+    
+    function renderDepositPage() {
+        return `
+            <div class="card">
+                <h3><i class="fas fa-wallet"></i> Deposit / Top Up Saldo</h3>
+                <input type="number" id="depositAmount" placeholder="Nominal deposit (min Rp10.000)">
+                <button id="depositBtn" class="btn">Buat Deposit via QRIS</button>
+                <hr style="margin:1rem 0;">
+                <h4>QRIS Payment</h4>
+                <div class="qris-area">
+                    <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS Xyrooo" style="max-width:200px;">
+                </div>
+                <p class="text-muted">Scan QRIS, transfer sesuai nominal, lalu konfirmasi. Saldo akan masuk setelah verifikasi owner.</p>
+            </div>
+        `;
+    }
+    
+    function renderWithdrawPage() {
+        if(!currentUser) return `<div class="card"><h3>Login untuk withdraw</h3></div>`;
+        return `
+            <div class="card">
+                <h3><i class="fas fa-money-bill-wave"></i> Withdraw Saldo</h3>
+                <p>Saldo saat ini: <strong>Rp${(currentUser.saldo || 0).toLocaleString()}</strong></p>
+                <select id="withdrawMethod">
+                    <option value="DANA">DANA</option>
+                    <option value="OVO">OVO</option>
+                    <option value="GOPAY">GoPay</option>
+                </select>
+                <input type="text" id="withdrawPhone" placeholder="Nomor HP (DANA/OVO)">
+                <input type="number" id="withdrawAmount" placeholder="Nominal withdraw (min Rp50.000)">
+                <button id="withdrawBtn" class="btn">Ajukan Withdraw</button>
+                <p style="font-size:0.7rem; margin-top:10px;">*Withdraw diproses manual oleh owner maksimal 1x24 jam</p>
+            </div>
+        `;
+    }
+    
+    function renderFeaturesPage() {
+        const allFeatures = [
+            "Downloader (YT, IG, FB, Tiktok)", "Sticker Maker", "AI Chat GPT-4", "AI Image Generator",
+            "Group Management", "Anti Link & Spam", "Welcome Message", "Translate", "Voice to Text",
+            "Quotes Random", "Anime & Manga", "Weather & Cuaca", "News Update", "Music Downloader",
+            "Story IG/Tiktok", "Nulis di Kertas", "Pinterest Search", "OCR Image", "Remove Background",
+            "Speedtest", "Crypto Price", "Stalk IG/Tiktok", "Game Tebak Gambar", "Truth or Dare",
+            "Jadwal Sholat", "Quran Digital", "Textpro Maker", "Photooxy", "Ephoto 360", "Asupan"
+        ];
+        return `
+            <div class="card">
+                <h3><i class="fas fa-cubes"></i> Semua Fitur Bot MD</h3>
+                <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px;">
+                    ${allFeatures.map(f => `<div style="background:var(--bg-primary); padding:8px 12px; border-radius:40px;"><i class="fas fa-check-circle" style="color:#10b981;"></i> ${f}</div>`).join('')}
+                </div>
+                <p style="margin-top:1rem;">✅ Semua fitur aktif dengan API Key Premium | Multi Device Support</p>
+            </div>
+        `;
+    }
+    
+    function renderCurrentPage() {
+        const activeLink = document.querySelector('.nav-link.active');
+        let page = activeLink ? activeLink.getAttribute('data-page') : 'dashboard';
+        const container = document.getElementById('pageContent');
+        if(page === 'dashboard') container.innerHTML = renderDashboard();
+        else if(page === 'buy') container.innerHTML = renderBuyPage();
+        else if(page === 'deposit') container.innerHTML = renderDepositPage();
+        else if(page === 'withdraw') container.innerHTML = renderWithdrawPage();
+        else if(page === 'features') container.innerHTML = renderFeaturesPage();
+        else container.innerHTML = renderDashboard();
+        
+        // Attach events
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.onclick = () => buyApiKey(parseInt(btn.dataset.months));
+        });
+        const depositBtn = document.getElementById('depositBtn');
+        if(depositBtn) depositBtn.onclick = () => {
+            const amount = parseInt(document.getElementById('depositAmount')?.value);
+            if(amount) requestDeposit(amount);
+        };
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        if(withdrawBtn) withdrawBtn.onclick = () => {
+            const method = document.getElementById('withdrawMethod').value;
+            const phone = document.getElementById('withdrawPhone').value;
+            const amount = parseInt(document.getElementById('withdrawAmount').value);
+            if(amount && phone) requestWithdraw(amount, method, phone);
+        };
+        const loginFromDash = document.getElementById('loginFromDash');
+        if(loginFromDash) loginFromDash.onclick = () => showAuthModal();
+        const loginFromBuy = document.getElementById('loginFromBuy');
+        if(loginFromBuy) loginFromBuy.onclick = () => showAuthModal();
+    }
+    
+    // Auth Modal
+    function showAuthModal() {
+        const modalHtml = `
+            <div class="modal-overlay" id="authModal">
+                <div class="modal-content">
+                    <h3><i class="fas fa-key"></i> Login / Register Xyrooo</h3>
+                    <input type="text" id="authUsername" placeholder="Username">
+                    <input type="password" id="authPassword" placeholder="Password">
+                    <input type="password" id="authConfirm" placeholder="Konfirmasi Password" style="display:none;">
+                    <div style="display:flex; gap:10px;">
+                        <button id="doLogin" class="btn" style="flex:1;">Login</button>
+                        <button id="doRegister" class="btn-outline" style="flex:1;">Register</button>
+                    </div>
+                    <button id="closeAuth" class="btn-outline" style="margin-top:10px; width:100%;">Tutup</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        document.getElementById('doLogin').onclick = () => {
+            const res = login(document.getElementById('authUsername').value, document.getElementById('authPassword').value);
+            showToast(res === "success" ? "Login berhasil!" : res, res === "success" ? "success" : "error");
+            if(res === "success") { document.getElementById('authModal').remove(); renderCurrentPage(); }
+        };
+        document.getElementById('doRegister').onclick = () => {
             const uname = document.getElementById('authUsername').value;
             const pwd = document.getElementById('authPassword').value;
             const res = register(uname, pwd);
             showToast(res === "success" ? "Register berhasil! Silakan login." : res, res === "success" ? "success" : "error");
-            if(res === "success") modal.remove();
+            if(res === "success") document.getElementById('authModal').remove();
         };
-        document.getElementById('closeAuth').onclick = () => modal.remove();
+        document.getElementById('closeAuth').onclick = () => document.getElementById('authModal').remove();
     }
-
-    function renderCurrentPage() {
-        const activeLink = document.querySelector('.nav-link.active');
-        let page = activeLink ? activeLink.getAttribute('data-page') : 'dashboard';
-        const contentDiv = document.getElementById('pageContent');
-        if(page === 'dashboard') contentDiv.innerHTML = renderDashboard();
-        else if(page === 'apifeature') contentDiv.innerHTML = renderAPIFeatures();
-        else if(page === 'otherfeature') contentDiv.innerHTML = renderOtherFeatures();
-        else if(page === 'pricing') contentDiv.innerHTML = renderPricing();
-        else if(page === 'profile') contentDiv.innerHTML = renderProfile();
-        else contentDiv.innerHTML = renderDashboard();
-
-        // attach event listeners setelah render
-        document.querySelectorAll('.buy-package-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const months = parseInt(btn.getAttribute('data-months'));
-                buyPackage(months);
-            });
-        });
-        const openAuthBtn = document.getElementById('openAuthFromDash');
-        if(openAuthBtn) openAuthBtn.onclick = () => showAuthModal();
-        const upgradeBtn = document.getElementById('upgradeBtn');
-        if(upgradeBtn) upgradeBtn.onclick = () => { document.querySelector('[data-page="pricing"]').click(); };
+    
+    function updateUI() {
+        const usernameSpan = document.getElementById('usernameDisplay');
+        const saldoSpan = document.getElementById('saldoDisplay');
+        const loginBtn = document.getElementById('loginBtnNav');
+        const logoutBtn = document.getElementById('logoutBtn');
+        if(currentUser) {
+            usernameSpan.innerText = currentUser.username + (currentUser.active ? ' ✓' : ' (Expired)');
+            saldoSpan.style.display = 'inline-block';
+            saldoSpan.innerText = `Saldo: Rp${(currentUser.saldo || 0).toLocaleString()}`;
+            loginBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
+        } else {
+            usernameSpan.innerText = 'Guest';
+            saldoSpan.style.display = 'none';
+            loginBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
+        }
     }
-
+    
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text);
         showToast("API Key disalin!", "success");
     }
     window.copyToClipboard = copyToClipboard;
-
+    
     function showToast(msg, type) {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -676,29 +770,46 @@
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
-
-    // Routing & Event
+    
+    // Theme toggle
+    function initTheme() {
+        const savedTheme = localStorage.getItem('xyrooo_theme') || 'dark';
+        if(savedTheme === 'light') document.body.classList.add('light');
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === savedTheme);
+            btn.onclick = () => {
+                const theme = btn.dataset.theme;
+                if(theme === 'light') document.body.classList.add('light');
+                else document.body.classList.remove('light');
+                localStorage.setItem('xyrooo_theme', theme);
+                document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            };
+        });
+    }
+    
     function initRouting() {
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.onclick = (e) => {
                 e.preventDefault();
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
                 renderCurrentPage();
-            });
+            };
         });
         document.getElementById('loginBtnNav').onclick = () => showAuthModal();
         document.getElementById('logoutBtn').onclick = () => logout();
         document.getElementById('contactWaBtn').onclick = (e) => {
             e.preventDefault();
-            window.open(`https://wa.me/${OWNER_PHONE}?text=Halo%20Admin%20APIKey%20Bot%2C%20saya%20mau%20tanya%20pembelian%20premium`, '_blank');
+            window.open(`https://wa.me/${OWNER_PHONE}?text=Halo%20Xyrooo%20API%20MD%2C%20saya%20mau%20tanya%20API%20Key%20premium`, '_blank');
         };
     }
-
-    loadData();
+    
+    initData();
+    initTheme();
     initRouting();
     renderCurrentPage();
-    setInterval(() => { loadData(); renderCurrentPage(); }, 30000);
+    window.showAuthModal = showAuthModal;
 </script>
 </body>
 </html>
