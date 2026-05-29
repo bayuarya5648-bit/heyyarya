@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Felix Pedia | Dashboard Modern + API Hub</title>
-    <!-- Google Fonts & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <title>API Key Bot MD - Premium Bot Management</title>
+    <!-- Font Awesome 6 (Free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js CDN untuk visualisasi -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -18,579 +17,610 @@
         }
 
         body {
-            background: #f0f2f8;
-            color: #1e293b;
-            padding-bottom: 80px;
-        }
-
-        /* SIDEBAR KIRI (seperti gaya kanan modern) */
-        .app-container {
-            display: flex;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            color: #eef2ff;
+            padding: 2rem 1.5rem;
             min-height: 100vh;
         }
 
-        /* Sidebar premium */
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(145deg, #0f172a 0%, #111827 100%);
-            backdrop-filter: blur(2px);
-            color: #e2e8f0;
-            padding: 2rem 1rem;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            transition: all 0.3s ease;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
-            z-index: 20;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .logo-area {
+        /* Header & Brand */
+        .header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 2.5rem;
-            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
         }
-        .logo-icon {
-            background: #3b82f6;
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .logo h1 {
             font-size: 1.8rem;
-            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.3);
+            background: linear-gradient(120deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .logo-text h2 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
+        .logo p {
+            font-size: 0.85rem;
+            color: #94a3b8;
         }
-        .logo-text p {
-            font-size: 0.7rem;
-            opacity: 0.7;
+        .wa-contact {
+            background: #25D36620;
+            backdrop-filter: blur(5px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #25D36640;
+            transition: 0.2s;
         }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        .nav-item {
+        .wa-contact a {
+            color: #25D366;
+            text-decoration: none;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #cbd5e1;
-            font-weight: 500;
+            gap: 10px;
         }
-        .nav-item i {
-            width: 24px;
-            font-size: 1.2rem;
-        }
-        .nav-item.active {
-            background: #1e293b;
-            color: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-        .nav-item:hover:not(.active) {
-            background: #1e293b;
-            color: #f1f5f9;
+        .wa-contact:hover {
+            background: #25D36630;
+            transform: scale(1.02);
         }
 
-        /* main content area */
-        .main-content {
-            flex: 1;
-            padding: 1.8rem 2rem 2rem;
-            background: #f8fafc;
-        }
-
-        /* header cards */
-        .stats-grid {
+        /* Grid Layout */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 1.8rem;
             margin-bottom: 2rem;
         }
-        .stat-card {
-            background: white;
-            border-radius: 28px;
-            padding: 1.3rem 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #eef2ff;
-            transition: transform 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-3px);}
-        .stat-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: #5b6e8c; }
-        .stat-value { font-size: 2rem; font-weight: 800; color: #0f172a; margin-top: 8px; word-break: break-word; }
-        .stat-sub { font-size: 0.75rem; color: #4b5563; margin-top: 6px;}
 
-        /* panel modern */
-        .card-modern {
-            background: white;
-            border-radius: 28px;
+        /* Card Style */
+        .card {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
             padding: 1.5rem 1.8rem;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-            border: 1px solid #eef2ff;
-            margin-bottom: 1.8rem;
-        }
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 1.2rem;
-            border-bottom: 2px solid #eef2ff;
-            padding-bottom: 0.75rem;
-        }
-        .badge-api {
-            background: #eef2ff;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            font-family: monospace;
-        }
-        .btn {
-            padding: 8px 18px;
-            border-radius: 40px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #f1f5f9;
-        }
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-            box-shadow: 0 2px 6px rgba(59,130,246,0.3);
-        }
-        .btn-primary:hover { background: #2563eb; transform: scale(0.98);}
-        .btn-outline {
-            border: 1px solid #cbd5e1;
-            background: white;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .api-key-area {
-            background: #f1f5f9;
-            padding: 12px 18px;
-            border-radius: 60px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .service-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 1rem;
-        }
-        .service-tag {
-            background: linear-gradient(135deg, #f1f5f9, #ffffff);
-            border: 1px solid #e2e8f0;
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-weight: 500;
-            cursor: pointer;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
             transition: all 0.2s;
         }
-        .service-tag:hover { background: #3b82f6; color: white; border-color:#3b82f6;}
-
-        .webhook-preview {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 20px;
-            font-family: monospace;
-            font-size: 0.8rem;
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #3b82f6;
+            padding-left: 15px;
+        }
+        .card h2 i {
+            color: #3b82f6;
         }
 
-        @media (max-width: 780px) {
-            .sidebar { width: 80px; padding: 1rem 0.5rem; }
-            .sidebar .logo-text, .sidebar .nav-item span:not(i) { display: none; }
-            .nav-item i { margin: 0 auto; font-size: 1.5rem; }
-            .nav-item { justify-content: center; }
-            .main-content { padding: 1rem; }
+        /* Form & Input */
+        .input-group {
+            margin-bottom: 1.2rem;
         }
-        .footer-menu-mobile {
-            display: none;
-        }
-        @media (max-width: 680px) {
-            .footer-menu-mobile {
-                display: flex;
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                border-top: 1px solid #e2e8f0;
-                justify-content: space-around;
-                padding: 12px 0;
-                z-index: 30;
-                backdrop-filter: blur(8px);
-            }
-            .sidebar { display: none; }
-            body { padding-bottom: 70px; }
-        }
-        .toast-msg {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background: #1f2937;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 60px;
+        label {
+            display: block;
             font-size: 0.85rem;
-            z-index: 200;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #cbd5e6;
         }
-        textarea, input {
-            border-radius: 20px;
-            border: 1px solid #cbd5e1;
-            padding: 10px 16px;
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #0f172a;
+            border: 1px solid #2d3a5e;
+            border-radius: 1rem;
+            color: white;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        input:focus, select:focus {
             outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px #3b82f620;
         }
-        hr { margin: 1rem 0; }
+        button {
+            background: #3b82f6;
+            border: none;
+            padding: 0.8rem 1.4rem;
+            border-radius: 1.8rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3b82f6;
+            color: #3b82f6;
+        }
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Package Plans */
+        .packages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .package-card {
+            flex: 1;
+            background: #0f172a;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #2d3a5e;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .package-card.selected {
+            border: 2px solid #3b82f6;
+            background: #1e2a4a;
+            box-shadow: 0 0 12px #3b82f670;
+        }
+        .package-card h3 {
+            font-size: 1.2rem;
+        }
+        .price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #facc15;
+            margin: 8px 0;
+        }
+
+        /* API Key Table / List */
+        .api-list {
+            margin-top: 1.2rem;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+        .api-item {
+            background: #0f172a;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .api-key-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            background: #00000050;
+            padding: 4px 8px;
+            border-radius: 12px;
+            word-break: break-all;
+        }
+        .badge {
+            background: #10b98130;
+            color: #34d399;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .badge.expired {
+            background: #ef444430;
+            color: #f87171;
+        }
+        .actions i {
+            margin: 0 5px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: 0.1s;
+        }
+        .actions i:hover { opacity: 1; }
+
+        /* All Menu Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 1rem;
+        }
+        .feature-tag {
+            background: #0f172a;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            justify-content: center;
+        }
+        .feature-tag i {
+            font-size: 0.7rem;
+            color: #60a5fa;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e293b;
+            border-radius: 40px;
+            padding: 12px 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-left: 5px solid #10b981;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+        }
+        @media (max-width: 800px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            body { padding: 1rem; }
+        }
+        hr { margin: 1rem 0; border-color: #2d3a5e; }
+        .text-muted { color: #94a3b8; font-size: 0.8rem; }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <!-- Sidebar kiri modern -->
-    <div class="sidebar">
-        <div class="logo-area">
-            <div class="logo-icon"><i class="fas fa-crown"></i></div>
-            <div class="logo-text">
-                <h2>Felix Pedia</h2>
-                <p>Digital Mudah</p>
-            </div>
+
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <h1><i class="fas fa-robot"></i> APIKey Bot MD</h1>
+            <p>Premium WhatsApp Bot | Semua Fitur Menu Aktif Real-Time</p>
         </div>
-        <div class="nav-menu">
-            <div class="nav-item active" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></div>
-            <div class="nav-item" data-tab="api-integration"><i class="fas fa-plug"></i> <span>API & Koneksi</span></div>
-            <div class="nav-item" data-tab="services"><i class="fas fa-mobile-alt"></i> <span>Layanan OTP</span></div>
-            <div class="nav-item" data-tab="bot-webhook"><i class="fab fa-telegram"></i> <span>Bot & Webhook</span></div>
-            <div class="nav-item" data-tab="profile"><i class="fas fa-user-circle"></i> <span>Profil</span></div>
-        </div>
-        <div style="margin-top: 2rem; font-size: 0.7rem; text-align: center; opacity: 0.5;">
-            <i class="fas fa-shield-alt"></i> API Ready v2
+        <div class="wa-contact">
+            <a href="#" id="contactOwnerBtn"><i class="fab fa-whatsapp"></i> Contact Owner (Real WA)</a>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- TAB DASHBOARD -->
-        <div id="dashboardTab" class="tab-content">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-title"><i class="fas fa-wallet"></i> SALDO</div><div class="stat-value" id="saldoAmount">Rp0</div><div class="stat-sub">+ Top up via API</div></div>
-                <div class="stat-card"><div class="stat-title"><i class="fas fa-exchange-alt"></i> TOTAL TRANSAKSI</div><div class="stat-value" id="totalTransaksi">0</div><div class="stat-sub">Sukses / Gagal</div></div>
-                <div class="stat-card"><div class="stat-title"><i class="fas fa-shopping-cart"></i> TOTAL BELANJA</div><div class="stat-value" id="totalBelanja">Rp0</div><div class="stat-sub">OTP & Virtual</div></div>
-                <div class="stat-card"><div class="stat-title"><i class="fas fa-coins"></i> TOTAL DEPOSIT</div><div class="stat-value" id="totalDeposit">Rp0</div><div class="stat-sub">Riwayat deposit</div></div>
+    <div class="dashboard-grid">
+        <!-- LEFT: Generate & Beli API Key -->
+        <div class="card">
+            <h2><i class="fas fa-key"></i> Kelola API Key</h2>
+            <div class="input-group">
+                <label>Nama / User ID</label>
+                <input type="text" id="userName" placeholder="Contoh: mybot_username" autocomplete="off">
             </div>
-            <div class="card-modern">
-                <div class="card-header"><h3><i class="fas fa-chart-simple"></i> Statistik Aktivitas</h3><span class="badge-api">update realtime</span></div>
-                <canvas id="activityChart" width="400" height="200" style="max-height: 220px; width:100%"></canvas>
-            </div>
-            <div class="card-modern">
-                <div class="flex-between"><h3><i class="fas fa-bolt"></i> Server Status & Produk</h3><button id="refreshServerBtn" class="btn btn-outline"><i class="fas fa-sync-alt"></i> Refresh</button></div>
-                <div id="serverStatusArea" class="flex-between" style="margin-top: 15px; gap: 12px;">
-                    <span>Server 1: <span id="server1Status" class="badge-api" style="background:#fee2e2;">MAINTENANCE</span></span>
-                    <span>Server 2: <span id="server2Status" class="badge-api" style="background:#dcfce7;">ONLINE</span></span>
-                </div>
-                <div style="margin-top: 20px;"><strong>Layanan Populer:</strong> WhatsApp, Telegram, Google, Social Media, Tiktok</div>
-                <button id="demoOrderBtn" class="btn btn-primary" style="margin-top: 15px;"><i class="fas fa-shopping-cart"></i> Beli Nomor Virtual (Demo)</button>
-            </div>
-        </div>
-
-        <!-- TAB API & KONEKSI (support generate API, create) -->
-        <div id="apiIntegrationTab" class="tab-content" style="display: none;">
-            <div class="card-modern">
-                <div class="card-header"><h3><i class="fas fa-key"></i> API Key Management (Generate / Create)</h3><button id="generateApiKeyBtn" class="btn btn-primary"><i class="fas fa-sync"></i> Generate API Key Baru</button></div>
-                <div class="api-key-area" style="background:#eef2ff; justify-content: space-between;">
-                    <span><i class="fas fa-code"></i> API KEY ANDA : </span>
-                    <strong id="apiKeyDisplay">fp_1723282_example</strong>
-                    <button id="copyApiKeyBtn" class="btn btn-outline" style="padding: 4px 14px;"><i class="far fa-copy"></i> Salin</button>
-                </div>
-                <p class="stat-sub" style="margin: 12px 0;">Gunakan API Key untuk mengakses endpoint integrasi. Simpan dengan aman. Endpoint: <code>https://api.felixpedia.my.id/v1/order</code></p>
-                <hr>
-                <h4><i class="fas fa-network-wired"></i> Integrasi & Endpoint Contoh</h4>
-                <div class="webhook-preview">
-                    POST /api/v1/create-order<br>
-                    Headers: { "X-API-Key": "your_key", "Content-Type": "application/json" }<br>
-                    Body: { "service": "whatsapp", "quantity": 1 }<br>
-                    Response: { "status": "success", "order_id": "FP789", "nomor": "+628123456789" }
-                </div>
-                <div style="margin-top: 20px;">
-                    <label>🔌 Test API Call (Create Order Simulasi):</label>
-                    <div class="flex-between" style="margin-top: 8px;">
-                        <select id="testServiceSelect" style="border-radius: 40px; padding: 8px;">
-                            <option value="whatsapp">WhatsApp OTP</option>
-                            <option value="telegram">Telegram OTP</option>
-                            <option value="google">Google Voice</option>
-                        </select>
-                        <button id="testApiCreateBtn" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Create Order (API)</button>
+            <div class="input-group">
+                <label>Pilih Paket Langganan (Real Time)</label>
+                <div class="packages" id="packageSelector">
+                    <div class="package-card" data-months="1" data-price="25000">
+                        <h3>1 Bulan</h3>
+                        <div class="price">Rp 25.000</div>
+                        <small>Akses penuh semua menu</small>
                     </div>
-                    <div id="apiResponseMsg" style="margin-top: 12px; background:#f1f5f9; padding: 10px; border-radius: 20px; font-size: 0.8rem;"></div>
+                    <div class="package-card" data-months="2" data-price="45000">
+                        <h3>2 Bulan</h3>
+                        <div class="price">Rp 45.000</div>
+                        <small>Hemat 10%</small>
+                    </div>
+                    <div class="package-card" data-months="3" data-price="65000">
+                        <h3>3 Bulan</h3>
+                        <div class="price">Rp 65.000</div>
+                        <small>Best value</small>
+                    </div>
+                    <div class="package-card" data-months="6" data-price="120000">
+                        <h3>6 Bulan</h3>
+                        <div class="price">Rp 120.000</div>
+                        <small>Extra hemat</small>
+                    </div>
                 </div>
+            </div>
+            <button id="buyApiBtn"><i class="fas fa-shopping-cart"></i> Beli & Generate API Key</button>
+            <hr>
+            <div style="font-size: 0.8rem; background: #00000040; border-radius: 1rem; padding: 12px;">
+                <i class="fas fa-info-circle"></i> Setelah pembelian, API Key akan aktif secara realtime. Semua fitur menu otomatis tersedia. Hubungi owner via WhatsApp untuk konfirmasi pembayaran (jika diperlukan) atau dukungan.
             </div>
         </div>
 
-        <!-- TAB LAYANAN OTP -->
-        <div id="servicesTab" class="tab-content" style="display: none;">
-            <div class="card-modern">
-                <h3><i class="fas fa-list-ul"></i> Layanan Nomor Virtual (OTP Fast Murah)</h3>
-                <div class="service-grid" id="serviceListContainer">
-                    <!-- akan diisi dinamis -->
-                </div>
-                <div style="margin-top: 20px;">
-                    <label>Pilih aplikasi & beli nomor:</label>
-                    <div class="flex-between"><input type="text" id="customServiceInput" placeholder="Cth: WhatsApp, Telegram" style="flex:1"><button id="beliNomorCustomBtn" class="btn btn-primary">Beli Sekarang</button></div>
-                    <div id="orderResultPreview" class="stat-sub" style="margin-top: 12px;"></div>
-                </div>
+        <!-- RIGHT: Daftar API Key Aktif & Fitur Lengkap -->
+        <div class="card">
+            <h2><i class="fas fa-list-ul"></i> API Keys Aktif</h2>
+            <div id="apiKeysList" class="api-list">
+                <!-- Dynamic list of API keys -->
+                <div class="text-muted" style="text-align:center; padding: 20px;">Belum ada API Key, silakan beli paket di samping</div>
             </div>
-        </div>
-
-        <!-- TAB BOT & WEBHOOK TELEGRAM -->
-        <div id="botWebhookTab" class="tab-content" style="display: none;">
-            <div class="card-modern">
-                <h3><i class="fab fa-telegram"></i> Telegram Integration</h3>
-                <p>Kirim notifikasi order/produk via Bot Telegram. Masukkan Bot Token & Chat ID.</p>
-                <div style="display: flex; flex-direction: column; gap: 12px; max-width: 500px;">
-                    <input type="text" id="botTokenInput" placeholder="Bot Token: 123456:ABC-DEF" value="7890123456:AAHdemoTokenFelix">
-                    <input type="text" id="chatIdInput" placeholder="Chat ID: 123456789" value="-100123456789">
-                    <button id="saveTelegramBtn" class="btn btn-primary">Simpan & Test Webhook</button>
-                </div>
-                <div id="telegramStatusMsg" class="stat-sub" style="margin-top: 12px;"></div>
-                <div class="webhook-preview" style="margin-top: 18px;">
-                    <i class="fas fa-bell"></i> Webhook aktif: Notifikasi akan dikirim saat order berhasil dibuat.
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB PROFIL (dengan informasi akun & logout) -->
-        <div id="profileTab" class="tab-content" style="display: none;">
-            <div class="card-modern">
-                <div class="flex-between"><h3><i class="fas fa-user-astronaut"></i> Profil Saya</h3><span class="badge-api">ID: #1779661357351</span></div>
-                <div><strong>Username:</strong> arya &nbsp;|&nbsp; <strong>Email:</strong> udinnnganteng42@gmail.com</div>
-                <div><strong>Status Akun:</strong> Aktif / Member &nbsp; <i class="fas fa-check-circle" style="color:#22c55e;"></i></div>
-                <hr>
-                <h4>Keamanan Akun</h4>
-                <input type="password" id="oldPass" placeholder="Password Lama" style="width:100%; margin-bottom: 10px;">
-                <input type="password" id="newPass" placeholder="Password Baru (min 4 karakter)" style="width:100%;">
-                <button id="updatePasswordBtn" class="btn btn-primary" style="margin-top: 5px;">Perbarui Password</button>
-                <hr>
-                <button id="logoutBtn" class="btn" style="background:#fee2e2; color:#b91c1c;"><i class="fas fa-sign-out-alt"></i> Keluar Sekarang</button>
-            </div>
+            <button id="refreshListBtn" class="btn-outline" style="margin-top: 8px;"><i class="fas fa-sync-alt"></i> Refresh Status</button>
         </div>
     </div>
-</div>
-<div class="footer-menu-mobile">
-    <i class="fas fa-home" data-tab="dashboard"></i>
-    <i class="fas fa-plug" data-tab="api-integration"></i>
-    <i class="fas fa-mobile-alt" data-tab="services"></i>
-    <i class="fas fa-robot" data-tab="bot-webhook"></i>
-    <i class="fas fa-user" data-tab="profile"></i>
+
+    <!-- ALL MENU FEATURES (Semua fitur bot MD) -->
+    <div class="card" style="margin-bottom: 1.2rem;">
+        <h2><i class="fas fa-cubes"></i> Semua Menu & Fitur Bot (Include All)</h2>
+        <div class="features-grid" id="allFeaturesGrid">
+            <!-- features injected via js -->
+        </div>
+        <div class="text-muted" style="margin-top: 14px;"><i class="fas fa-check-circle" style="color:#10b981;"></i> Dengan API Key premium, semua fitur di atas dapat diakses real-time via bot WhatsApp. Support downloader, AI, group tools, dll.</div>
+    </div>
 </div>
 
 <script>
-    // -------------------- MOCK STATE (data support create/generate API)
-    let appState = {
-        apiKey: "fp_1723282_gen_" + Math.random().toString(36).substring(2,10),
-        balance: 125000,      // saldo demo
-        totalTransaksi: 12,
-        totalBelanja: 87500,
-        totalDeposit: 125000,
-        orders: [],
-        telegramConfig: { botToken: "7890123456:AAHdemoTokenFelix", chatId: "-100123456789" },
-        services: ["WhatsApp", "Telegram", "Google Voice", "TikTok", "Social Media", "LINE", "WeChat"]
-    };
-    
-    // Update UI numbers
-    function updateStatsUI() {
-        document.getElementById('saldoAmount').innerHTML = `Rp${appState.balance.toLocaleString()}`;
-        document.getElementById('totalTransaksi').innerText = appState.totalTransaksi;
-        document.getElementById('totalBelanja').innerHTML = `Rp${appState.totalBelanja.toLocaleString()}`;
-        document.getElementById('totalDeposit').innerHTML = `Rp${appState.totalDeposit.toLocaleString()}`;
-        if(document.getElementById('apiKeyDisplay')) document.getElementById('apiKeyDisplay').innerText = appState.apiKey;
-    }
-    
-    // Generate API Key baru (Create)
-    function regenerateApiKey() {
-        let newKey = "fp_key_" + Math.random().toString(36).substring(2,15) + "_" + Date.now().toString(36);
-        appState.apiKey = newKey;
-        updateStatsUI();
-        showToast("API Key baru berhasil dibuat! Simpan dengan aman.");
-        if(document.getElementById('apiKeyDisplay')) document.getElementById('apiKeyDisplay').innerText = appState.apiKey;
-    }
-    
-    // Simulasi create order via API support
-    function createOrderViaAPI(serviceName) {
-        if(appState.balance < 2000) {
-            showToast("Saldo tidak mencukupi (min Rp2000), silakan deposit demo.");
-            return { success: false, msg: "Saldo rendah" };
-        }
-        let harga = 1800; // harga simulasi
-        appState.balance -= harga;
-        appState.totalBelanja += harga;
-        appState.totalTransaksi += 1;
-        let orderId = "FP" + Math.floor(Math.random()*10000);
-        let virtualNumber = "+62" + Math.floor(8000000000 + Math.random()*1000000000);
-        let newOrder = { id: orderId, service: serviceName, nomor: virtualNumber, date: new Date().toLocaleString(), harga: harga };
-        appState.orders.unshift(newOrder);
-        updateStatsUI();
-        // Notifikasi Telegram (simulasi)
-        sendTelegramNotif(`🔔 ORDER BARU! Layanan: ${serviceName}\nNomor: ${virtualNumber}\nHarga: Rp${harga}\nID: ${orderId}`);
-        showToast(`Berhasil beli ${serviceName} - Nomor: ${virtualNumber}`);
-        return { success: true, order: newOrder };
-    }
-    
-    function sendTelegramNotif(message) {
-        let { botToken, chatId } = appState.telegramConfig;
-        if(botToken && chatId && botToken !== "") {
-            console.log(`[Telegram Mock] Notif ke ${chatId}: ${message}`);
-            // Simulasi pengiriman (tidak HTTP aktual tapi demo)
-            let statusDiv = document.getElementById('telegramStatusMsg');
-            if(statusDiv) statusDiv.innerHTML = `<i class="fas fa-paper-plane"></i> Notifikasi terkirim (simulasi): ${message.substring(0,40)}...`;
-            setTimeout(()=>{ if(statusDiv) statusDiv.innerHTML = "✅ Terintegrasi dengan Bot Telegram."; }, 1500);
-        } else {
-            console.log("Telegram not configured");
-        }
-    }
-    
-    // load services list UI
-    function renderServices() {
-        let container = document.getElementById('serviceListContainer');
-        if(container){
-            container.innerHTML = appState.services.map(s => `<div class="service-tag" data-srv="${s}">${s} <i class="fas fa-phone"></i></div>`).join('');
-            document.querySelectorAll('.service-tag').forEach(el => {
-                el.addEventListener('click', (e) => {
-                    let srv = el.getAttribute('data-srv');
-                    createOrderViaAPI(srv);
-                    if(document.getElementById('orderResultPreview')) document.getElementById('orderResultPreview').innerHTML = `✅ Order ${srv} diproses. Cek riwayat.`;
+    // --------------------------------------------------------------
+    // REAL API KEYS STORAGE (LocalStorage based, namun bisa diintegrasi backend real)
+    // Disini kita simulasikan real-time database via localStorage + timestamps.
+    // Setiap pembelian menghasilkan API Key unik, masa aktif real-time.
+    // SEMUA FITUR MENU (List lengkap bot MD)
+    // --------------------------------------------------------------
+
+    const ALL_FEATURES = [
+        "Downloader (YT, IG, FB, Tiktok)", "Sticker Maker", "AI Chat (GPT-4)", "Text to Image", "Vision AI",
+        "Group Management (Add/Kick/Promote)", "Anti Link & Anti Spam", "Welcome Message", "Translate", "Voice Note to Text",
+        "Quotes Random", "Anime & Manga Info", "Weather Info", "News Update", "Brainly & QnA", "Calculator & Tools",
+        "Jadwal Sholat", "Quran Digital", "Music Downloader", "Story IG Viewer", "Nulis di Kertas", "Pinterest Search",
+        "OCR Image", "Remove Background", "Shortlink Creator", "Speedtest", "Check IP/Domain", "Crypto Price", "Stalk TikTok/IG",
+        "Game Tebak Gambar", "Suit Jepang", "Truth or Dare", "Poll Maker"
+    ];
+
+    // Data API Keys: [{ id: "key123", userName: "Andi", createdAt: timestamp, expiresAt: timestamp, active: true }]
+    let apiKeys = [];
+
+    // Load from localStorage (real time persistence)
+    function loadKeysFromStorage() {
+        const stored = localStorage.getItem("apikey_bot_md_keys");
+        if(stored) {
+            try {
+                apiKeys = JSON.parse(stored);
+                // auto check expired keys (update expired status)
+                const now = Date.now();
+                let changed = false;
+                apiKeys.forEach(key => {
+                    if(key.expiresAt && key.expiresAt < now && key.active !== false) {
+                        key.active = false;
+                        changed = true;
+                    } else if (key.expiresAt >= now && !key.active) {
+                        key.active = true;
+                        changed = true;
+                    }
                 });
-            });
+                if(changed) saveKeysToStorage();
+            } catch(e) { apiKeys = []; }
+        } else {
+            // demo data dummy (tapi real time valid, ga pake demo? tapi kita isi sample tapi real expired? kita kasih contoh expired ke depannya tapi user bisa beli. 
+            // Untuk menghindari demo, kita buat kosong. 
+            apiKeys = [];
+        }
+        renderApiKeys();
+    }
+
+    function saveKeysToStorage() {
+        localStorage.setItem("apikey_bot_md_keys", JSON.stringify(apiKeys));
+        renderApiKeys();
+    }
+
+    // Generate random API Key
+    function generateApiKey() {
+        return "MD_" + Math.random().toString(36).substring(2, 12).toUpperCase() + "_" + Date.now().toString(36);
+    }
+
+    // Membeli paket dan generate API key (real time)
+    function purchaseApiKey(userName, months, price) {
+        if(!userName.trim()) {
+            showToast("Masukkan nama / user ID terlebih dahulu!", "error");
+            return false;
+        }
+        // Cek apakah sudah ada key dengan nama yg sama dan masih aktif? opsional
+        const existingActive = apiKeys.find(k => k.userName.toLowerCase() === userName.trim().toLowerCase() && k.active === true && k.expiresAt > Date.now());
+        if(existingActive) {
+            showToast(`User ${userName} sudah memiliki API Key aktif! Silakan gunakan key yang ada.`, "error");
+            return false;
+        }
+
+        const now = Date.now();
+        const expireMs = months * 30 * 24 * 60 * 60 * 1000; // 30 hari per bulan
+        const expiresAt = now + expireMs;
+        const newKey = {
+            id: generateApiKey(),
+            userName: userName.trim(),
+            createdAt: now,
+            expiresAt: expiresAt,
+            active: true,
+            packageMonths: months,
+            price: price
+        };
+        apiKeys.push(newKey);
+        saveKeysToStorage();
+
+        // Simulasi integrasi WA real API (kirim notifikasi ke owner? tapi user bisa kontak langsung)
+        // Tampilkan detail pembelian
+        showToast(`✅ Berhasil membeli ${months} bulan! API Key: ${newKey.id}`, "success");
+        
+        // Tampilkan popup info lengkap untuk disimpan user
+        alert(`🎉 PEMBELIAN SUKSES (Real Time)\n\nUser: ${newKey.userName}\nAPI Key: ${newKey.id}\nPaket: ${months} Bulan\nAktif sampai: ${new Date(expiresAt).toLocaleString()}\n\nSimpan API Key Anda. Hubungi owner via WhatsApp untuk verifikasi pembayaran (jika manual) atau support.`);
+        
+        // Bisa juga mengirim notifikasi WA ke owner (menggunakan API WhatsApp real), di sini kita tambahkan link WA owner
+        return true;
+    }
+
+    // Hapus API key
+    function deleteApiKey(keyId) {
+        if(confirm("Hapus API Key ini? Aksi permanen.")) {
+            apiKeys = apiKeys.filter(k => k.id !== keyId);
+            saveKeysToStorage();
+            showToast("API Key dihapus", "info");
         }
     }
-    
-    function initCharts() {
-        const ctx = document.getElementById('activityChart')?.getContext('2d');
-        if(ctx) {
-            new Chart(ctx, {
-                type: 'line',
-                data: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], datasets: [{ label: 'Transaksi OTP', data: [3, 5, 2, 7, 4, 6, 2], borderColor: '#3b82f6', tension: 0.3, fill: false }] },
-                options: { responsive: true, maintainAspectRatio: true }
-            });
+
+    // Render daftar API key
+    function renderApiKeys() {
+        const container = document.getElementById("apiKeysList");
+        if(!apiKeys.length) {
+            container.innerHTML = `<div class="text-muted" style="text-align:center; padding: 20px;"><i class="fas fa-key"></i> Tidak ada API Key. Beli paket sekarang!</div>`;
+            return;
         }
+        const now = Date.now();
+        let html = "";
+        apiKeys.forEach(key => {
+            const isExpired = (key.expiresAt < now);
+            const activeStatus = !isExpired && key.active;
+            const expireDate = new Date(key.expiresAt).toLocaleString();
+            html += `
+                <div class="api-item">
+                    <div style="flex:1;">
+                        <div><strong>${escapeHtml(key.userName)}</strong> <span class="badge ${activeStatus ? '' : 'expired'}">${activeStatus ? 'AKTIF' : 'EXPIRED'}</span></div>
+                        <div class="api-key-text">${key.id}</div>
+                        <div style="font-size:0.7rem; margin-top:4px;">Berlaku s/d: ${expireDate} | ${key.packageMonths} Bulan</div>
+                    </div>
+                    <div class="actions">
+                        <i class="fas fa-trash-alt" style="color:#f87171;" onclick="deleteApiKey('${key.id}')" title="Hapus"></i>
+                        <i class="fas fa-copy" style="color:#60a5fa;" onclick="copyToClipboard('${key.id}')" title="Salin API Key"></i>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
     }
-    
-    function showToast(msg) {
-        let toast = document.createElement('div');
-        toast.className = 'toast-msg';
-        toast.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+
+    // helper copy
+    window.copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
+        showToast("API Key disalin ke clipboard!", "success");
+    };
+    window.deleteApiKey = deleteApiKey;
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Render all features grid
+    function renderAllFeatures() {
+        const container = document.getElementById("allFeaturesGrid");
+        if(!container) return;
+        let featuresHtml = "";
+        ALL_FEATURES.forEach(f => {
+            featuresHtml += `<div class="feature-tag"><i class="fas fa-check-circle"></i> ${f}</div>`;
+        });
+        container.innerHTML = featuresHtml;
+    }
+
+    // Toast realtime notification
+    let toastTimeout = null;
+    function showToast(msg, type = "success") {
+        let existingToast = document.querySelector(".toast");
+        if(existingToast) existingToast.remove();
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        const icon = type === "success" ? '<i class="fas fa-check-circle" style="color:#10b981;"></i>' : (type === "error" ? '<i class="fas fa-exclamation-triangle" style="color:#f97316;"></i>' : '<i class="fas fa-info-circle"></i>');
+        toast.innerHTML = `${icon} <span>${msg}</span>`;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
+        if(toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => { if(toast) toast.remove(); }, 4000);
     }
-    
-    // Event handlers + Tab switching
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-        document.getElementById(tabId + 'Tab').style.display = 'block';
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        document.querySelectorAll(`.nav-item[data-tab="${tabId}"]`).forEach(el => el.classList.add('active'));
-        if(tabId === 'services') renderServices();
-        if(tabId === 'api-integration') updateStatsUI();
+
+    // Integrasi Kontak Owner WhatsApp Real API (no dummy)
+    function setupContactOwner() {
+        // Real nomor WhatsApp Owner (GANTI DENGAN NOMOR ASLI PEMILIK BOT)
+        const ownerPhone = "6281234567890"; // <-- Ganti dengan nomor WhatsApp real owner
+        const message = encodeURIComponent("Halo Admin Bot MD, saya ingin bertanya tentang API Key dan pembelian paket premium. Tolong bantu.");
+        const waLink = `https://wa.me/${ownerPhone}?text=${message}`;
+        const contactBtn = document.getElementById("contactOwnerBtn");
+        if(contactBtn) {
+            contactBtn.href = waLink;
+            contactBtn.target = "_blank";
+        }
     }
-    
-    // binding semua event
-    document.querySelectorAll('.nav-item').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            let tab = btn.getAttribute('data-tab');
-            if(tab) switchTab(tab);
+
+    // Auto check expired periodically (real time)
+    function startExpirationWatcher() {
+        setInterval(() => {
+            let changed = false;
+            const now = Date.now();
+            apiKeys.forEach(key => {
+                const expired = (key.expiresAt < now);
+                if(key.active && expired) {
+                    key.active = false;
+                    changed = true;
+                } else if (!key.active && !expired && key.expiresAt >= now) {
+                    key.active = true;
+                    changed = true;
+                }
+            });
+            if(changed) {
+                saveKeysToStorage();
+                showToast("Status lisensi beberapa API Key diperbarui (expired/renew)", "info");
+            }
+        }, 15000); // setiap 15 detik cek realtime
+    }
+
+    // Package Selector UI & Buy Handler
+    let selectedMonths = 1;
+    let selectedPrice = 25000;
+    function initPackageSelector() {
+        const packages = document.querySelectorAll(".package-card");
+        packages.forEach(pkg => {
+            pkg.addEventListener("click", () => {
+                packages.forEach(p => p.classList.remove("selected"));
+                pkg.classList.add("selected");
+                selectedMonths = parseInt(pkg.getAttribute("data-months"));
+                selectedPrice = parseInt(pkg.getAttribute("data-price"));
+            });
+            // default pilih yg 1 bulan
+            if(pkg.getAttribute("data-months") === "1") pkg.classList.add("selected");
         });
-    });
-    document.querySelectorAll('.footer-menu-mobile i').forEach(icon => {
-        icon.addEventListener('click', (e) => {
-            let tab = icon.getAttribute('data-tab');
-            if(tab) switchTab(tab);
+    }
+
+    // Buy button logic
+    function initBuyButton() {
+        const buyBtn = document.getElementById("buyApiBtn");
+        if(!buyBtn) return;
+        buyBtn.addEventListener("click", () => {
+            const userName = document.getElementById("userName").value;
+            if(!userName.trim()) {
+                showToast("Masukkan nama / user ID terlebih dahulu!", "error");
+                return;
+            }
+            purchaseApiKey(userName, selectedMonths, selectedPrice);
         });
-    });
-    
-    // Initial event listeners
-    document.getElementById('generateApiKeyBtn')?.addEventListener('click', () => regenerateApiKey());
-    document.getElementById('copyApiKeyBtn')?.addEventListener('click', () => {
-        navigator.clipboard.writeText(appState.apiKey);
-        showToast("API Key disalin ke clipboard!");
-    });
-    document.getElementById('testApiCreateBtn')?.addEventListener('click', () => {
-        let service = document.getElementById('testServiceSelect').value;
-        let res = createOrderViaAPI(service);
-        let respDiv = document.getElementById('apiResponseMsg');
-        if(res.success) respDiv.innerHTML = `<span style="color:green;">✅ Sukses: Order ${res.order.id} dibuat. Nomor: ${res.order.nomor}</span>`;
-        else respDiv.innerHTML = `<span style="color:red;">❌ Gagal: ${res.msg}</span>`;
-        switchTab('dashboard'); // redirect ke dashboard agar lihat update saldo
-        setTimeout(()=> switchTab('api-integration'), 800);
-    });
-    document.getElementById('saveTelegramBtn')?.addEventListener('click', () => {
-        let botTok = document.getElementById('botTokenInput').value;
-        let chatIdVal = document.getElementById('chatIdInput').value;
-        appState.telegramConfig = { botToken: botTok, chatId: chatIdVal };
-        showToast("Pengaturan Telegram & Webhook disimpan");
-        sendTelegramNotif("✅ Webhook Felix Pedia aktif! Notifikasi order akan dikirim.");
-    });
-    document.getElementById('beliNomorCustomBtn')?.addEventListener('click', () => {
-        let custom = document.getElementById('customServiceInput').value;
-        if(custom.trim() === "") return showToast("Masukkan nama layanan");
-        createOrderViaAPI(custom);
-    });
-    document.getElementById('demoOrderBtn')?.addEventListener('click', () => {
-        createOrderViaAPI("WhatsApp (Demo)");
-    });
-    document.getElementById('refreshServerBtn')?.addEventListener('click', () => {
-        let rand1 = Math.random() > 0.5 ? "ONLINE" : "MAINTENANCE";
-        let rand2 = "ONLINE";
-        document.getElementById('server1Status').innerText = rand1;
-        document.getElementById('server1Status').style.background = rand1 === "ONLINE" ? "#dcfce7" : "#fee2e2";
-        document.getElementById('server2Status').innerText = rand2;
-        showToast("Server status diperbarui.");
-    });
-    document.getElementById('updatePasswordBtn')?.addEventListener('click', () => {
-        let old = document.getElementById('oldPass').value;
-        let newp = document.getElementById('newPass').value;
-        if(newp.length < 4) return showToast("Password baru minimal 4 karakter");
-        if(old === "") return showToast("Masukkan password lama");
-        showToast("Password berhasil diperbarui! (simulasi)");
-        document.getElementById('oldPass').value = "";
-        document.getElementById('newPass').value = "";
-    });
-    document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        showToast("Anda telah keluar dari sesi. (Demo logout)");
-        setTimeout(() => location.reload(), 1000);
-    });
-    // set default server status
-    document.getElementById('server1Status').innerText = "MAINTENANCE";
-    document.getElementById('server2Status').innerText = "ONLINE";
-    updateStatsUI();
-    renderServices();
-    initCharts();
-    switchTab('dashboard');
-    // tambahan event untuk riwayat dari order tersimpan
-    console.log("Felix Pedia Dashboard Modern + API ready | Generate & Create");
+    }
+
+    // Refresh list manual
+    function initRefresh() {
+        const refreshBtn = document.getElementById("refreshListBtn");
+        if(refreshBtn) {
+            refreshBtn.addEventListener("click", () => {
+                loadKeysFromStorage();
+                showToast("Daftar API Key diperbarui", "info");
+            });
+        }
+    }
+
+    // Inisialisasi semua
+    function init() {
+        loadKeysFromStorage();
+        renderAllFeatures();
+        initPackageSelector();
+        initBuyButton();
+        initRefresh();
+        setupContactOwner();     // Real WhatsApp Owner
+        startExpirationWatcher(); // Real time expiry watcher
+    }
+
+    init();
 </script>
 </body>
 </html>
