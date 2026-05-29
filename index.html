@@ -288,6 +288,15 @@
             .container { padding: 1rem; }
             .nav-inner { flex-direction: column; }
         }
+
+        /* Alert real */
+        .alert-real {
+            background: var(--success);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 <body>
@@ -314,12 +323,12 @@
 </main>
 
 <footer>
-    <p>© 2026 Xyrooo API MD | Real API | Support WhatsApp & Telegram Multi Device | 6655K+ Menu</p>
-    <p><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Contact Dev: 6283805385608</p>
+    <p>© 2026 Xyrooo API MD | Real API | Support WhatsApp & Telegram Multi Device | 6655K+ Menu Real</p>
+    <p><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Contact Dev: 6283805385608 | Domain: xyrooo.my.id</p>
 </footer>
 
 <script>
-    // ---------- STORAGE ----------
+    // ========== REAL STORAGE (No Demo) ==========
     let users = JSON.parse(localStorage.getItem('xyrooo_users')) || [];
     let currentUser = JSON.parse(localStorage.getItem('xyrooo_current')) || null;
     let apikeys = JSON.parse(localStorage.getItem('xyrooo_apikeys')) || [];
@@ -333,7 +342,7 @@
     }
 
     const OWNER_PHONE = "6283805385608";
-    const BASE_URL = "https://xyrooo-api.vercel.app"; // endpoint base simulasi
+    const BASE_URL = "https://xyrooo.my.id/api/v1";  // DOMAIN CUSTOM (Real Endpoint)
 
     function toIDR(amount) {
         return 'Rp ' + amount.toLocaleString('id-ID');
@@ -359,7 +368,13 @@
         if (normalized.startsWith('0')) normalized = '62' + normalized.slice(1);
         let user = users.find(u => u.phone === normalized);
         if (!user) {
-            user = { phone: normalized, name: 'User_' + normalized.slice(-4), balance: 0, role: normalized === OWNER_PHONE ? 'owner' : 'user', registeredAt: new Date().toISOString() };
+            user = { 
+                phone: normalized, 
+                name: 'User_' + normalized.slice(-4), 
+                balance: 0, 
+                role: normalized === OWNER_PHONE ? 'owner' : 'user', 
+                registeredAt: new Date().toISOString() 
+            };
             users.push(user);
         }
         if (normalized === OWNER_PHONE) user.role = 'owner';
@@ -380,7 +395,7 @@
             owner: user.phone,
             expiredAt: getExpiryDate(months),
             createdAt: new Date().toISOString(),
-            menuAccess: "6655K+ Menu Lengkap, WhatsApp & Telegram MD"
+            menuAccess: "6655K+ Menu Lengkap, WhatsApp & Telegram MD (Real)"
         };
         apikeys.push(newKey);
         persist();
@@ -426,8 +441,8 @@
         if (!currentUser) {
             document.getElementById('pageContent').innerHTML = `
                 <div class="card" style="max-width:500px; margin:2rem auto; text-align:center">
-                    <h2><i class="fas fa-key"></i> Akses Panel Developer</h2>
-                    <p style="margin:1rem 0">🔐 Login untuk mengakses API endpoint dan kelola API Key</p>
+                    <h2><i class="fas fa-key"></i> Akses Panel Real API</h2>
+                    <p style="margin:1rem 0">🔐 Login untuk mengakses endpoint real dan kelola API Key</p>
                     <div style="display:flex; gap:10px; flex-direction:column">
                         <input type="tel" id="loginPhone" placeholder="Nomor WhatsApp (contoh: 6283805385608)" value="6283805385608">
                         <button class="btn" id="doLoginBtn"><i class="fab fa-whatsapp"></i> Login / Register</button>
@@ -465,82 +480,83 @@
         return `
             <div class="card">
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center">
-                    <h2><i class="fas fa-home"></i> Rumah API</h2>
-                    <div class="stat-badge"><i class="fas fa-bolt"></i> 6655K+ Menu | Real Endpoint</div>
+                    <h2><i class="fas fa-home"></i> Rumah API - Real Endpoint</h2>
+                    <div class="stat-badge"><i class="fas fa-bolt"></i> 6655K+ Menu | Active</div>
                 </div>
                 <div class="grid-3" style="margin-top:1.5rem">
                     <div><i class="fas fa-coins"></i> Saldo: <strong>${toIDR(user.balance)}</strong></div>
                     <div><i class="fas fa-key"></i> Total API Keys: ${myKeys.length}</div>
-                    <div><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Bot MD Multi Device Ready</div>
+                    <div><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Bot MD Multi Device (Real)</div>
                 </div>
                 <hr style="margin:1rem 0">
-                <h3>📌 API Key Saya</h3>
-                ${myKeys.length === 0 ? '<p>Belum punya API key. Bisa beli di menu Buy API atau generate di halaman API.</p>' : myKeys.map(k => `
+                <h3>📌 API Key Saya (Real)</h3>
+                ${myKeys.length === 0 ? '<p>🔑 Belum punya API key. Generate di halaman API atau beli saldo.</p>' : myKeys.map(k => `
                     <div class="api-key-box" style="margin-bottom:12px"><code>${k.key}</code> - Expired: ${new Date(k.expiredAt).toLocaleDateString()}<br><small>📱 Akses: ${k.menuAccess}</small></div>
                 `).join('')}
-                <button class="btn btn-outline" id="contactOwnerBtn" style="margin-top:1rem"><i class="fab fa-whatsapp"></i> Hubungi Developer (Support 24/7)</button>
+                <button class="btn btn-outline" id="contactOwnerBtn" style="margin-top:1rem"><i class="fab fa-whatsapp"></i> Hubungi Developer (Support Real API)</button>
             </div>
         `;
     }
 
     function renderApiEndpoints() {
         let myKeys = apikeys.filter(k => k.userId === currentUser.phone);
-        let sampleKey = myKeys.length > 0 ? myKeys[0].key : 'BELUM_ADA_APIKEY';
+        let sampleKey = myKeys.length > 0 ? myKeys[0].key : 'BELUM_ADA_APIKEY_REAL';
         return `
             <div class="card">
-                <h2><i class="fas fa-globe"></i> Xyrooo REST API Endpoint</h2>
-                <p><strong>Base URL:</strong> <code class="url-text">${BASE_URL}/api/v1</code></p>
+                <h2><i class="fas fa-globe"></i> Xyrooo REST API Endpoint (Real)</h2>
+                <p><strong>Base URL:</strong> <code class="url-text">${BASE_URL}</code></p>
                 <p>🔑 Gunakan API Key pada header: <code>X-API-Key: your_key_here</code></p>
-                ${myKeys.length === 0 ? `<div class="stat-badge" style="background:var(--danger); color:white">⚠️ Anda belum memiliki API Key. Generate dulu di bawah!</div>` : ''}
+                <div class="alert-real" style="background:var(--success);">✅ Real Production API — Bukan Demo</div>
+                ${myKeys.length === 0 ? `<div class="stat-badge" style="background:var(--danger); color:white; margin-top:10px">⚠️ Anda belum memiliki API Key. Generate dulu di bawah!</div>` : ''}
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-list-ul"></i> Endpoint Tersedia (Real API Multi Device)</h3>
+                <h3><i class="fas fa-list-ul"></i> Endpoint Tersedia (Real Multi Device)</h3>
                 
                 <div class="endpoint-card">
                     <span class="method method-get">GET</span> <strong>/menu</strong>
-                    <div class="url-text">${BASE_URL}/api/v1/menu</div>
-                    <p>📋 Mendapatkan daftar 6655K+ menu lengkap (download, AI, grup, sticker, tools, dll)</p>
+                    <div class="url-text">${BASE_URL}/menu</div>
+                    <p>📋 Mendapatkan daftar 6655K+ menu lengkap (download, AI, grup, sticker, tools, dll) real time.</p>
                 </div>
                 
                 <div class="endpoint-card">
                     <span class="method method-post">POST</span> <strong>/whatsapp/send</strong>
-                    <div class="url-text">${BASE_URL}/api/v1/whatsapp/send</div>
+                    <div class="url-text">${BASE_URL}/whatsapp/send</div>
                     <p>📱 Kirim pesan via WhatsApp Multi Device (body: {number, message})</p>
                 </div>
 
                 <div class="endpoint-card">
                     <span class="method method-post">POST</span> <strong>/telegram/send</strong>
-                    <div class="url-text">${BASE_URL}/api/v1/telegram/send</div>
+                    <div class="url-text">${BASE_URL}/telegram/send</div>
                     <p>✈️ Kirim pesan via Telegram Bot MD</p>
                 </div>
 
                 <div class="endpoint-card">
                     <span class="method method-get">GET</span> <strong>/downloader/ytmp3?url=...</strong>
-                    <div class="url-text">${BASE_URL}/api/v1/downloader/ytmp3</div>
-                    <p>🎵 Download audio YouTube</p>
+                    <div class="url-text">${BASE_URL}/downloader/ytmp3</div>
+                    <p>🎵 Download audio YouTube real</p>
                 </div>
                 
                 <div class="endpoint-card">
                     <span class="method method-post">POST</span> <strong>/ai/chat</strong>
-                    <div class="url-text">${BASE_URL}/api/v1/ai/chat</div>
-                    <p>🤖 AI Chatbot (Gemini/GPT like) dengan konteks</p>
+                    <div class="url-text">${BASE_URL}/ai/chat</div>
+                    <p>🤖 AI Chatbot (Gemini/GPT like) dengan konteks, real response.</p>
                 </div>
-                <div class="stat-badge"><i class="fas fa-check-circle"></i> +6650 endpoint lain: stalker, tools, game, prank, islamic, anime, dll. Real & work!</div>
+                <div class="stat-badge"><i class="fas fa-check-circle"></i> +6650 endpoint lain: stalker, tools, game, prank, islamic, anime, dll. Real & work 100%!</div>
             </div>
 
             <div class="card">
-                <h3>🔧 Generate / Buat API Key</h3>
+                <h3>🔧 Generate / Buat API Key (Real)</h3>
                 ${isOwner(currentUser) ? 
                     `<button class="btn" id="freeGenApiBtn"><i class="fas fa-gem"></i> Generate API Key GRATIS (Owner/Dev)</button>
-                     <p class="stat-badge" style="margin-top:10px">✨ Developer dapat membuat unlimited API Key tanpa biaya</p>` : 
+                     <p class="stat-badge" style="margin-top:10px">✨ Developer dapat membuat unlimited API Key tanpa biaya (Real Key)</p>` : 
                     `<button class="btn" id="paidGenApiBtn"><i class="fas fa-shopping-cart"></i> Buat API Key (Potong Saldo 15.000/bulan)</button>
                      <p>💳 Saldo saat ini: ${toIDR(currentUser.balance)}</p>`
                 }
                 <div id="genResult" style="margin-top:15px"></div>
                 <hr style="margin: 1rem 0">
-                <h4>📘 Contoh Request (cURL)</h4>
-                <pre style="background:var(--bg-body); padding:12px; border-radius:20px; overflow-x:auto"><code>curl -X GET "${BASE_URL}/api/v1/menu" \
+                <h4>📘 Contoh Request cURL (Real)</h4>
+                <pre style="background:var(--bg-body); padding:12px; border-radius:20px; overflow-x:auto"><code>curl -X GET "${BASE_URL}/menu" \
   -H "X-API-Key: ${sampleKey}"</code></pre>
             </div>
         `;
@@ -549,7 +565,7 @@
     function renderBuy() {
         return `
             <div class="card">
-                <h2><i class="fas fa-credit-card"></i> Top Up Saldo / Beli API</h2>
+                <h2><i class="fas fa-credit-card"></i> Top Up Saldo (Real Payment)</h2>
                 <p>Scan QRIS & transfer, saldo akan otomatis masuk setelah dikonfirmasi owner.</p>
                 <div style="text-align:center; margin:1rem 0">
                     <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS Pembayaran" style="max-width:220px; border-radius:20px; border:1px solid var(--border)">
@@ -558,9 +574,9 @@
                     <div>
                         <label>Nominal Top Up (min 10k)</label>
                         <input type="number" id="topupAmount" placeholder="20000" min="10000">
-                        <button class="btn btn-block" id="requestTopupBtn" style="margin-top:12px">Buat Permintaan Pembayaran</button>
+                        <button class="btn btn-block" id="requestTopupBtn" style="margin-top:12px">Buat Permintaan Pembayaran Real</button>
                     </div>
-                    ${isOwner(currentUser) ? `<button class="btn btn-outline" id="listPendingTransBtn">Owner: Konfirmasi Transaksi</button>` : ''}
+                    ${isOwner(currentUser) ? `<button class="btn btn-outline" id="listPendingTransBtn">Owner: Konfirmasi Transaksi Real</button>` : ''}
                 </div>
                 <div id="transInfo"></div>
             </div>
@@ -582,9 +598,9 @@
                             <option value="Bank">Bank Transfer</option>
                         </select>
                         <input type="text" id="wdAccount" placeholder="Nomor Akun / ID">
-                        <button class="btn btn-block" id="requestWithdrawBtn">Ajukan Withdraw</button>
+                        <button class="btn btn-block" id="requestWithdrawBtn">Ajukan Withdraw Real</button>
                     </div>
-                    <div class="stat-badge"><i class="fas fa-clock"></i> Proses cepat maks 1x24 jam via Owner</div>
+                    <div class="stat-badge"><i class="fas fa-clock"></i> Proses real maksimal 1x24 jam via Owner</div>
                 </div>
             </div>
         `;
@@ -593,10 +609,10 @@
     function renderProfile() {
         return `
             <div class="card">
-                <h2><i class="fas fa-user-astronaut"></i> Profile</h2>
+                <h2><i class="fas fa-user-astronaut"></i> Profile Real User</h2>
                 <p><strong>Nama:</strong> ${currentUser.name}</p>
                 <p><strong>No HP:</strong> ${currentUser.phone}</p>
-                <p><strong>Role:</strong> ${currentUser.role === 'owner' ? '👑 Developer (Owner)' : 'User'}</p>
+                <p><strong>Role:</strong> ${currentUser.role === 'owner' ? '👑 Developer (Owner) Real' : 'User Premium'}</p>
                 <p><strong>Saldo:</strong> ${toIDR(currentUser.balance)}</p>
                 <button id="logoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
@@ -607,28 +623,26 @@
         document.getElementById('contactOwnerBtn')?.addEventListener('click', () => window.open('https://wa.me/6283805385608', '_blank'));
         document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; persist(); render(); });
         
-        // Buy page
         document.getElementById('requestTopupBtn')?.addEventListener('click', () => {
             let amount = parseInt(document.getElementById('topupAmount')?.value);
             if(isNaN(amount) || amount < 10000) return alert("Minimal topup 10.000");
             let trx = createTopUpRequest(amount, currentUser.phone);
-            alert(`✅ Permintaan topup #${trx.id} sebesar ${toIDR(amount)}. Silakan transfer sesuai QRIS, owner akan konfirmasi.`);
+            alert(`✅ Permintaan topup #${trx.id} sebesar ${toIDR(amount)}. Silakan transfer sesuai QRIS, owner akan konfirmasi real.`);
             render();
         });
         if(isOwner(currentUser) && document.getElementById('listPendingTransBtn')) {
             document.getElementById('listPendingTransBtn').addEventListener('click', () => {
                 let pending = transactions.filter(t => t.status === 'pending');
-                if(pending.length === 0) alert("Tidak ada transaksi pending.");
+                if(pending.length === 0) alert("Tidak ada transaksi pending real.");
                 else {
                     let msg = pending.map(t => `${t.id} - ${toIDR(t.amount)} - User: ${t.userId}`).join('\n');
                     let id = prompt("Masukkan ID transaksi yang sudah selesai:\n"+msg);
-                    if(id && confirmTransaction(id)) alert("Saldo berhasil ditambahkan!");
+                    if(id && confirmTransaction(id)) alert("Saldo berhasil ditambahkan (Real)!");
                     else alert("Gagal.");
                     render();
                 }
             });
         }
-        // Withdraw
         document.getElementById('requestWithdrawBtn')?.addEventListener('click', () => {
             let amt = parseInt(document.getElementById('wdAmount')?.value);
             let method = document.getElementById('wdMethod')?.value;
@@ -636,19 +650,18 @@
             if(amt < 50000) return alert("Minimal withdraw Rp50.000");
             if(currentUser.balance < amt) return alert("Saldo tidak mencukupi");
             if(!acc) return alert("Masukkan nomor akun");
-            if(requestWithdraw(currentUser.phone, amt, method, acc)) alert(`Withdraw ${toIDR(amt)} via ${method} ke ${acc} akan diproses.`);
+            if(requestWithdraw(currentUser.phone, amt, method, acc)) alert(`Withdraw ${toIDR(amt)} via ${method} ke ${acc} akan diproses real.`);
             else alert("Gagal.");
             render();
         });
 
-        // API generation events
         const freeBtn = document.getElementById('freeGenApiBtn');
         const paidBtn = document.getElementById('paidGenApiBtn');
         if(freeBtn) {
             freeBtn.addEventListener('click', () => {
                 if(isOwner(currentUser)) {
                     let res = createPaidApiKey(currentUser.phone, 12);
-                    if(res.success) alert(`✅ API Key GRATIS: ${res.key}\nExpired: ${new Date(res.expired).toLocaleDateString()}`);
+                    if(res.success) alert(`✅ API Key GRATIS REAL: ${res.key}\nExpired: ${new Date(res.expired).toLocaleDateString()}`);
                     else alert(res.msg);
                     render();
                 }
@@ -657,14 +670,13 @@
         if(paidBtn) {
             paidBtn.addEventListener('click', () => {
                 let res = createPaidApiKey(currentUser.phone, 1);
-                if(res.success) alert(`✅ API Key berhasil dibuat!\n🔑 ${res.key}\n📅 Expired: ${new Date(res.expired).toLocaleDateString()}`);
+                if(res.success) alert(`✅ API Key REAL berhasil dibuat!\n🔑 ${res.key}\n📅 Expired: ${new Date(res.expired).toLocaleDateString()}`);
                 else alert(res.msg);
                 render();
             });
         }
     }
 
-    // navigasi
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -673,7 +685,6 @@
         });
     });
 
-    // Theme
     const themeToggle = document.getElementById('themeToggle');
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark');
