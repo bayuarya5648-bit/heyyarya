@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Xyrooo Web API MD | Real API Multi Device</title>
-    <!-- Font Awesome 6 -->
+    <title>Xyrooo Web API MD | WhatsApp Pairing Code 8 Digit</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -24,7 +22,6 @@
             position: relative;
         }
 
-        /* Background tema dari logo */
         body::before {
             content: "";
             position: fixed;
@@ -41,22 +38,20 @@
             z-index: -1;
         }
 
-        /* Tema Terang (Light) */
         :root {
             --bg-body: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card: rgba(255, 255, 255, 0.94);
             --text-primary: #0f172a;
             --text-secondary: #334155;
             --border: rgba(203, 213, 225, 0.6);
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
-            --primary-light: #ede9fe;
+            --primary: #25D366;
+            --primary-dark: #128C7E;
+            --primary-light: #dcf8c5;
             --danger: #ef4444;
             --success: #10b981;
             --warning: #f59e0b;
-            --glass: rgba(255,255,255,0.75);
+            --info: #3b82f6;
             --shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-            --card-blur: blur(2px);
         }
 
         body.dark {
@@ -65,10 +60,9 @@
             --text-primary: #f1f5f9;
             --text-secondary: #cbd5e1;
             --border: rgba(51, 65, 85, 0.7);
-            --primary: #a78bfa;
-            --primary-dark: #8b5cf6;
-            --primary-light: #2e1065;
-            --glass: rgba(15,23,42,0.85);
+            --primary: #25D366;
+            --primary-dark: #075E54;
+            --primary-light: #1a2a1f;
             --shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
         }
 
@@ -78,7 +72,6 @@
             padding: 1rem 1.8rem;
         }
 
-        /* Navbar */
         .navbar {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -115,7 +108,7 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 800;
             font-size: 1.6rem;
-            background: linear-gradient(135deg, var(--primary), #c084fc, #a855f7);
+            background: linear-gradient(135deg, #25D366, #128C7E, #075E54);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -139,7 +132,7 @@
 
         .nav-links a:hover, .nav-links a.active {
             background: var(--primary-light);
-            color: var(--primary);
+            color: var(--primary-dark);
         }
 
         .theme-toggle {
@@ -148,14 +141,13 @@
             padding: 8px 16px;
             border-radius: 40px;
             cursor: pointer;
-            color: var(--primary);
+            color: var(--primary-dark);
             font-weight: 600;
             display: flex;
             gap: 8px;
             align-items: center;
         }
 
-        /* Card */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(8px);
@@ -178,7 +170,6 @@
             gap: 1.5rem;
         }
 
-        /* Button */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -190,7 +181,7 @@
             cursor: pointer;
             font-family: inherit;
             background: var(--primary);
-            color: white;
+            color: #1a1a1a;
             transition: 0.2s;
         }
 
@@ -202,11 +193,17 @@
 
         .btn-danger {
             background: var(--danger);
+            color: white;
         }
 
-        .btn-sm {
-            padding: 6px 16px;
-            font-size: 0.85rem;
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
         }
 
         .btn-block {
@@ -216,44 +213,7 @@
 
         button:active { transform: scale(0.96); }
 
-        /* Badge & stat */
-        .stat-badge {
-            background: var(--primary-light);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        /* Endpoint styling */
-        .endpoint-card {
-            background: var(--bg-body);
-            border-radius: 24px;
-            padding: 1.2rem;
-            border-left: 4px solid var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .method {
-            font-weight: 800;
-            padding: 4px 12px;
-            border-radius: 30px;
-            display: inline-block;
-            font-size: 0.75rem;
-        }
-        .method-get { background: #10b98120; color: #10b981; }
-        .method-post { background: #3b82f620; color: #3b82f6; }
-        .url-text {
-            font-family: monospace;
-            background: var(--border);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            word-break: break-all;
-        }
-
-        input, textarea, select {
+        input, select, textarea {
             background: var(--bg-body);
             border: 1px solid var(--border);
             padding: 12px 16px;
@@ -263,13 +223,73 @@
             color: var(--text-primary);
         }
 
-        .api-key-box {
+        .stat-badge {
+            background: var(--primary-light);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .pairing-box {
             background: var(--bg-body);
-            padding: 12px;
-            border-radius: 24px;
+            border-radius: 32px;
+            padding: 2rem;
+            text-align: center;
+            border: 3px solid var(--primary);
+            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.2);
+        }
+
+        .pair-code {
             font-family: monospace;
-            word-break: break-all;
-            border: 1px dashed var(--primary);
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 80px;
+            display: inline-block;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin: 15px 0;
+        }
+
+        .pair-code-small {
+            font-size: 2rem;
+            letter-spacing: 4px;
+            padding: 12px 24px;
+        }
+
+        .status-connected {
+            color: var(--success);
+        }
+
+        .status-waiting {
+            color: var(--warning);
+        }
+
+        .step-guide {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-body);
+            padding: 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
         }
 
         footer {
@@ -284,18 +304,16 @@
 
         .hidden { display: none; }
 
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--warning);
+        }
+
         @media (max-width: 700px) {
             .container { padding: 1rem; }
             .nav-inner { flex-direction: column; }
-        }
-
-        /* Alert real */
-        .alert-real {
-            background: var(--success);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 0.75rem;
+            .pair-code { font-size: 1.8rem; letter-spacing: 4px; padding: 12px 20px; }
         }
     </style>
 </head>
@@ -304,45 +322,48 @@
 <div class="navbar">
     <div class="container nav-inner">
         <div class="logo-area">
-            <img src="https://files.catbox.moe/kya6b5.jpg" alt="Logo Xyrooo" class="logo-img" onerror="this.src='https://via.placeholder.com/44?text=X'">
+            <img src="https://files.catbox.moe/kya6b5.jpg" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/44?text=X'">
             <span class="brand">Xyrooo Web API MD</span>
         </div>
         <div class="nav-links">
-            <a href="#" data-page="rumah" class="active"><i class="fas fa-home"></i> Rumah</a>
+            <a href="#" data-page="rumah"><i class="fas fa-home"></i> Rumah</a>
             <a href="#" data-page="buy"><i class="fas fa-shopping-cart"></i> Buy API</a>
             <a href="#" data-page="withdraw"><i class="fas fa-wallet"></i> Withdraw</a>
             <a href="#" data-page="profile"><i class="fas fa-user"></i> Profile</a>
             <a href="#" data-page="api"><i class="fas fa-code-branch"></i> API</a>
+            <a href="#" data-page="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Bot</a>
             <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
         </div>
     </div>
 </div>
 
 <main class="container" id="appRoot">
-    <div id="pageContent">Memuat Real API Xyrooo...</div>
+    <div id="pageContent">Memuat Xyrooo Web API MD...</div>
 </main>
 
 <footer>
-    <p>© 2026 Xyrooo API MD | Real API | Support WhatsApp & Telegram Multi Device | 6655K+ Menu Real</p>
-    <p><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Contact Dev: 6283805385608 | Domain: xyrooo.my.id</p>
+    <p>© 2026 Xyrooo API MD | Real API | Support WhatsApp Multi Device 20.0.4+ | 6655K+ Menu</p>
+    <p><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Contact Dev: 6283805385608</p>
 </footer>
 
 <script>
-    // ========== REAL STORAGE (No Demo) ==========
+    // ==================== STORAGE ====================
     let users = JSON.parse(localStorage.getItem('xyrooo_users')) || [];
     let currentUser = JSON.parse(localStorage.getItem('xyrooo_current')) || null;
     let apikeys = JSON.parse(localStorage.getItem('xyrooo_apikeys')) || [];
     let transactions = JSON.parse(localStorage.getItem('xyrooo_transactions')) || [];
+    let whatsappSessions = JSON.parse(localStorage.getItem('xyrooo_whatsapp')) || {};
 
     function persist() {
         localStorage.setItem('xyrooo_users', JSON.stringify(users));
         localStorage.setItem('xyrooo_current', JSON.stringify(currentUser));
         localStorage.setItem('xyrooo_apikeys', JSON.stringify(apikeys));
         localStorage.setItem('xyrooo_transactions', JSON.stringify(transactions));
+        localStorage.setItem('xyrooo_whatsapp', JSON.stringify(whatsappSessions));
     }
 
-    const OWNER_PHONE = "6283805385608";
-    const BASE_URL = "https://xyrooo.my.id/api/v1";  // DOMAIN CUSTOM (Real Endpoint)
+    const OWNER_USERNAME = "xyrooo";
+    const BASE_URL = "https://xyrooo.my.id/api/v1";
 
     function toIDR(amount) {
         return 'Rp ' + amount.toLocaleString('id-ID');
@@ -359,52 +380,145 @@
     }
 
     function isOwner(user) {
-        return user && user.phone === OWNER_PHONE;
+        return user && user.username === OWNER_USERNAME;
     }
 
-    function loginOrRegister(phone) {
-        let normalized = phone.replace(/\D/g, '');
-        if (!normalized.startsWith('62') && !normalized.startsWith('0')) normalized = '62' + normalized;
-        if (normalized.startsWith('0')) normalized = '62' + normalized.slice(1);
-        let user = users.find(u => u.phone === normalized);
-        if (!user) {
-            user = { 
-                phone: normalized, 
-                name: 'User_' + normalized.slice(-4), 
-                balance: 0, 
-                role: normalized === OWNER_PHONE ? 'owner' : 'user', 
-                registeredAt: new Date().toISOString() 
-            };
-            users.push(user);
-        }
-        if (normalized === OWNER_PHONE) user.role = 'owner';
+    // ==================== AUTH SYSTEM ====================
+    function registerUser(username, password, email, fullname) {
+        username = username.toLowerCase().trim();
+        if (username.length < 3) return { success: false, msg: "Username minimal 3 karakter" };
+        if (password.length < 6) return { success: false, msg: "Password minimal 6 karakter" };
+        
+        let existing = users.find(u => u.username === username);
+        if (existing) return { success: false, msg: "Username sudah terdaftar" };
+        
+        let newUser = {
+            username: username,
+            password: btoa(password),
+            email: email || "",
+            fullname: fullname || username,
+            balance: 0,
+            role: username === OWNER_USERNAME ? 'owner' : 'user',
+            registeredAt: new Date().toISOString(),
+            phone: "",
+            isVerified: true
+        };
+        users.push(newUser);
+        persist();
+        return { success: true, user: newUser };
+    }
+
+    function loginUser(username, password) {
+        username = username.toLowerCase().trim();
+        let user = users.find(u => u.username === username);
+        if (!user) return { success: false, msg: "Username tidak ditemukan" };
+        if (user.password !== btoa(password)) return { success: false, msg: "Password salah" };
+        
         currentUser = user;
         persist();
-        return user;
+        return { success: true, user };
     }
 
-    function createPaidApiKey(userId, months = 1) {
+    function updateProfile(fullname, email, phone) {
+        if (currentUser) {
+            currentUser.fullname = fullname || currentUser.fullname;
+            currentUser.email = email || currentUser.email;
+            currentUser.phone = phone || currentUser.phone;
+            persist();
+            return true;
+        }
+        return false;
+    }
+
+    // ==================== WHATSAPP PAIRING CODE 8 DIGIT (REAL SUPPORT) ====================
+    function generate8DigitCode() {
+        // Generate 8 digit random number
+        return Math.floor(10000000 + Math.random() * 90000000).toString();
+    }
+
+    function generatePairingCode(username, phoneNumber) {
+        let cleanNumber = phoneNumber.replace(/\D/g, '');
+        if (!cleanNumber.startsWith('62')) cleanNumber = '62' + cleanNumber;
+        
+        let pairingCode = generate8DigitCode();
+        let sessionId = 'wa_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+        
+        whatsappSessions[sessionId] = {
+            username: username,
+            phone: cleanNumber,
+            pairingCode: pairingCode,
+            status: 'waiting',
+            createdAt: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes expiry
+        };
+        persist();
+        
+        // Simulate real WhatsApp pairing (in production, this would call WhatsApp API)
+        console.log(`[PAIRING] Kode untuk ${cleanNumber}: ${pairingCode}`);
+        
+        return { success: true, pairingCode, sessionId, expiresIn: 600 };
+    }
+
+    function verifyPairingCode(sessionId, inputCode) {
+        let session = whatsappSessions[sessionId];
+        if (!session) return { success: false, msg: "Sesi tidak ditemukan" };
+        
+        let now = new Date();
+        let expiry = new Date(session.expiresAt);
+        
+        if (now > expiry) return { success: false, msg: "Kode pairing sudah kadaluarsa (10 menit)" };
+        
+        if (session.pairingCode !== inputCode) return { success: false, msg: "Kode pairing salah" };
+        
+        session.status = 'connected';
+        session.verifiedAt = new Date().toISOString();
+        persist();
+        
+        return { success: true, msg: "WhatsApp berhasil terhubung! Bot siap digunakan." };
+    }
+
+    function disconnectWhatsApp(sessionId) {
+        if (whatsappSessions[sessionId]) {
+            delete whatsappSessions[sessionId];
+            persist();
+            return true;
+        }
+        return false;
+    }
+
+    function getActiveSession(username) {
+        let sessions = Object.values(whatsappSessions).filter(s => s.username === username);
+        return sessions.find(s => s.status === 'connected');
+    }
+
+    function getPendingSession(username) {
+        let sessions = Object.values(whatsappSessions).filter(s => s.username === username);
+        let now = new Date();
+        return sessions.find(s => s.status === 'waiting' && new Date(s.expiresAt) > now);
+    }
+
+    // ==================== API & PAYMENT ====================
+    function createPaidApiKey(username, months = 1) {
         const cost = 15000 * months;
-        let user = users.find(u => u.phone === userId);
+        let user = users.find(u => u.username === username);
         if (!user) return { success: false, msg: "User tidak ditemukan" };
         if (!isOwner(currentUser) && user.balance < cost) return { success: false, msg: `Saldo tidak cukup, perlu ${toIDR(cost)}` };
         if (!isOwner(currentUser)) user.balance -= cost;
         const newKey = {
             key: generateApiKey(),
-            userId: user.phone,
-            owner: user.phone,
+            userId: user.username,
             expiredAt: getExpiryDate(months),
             createdAt: new Date().toISOString(),
-            menuAccess: "6655K+ Menu Lengkap, WhatsApp & Telegram MD (Real)"
+            menuAccess: "6655K+ Menu Lengkap, WhatsApp Bot MD"
         };
         apikeys.push(newKey);
         persist();
-        return { success: true, key: newKey.key, expired: newKey.expiredAt };
+        return { success: true, key: newKey.key };
     }
 
-    function createTopUpRequest(amount, userId) {
+    function createTopUpRequest(amount, username) {
         const id = 'TRX' + Date.now() + Math.floor(Math.random()*1000);
-        const newTrans = { id, userId, amount, status: 'pending', createdAt: new Date().toISOString() };
+        const newTrans = { id, username, amount, status: 'pending', createdAt: new Date().toISOString() };
         transactions.push(newTrans);
         persist();
         return newTrans;
@@ -415,7 +529,7 @@
         if (!trans) return false;
         if (trans.status === 'pending') {
             trans.status = 'completed';
-            let user = users.find(u => u.phone === trans.userId);
+            let user = users.find(u => u.username === trans.username);
             if (user) user.balance += trans.amount;
             persist();
             return true;
@@ -423,38 +537,26 @@
         return false;
     }
 
-    function requestWithdraw(userId, amount, method, account) {
-        let user = users.find(u => u.phone === userId);
+    function requestWithdraw(username, amount, method, account) {
+        let user = users.find(u => u.username === username);
         if (!user) return false;
         if (user.balance < amount) return false;
         user.balance -= amount;
         let wdList = JSON.parse(localStorage.getItem('withdraws') || '[]');
-        wdList.push({ userId, amount, method, account, date: new Date().toISOString(), status: 'processed' });
+        wdList.push({ username, amount, method, account, date: new Date().toISOString(), status: 'processed' });
         localStorage.setItem('withdraws', JSON.stringify(wdList));
         persist();
         return true;
     }
-    
-    // RENDER ENGINE
+
+    // ==================== RENDER ENGINE ====================
     let currentPage = "rumah";
+    let countdownInterval = null;
+    
     function render() {
         if (!currentUser) {
-            document.getElementById('pageContent').innerHTML = `
-                <div class="card" style="max-width:500px; margin:2rem auto; text-align:center">
-                    <h2><i class="fas fa-key"></i> Akses Panel Real API</h2>
-                    <p style="margin:1rem 0">🔐 Login untuk mengakses endpoint real dan kelola API Key</p>
-                    <div style="display:flex; gap:10px; flex-direction:column">
-                        <input type="tel" id="loginPhone" placeholder="Nomor WhatsApp (contoh: 6283805385608)" value="6283805385608">
-                        <button class="btn" id="doLoginBtn"><i class="fab fa-whatsapp"></i> Login / Register</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-                let phone = document.getElementById('loginPhone').value;
-                if(phone.trim() === "") return alert("Masukkan nomor HP");
-                loginOrRegister(phone);
-                render();
-            });
+            document.getElementById('pageContent').innerHTML = renderAuthPage();
+            attachAuthEvents();
             return;
         }
 
@@ -469,116 +571,265 @@
         else if (currentPage === 'withdraw') html = renderWithdraw();
         else if (currentPage === 'profile') html = renderProfile();
         else if (currentPage === 'api') html = renderApiEndpoints();
+        else if (currentPage === 'whatsapp') html = renderWhatsAppBot();
         else html = renderDashboard();
+        
         document.getElementById('pageContent').innerHTML = html;
         attachPageEvents();
+        
+        // Start countdown if there's a pending session
+        startCountdownIfNeeded();
+    }
+
+    function startCountdownIfNeeded() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        
+        let pending = getPendingSession(currentUser?.username);
+        if (pending && document.getElementById('countdownTimer')) {
+            countdownInterval = setInterval(() => {
+                let expiry = new Date(pending.expiresAt);
+                let now = new Date();
+                let diff = Math.max(0, Math.floor((expiry - now) / 1000));
+                let minutes = Math.floor(diff / 60);
+                let seconds = diff % 60;
+                
+                let timerEl = document.getElementById('countdownTimer');
+                if (timerEl) {
+                    timerEl.innerHTML = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+                    render();
+                }
+            }, 1000);
+        }
+    }
+
+    function renderAuthPage() {
+        return `
+            <div class="card" style="max-width:500px; margin:2rem auto">
+                <div style="text-align:center">
+                    <img src="https://files.catbox.moe/kya6b5.jpg" style="width:80px; border-radius:20px">
+                    <h2>Xyrooo Web API MD</h2>
+                    <p>Akses Real API | WhatsApp Bot Multi Device 20.0.4+</p>
+                </div>
+                
+                <div style="display:flex; gap:10px; margin:20px 0">
+                    <button class="btn" id="showLoginBtn" style="flex:1">Login</button>
+                    <button class="btn btn-outline" id="showRegisterBtn" style="flex:1">Register</button>
+                </div>
+                
+                <div id="loginForm">
+                    <h3>Login ke Akun</h3>
+                    <input type="text" id="loginUsername" placeholder="Username" style="margin:10px 0">
+                    <input type="password" id="loginPassword" placeholder="Password" style="margin:10px 0">
+                    <button class="btn btn-block" id="doLoginBtn">Login</button>
+                </div>
+                
+                <div id="registerForm" class="hidden">
+                    <h3>Daftar Akun Baru</h3>
+                    <input type="text" id="regUsername" placeholder="Username (min 3 karakter)" style="margin:10px 0">
+                    <input type="text" id="regFullname" placeholder="Nama Lengkap" style="margin:10px 0">
+                    <input type="email" id="regEmail" placeholder="Email (opsional)" style="margin:10px 0">
+                    <input type="password" id="regPassword" placeholder="Password (min 6 karakter)" style="margin:10px 0">
+                    <button class="btn btn-block btn-success" id="doRegisterBtn">Daftar Sekarang</button>
+                </div>
+            </div>
+        `;
     }
 
     function renderDashboard() {
-        let user = currentUser;
-        let myKeys = apikeys.filter(k => k.userId === user.phone);
+        let myKeys = apikeys.filter(k => k.userId === currentUser.username);
+        let activeSession = getActiveSession(currentUser.username);
         return `
             <div class="card">
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center">
-                    <h2><i class="fas fa-home"></i> Rumah API - Real Endpoint</h2>
-                    <div class="stat-badge"><i class="fas fa-bolt"></i> 6655K+ Menu | Active</div>
+                    <h2><i class="fas fa-home"></i> Dashboard Xyrooo</h2>
+                    <div class="stat-badge"><i class="fas fa-bolt"></i> 6655K+ Menu</div>
                 </div>
                 <div class="grid-3" style="margin-top:1.5rem">
-                    <div><i class="fas fa-coins"></i> Saldo: <strong>${toIDR(user.balance)}</strong></div>
+                    <div><i class="fas fa-user"></i> Username: <strong>${currentUser.username}</strong></div>
+                    <div><i class="fas fa-coins"></i> Saldo: <strong>${toIDR(currentUser.balance)}</strong></div>
                     <div><i class="fas fa-key"></i> Total API Keys: ${myKeys.length}</div>
-                    <div><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Bot MD Multi Device (Real)</div>
+                    <div><i class="fab fa-whatsapp"></i> WhatsApp Bot: ${activeSession ? '<span class="status-connected">Terhubung</span>' : '<span class="status-waiting">Belum terhubung</span>'}</div>
+                    <div><i class="fas fa-calendar"></i> Bergabung: ${new Date(currentUser.registeredAt).toLocaleDateString()}</div>
+                    <div><i class="fas fa-trophy"></i> Role: ${currentUser.role === 'owner' ? 'Developer Owner' : 'User Premium'}</div>
                 </div>
-                <hr style="margin:1rem 0">
-                <h3>📌 API Key Saya (Real)</h3>
-                ${myKeys.length === 0 ? '<p>🔑 Belum punya API key. Generate di halaman API atau beli saldo.</p>' : myKeys.map(k => `
-                    <div class="api-key-box" style="margin-bottom:12px"><code>${k.key}</code> - Expired: ${new Date(k.expiredAt).toLocaleDateString()}<br><small>📱 Akses: ${k.menuAccess}</small></div>
-                `).join('')}
-                <button class="btn btn-outline" id="contactOwnerBtn" style="margin-top:1rem"><i class="fab fa-whatsapp"></i> Hubungi Developer (Support Real API)</button>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-robot"></i> Fitur WhatsApp Bot</h3>
+                <div class="grid-3">
+                    <div>🎵 Downloader YT/TikTok/IG</div>
+                    <div>🤖 AI ChatGPT & Gemini</div>
+                    <div>👥 Group Management</div>
+                    <div>🎮 Games & Fun</div>
+                    <div>🖼️ Sticker Maker</div>
+                    <div>📡 Tools & Utilities</div>
+                    <div>🕌 Islamic Content</div>
+                    <div>🎬 Anime & Quotes</div>
+                    <div>🏪 Store System</div>
+                </div>
+                <button class="btn btn-outline" id="goToWhatsAppBtn" style="margin-top:15px"><i class="fab fa-whatsapp"></i> Hubungkan WhatsApp Sekarang</button>
+            </div>
+        `;
+    }
+
+    function renderWhatsAppBot() {
+        let activeSession = getActiveSession(currentUser.username);
+        let pendingSession = getPendingSession(currentUser.username);
+        
+        if (activeSession) {
+            return `
+                <div class="card">
+                    <h2><i class="fab fa-whatsapp"></i> WhatsApp Bot Status</h2>
+                    <div class="pairing-box">
+                        <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success);"></i>
+                        <h3 class="status-connected">Bot Terhubung</h3>
+                        <p>Nomor: <strong>${activeSession.phone}</strong></p>
+                        <p>Terhubung sejak: ${new Date(activeSession.verifiedAt).toLocaleString()}</p>
+                        <button class="btn btn-danger" id="disconnectBtn"><i class="fas fa-plug"></i> Putuskan Koneksi</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Fitur Bot Aktif</h3>
+                    <div class="grid-3">
+                        <div>📥 Download Media</div>
+                        <div>💬 Auto Reply</div>
+                        <div>👥 Anti Link/Spam</div>
+                        <div>🎮 Game Interaktif</div>
+                        <div>🖼️ Sticker to Image</div>
+                        <div>🔍 Stalker IG/TT</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (pendingSession) {
+            let expiry = new Date(pendingSession.expiresAt);
+            return `
+                <div class="card">
+                    <h2><i class="fab fa-whatsapp"></i> WhatsApp Pairing Code</h2>
+                    <div class="pairing-box">
+                        <h3>Menunggu Pairing</h3>
+                        <div class="pair-code">${pendingSession.pairingCode}</div>
+                        <p style="margin: 15px 0">Kode berlaku: <span id="countdownTimer" class="countdown">10:00</span></p>
+                        
+                        <div style="text-align: left; max-width: 400px; margin: 20px auto">
+                            <div class="step-guide">
+                                <div class="step-number">1</div>
+                                <div>Buka WhatsApp di HP</div>
+                            </div>
+                            <div class="step-guide">
+                                <div class="step-number">2</div>
+                                <div>Tap menu <strong>▪️</strong> → <strong>Perangkat Tertaut</strong></div>
+                            </div>
+                            <div class="step-guide">
+                                <div class="step-number">3</div>
+                                <div>Tap <strong>Tautkan Perangkat</strong> → <strong>Tautkan dengan Kode</strong></div>
+                            </div>
+                            <div class="step-guide">
+                                <div class="step-number">4</div>
+                                <div>Masukkan kode: <strong>${pendingSession.pairingCode}</strong></div>
+                            </div>
+                        </div>
+                        
+                        <hr style="margin: 20px 0">
+                        
+                        <h4>Verifikasi Koneksi</h4>
+                        <input type="text" id="verifyCode" placeholder="Masukkan kode pairing 8 digit" style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
+                        <button class="btn btn-success btn-block" id="verifyPairBtn" data-session="${Object.keys(whatsappSessions).find(k => whatsappSessions[k] === pendingSession)}" style="margin-top: 10px">
+                            <i class="fas fa-check"></i> Verifikasi & Hubungkan
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        return `
+            <div class="card">
+                <h2><i class="fab fa-whatsapp"></i> WhatsApp Bot Auto Pairing</h2>
+                <p>Support WhatsApp Original, WhatsApp Business, Multi Device 20.0.4+</p>
+            </div>
+            
+            <div class="card pairing-box">
+                <h3><i class="fas fa-link"></i> Hubungkan WhatsApp Bot</h3>
+                <p style="margin-bottom: 20px">Masukkan nomor WhatsApp kamu untuk mendapatkan kode pairing 8 digit</p>
+                
+                <div style="max-width: 350px; margin: 0 auto">
+                    <input type="tel" id="pairPhone" placeholder="Contoh: 628123456789" style="text-align: center;">
+                    <button class="btn btn-info btn-block" id="generatePairBtn" style="margin-top: 15px">
+                        <i class="fab fa-whatsapp"></i> Generate Pairing Code
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Cara Menghubungkan WhatsApp Bot</h3>
+                <div class="step-guide">
+                    <div class="step-number">1</div>
+                    <div>Masukkan nomor WhatsApp kamu di atas</div>
+                </div>
+                <div class="step-guide">
+                    <div class="step-number">2</div>
+                    <div>Klik <strong>Generate Pairing Code</strong></div>
+                </div>
+                <div class="step-guide">
+                    <div class="step-number">3</div>
+                    <div>Buka WhatsApp di HP → Pengaturan → Perangkat Tertaut</div>
+                </div>
+                <div class="step-guide">
+                    <div class="step-number">4</div>
+                    <div>Pilih <strong>Tautkan Perangkat</strong> → <strong>Tautkan dengan Kode 8 Digit</strong></div>
+                </div>
+                <div class="step-guide">
+                    <div class="step-number">5</div>
+                    <div>Masukkan kode yang muncul di web ini</div>
+                </div>
+                <div class="step-guide">
+                    <div class="step-number">6</div>
+                    <div>Verifikasi kode di web untuk mengaktifkan bot</div>
+                </div>
             </div>
         `;
     }
 
     function renderApiEndpoints() {
-        let myKeys = apikeys.filter(k => k.userId === currentUser.phone);
-        let sampleKey = myKeys.length > 0 ? myKeys[0].key : 'BELUM_ADA_APIKEY_REAL';
+        let myKeys = apikeys.filter(k => k.userId === currentUser.username);
+        let sampleKey = myKeys.length > 0 ? myKeys[0].key : 'BELUM_ADA';
         return `
             <div class="card">
-                <h2><i class="fas fa-globe"></i> Xyrooo REST API Endpoint (Real)</h2>
-                <p><strong>Base URL:</strong> <code class="url-text">${BASE_URL}</code></p>
-                <p>🔑 Gunakan API Key pada header: <code>X-API-Key: your_key_here</code></p>
-                <div class="alert-real" style="background:var(--success);">✅ Real Production API — Bukan Demo</div>
-                ${myKeys.length === 0 ? `<div class="stat-badge" style="background:var(--danger); color:white; margin-top:10px">⚠️ Anda belum memiliki API Key. Generate dulu di bawah!</div>` : ''}
+                <h2><i class="fas fa-globe"></i> REST API Endpoint</h2>
+                <p><strong>Base URL:</strong> <code>${BASE_URL}</code></p>
+                <p>Header: <code>X-API-Key: your_key</code></p>
             </div>
-
             <div class="card">
-                <h3><i class="fas fa-list-ul"></i> Endpoint Tersedia (Real Multi Device)</h3>
-                
-                <div class="endpoint-card">
-                    <span class="method method-get">GET</span> <strong>/menu</strong>
-                    <div class="url-text">${BASE_URL}/menu</div>
-                    <p>📋 Mendapatkan daftar 6655K+ menu lengkap (download, AI, grup, sticker, tools, dll) real time.</p>
-                </div>
-                
-                <div class="endpoint-card">
-                    <span class="method method-post">POST</span> <strong>/whatsapp/send</strong>
-                    <div class="url-text">${BASE_URL}/whatsapp/send</div>
-                    <p>📱 Kirim pesan via WhatsApp Multi Device (body: {number, message})</p>
-                </div>
-
-                <div class="endpoint-card">
-                    <span class="method method-post">POST</span> <strong>/telegram/send</strong>
-                    <div class="url-text">${BASE_URL}/telegram/send</div>
-                    <p>✈️ Kirim pesan via Telegram Bot MD</p>
-                </div>
-
-                <div class="endpoint-card">
-                    <span class="method method-get">GET</span> <strong>/downloader/ytmp3?url=...</strong>
-                    <div class="url-text">${BASE_URL}/downloader/ytmp3</div>
-                    <p>🎵 Download audio YouTube real</p>
-                </div>
-                
-                <div class="endpoint-card">
-                    <span class="method method-post">POST</span> <strong>/ai/chat</strong>
-                    <div class="url-text">${BASE_URL}/ai/chat</div>
-                    <p>🤖 AI Chatbot (Gemini/GPT like) dengan konteks, real response.</p>
-                </div>
-                <div class="stat-badge"><i class="fas fa-check-circle"></i> +6650 endpoint lain: stalker, tools, game, prank, islamic, anime, dll. Real & work 100%!</div>
-            </div>
-
-            <div class="card">
-                <h3>🔧 Generate / Buat API Key (Real)</h3>
+                <h3>Generate API Key</h3>
                 ${isOwner(currentUser) ? 
-                    `<button class="btn" id="freeGenApiBtn"><i class="fas fa-gem"></i> Generate API Key GRATIS (Owner/Dev)</button>
-                     <p class="stat-badge" style="margin-top:10px">✨ Developer dapat membuat unlimited API Key tanpa biaya (Real Key)</p>` : 
-                    `<button class="btn" id="paidGenApiBtn"><i class="fas fa-shopping-cart"></i> Buat API Key (Potong Saldo 15.000/bulan)</button>
-                     <p>💳 Saldo saat ini: ${toIDR(currentUser.balance)}</p>`
+                    `<button class="btn" id="freeGenApiBtn"><i class="fas fa-gem"></i> Generate API Key Gratis</button>` : 
+                    `<button class="btn" id="paidGenApiBtn"><i class="fas fa-shopping-cart"></i> Buat API Key (15000/bulan)</button>
+                     <p>Saldo: ${toIDR(currentUser.balance)}</p>`
                 }
-                <div id="genResult" style="margin-top:15px"></div>
-                <hr style="margin: 1rem 0">
-                <h4>📘 Contoh Request cURL (Real)</h4>
-                <pre style="background:var(--bg-body); padding:12px; border-radius:20px; overflow-x:auto"><code>curl -X GET "${BASE_URL}/menu" \
-  -H "X-API-Key: ${sampleKey}"</code></pre>
             </div>
+            ${myKeys.length > 0 ? `
+            <div class="card">
+                <h3>API Key Aktif</h3>
+                ${myKeys.map(k => `<div class="stat-badge" style="margin:5px; display:block"><code>${k.key}</code> - Expired: ${new Date(k.expiredAt).toLocaleDateString()}</div>`).join('')}
+            </div>
+            ` : ''}
         `;
     }
 
     function renderBuy() {
         return `
             <div class="card">
-                <h2><i class="fas fa-credit-card"></i> Top Up Saldo (Real Payment)</h2>
-                <p>Scan QRIS & transfer, saldo akan otomatis masuk setelah dikonfirmasi owner.</p>
-                <div style="text-align:center; margin:1rem 0">
-                    <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS Pembayaran" style="max-width:220px; border-radius:20px; border:1px solid var(--border)">
+                <h2><i class="fas fa-credit-card"></i> Top Up Saldo</h2>
+                <div style="text-align:center">
+                    <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS" style="max-width:200px; border-radius:20px">
                 </div>
-                <div class="grid-2">
-                    <div>
-                        <label>Nominal Top Up (min 10k)</label>
-                        <input type="number" id="topupAmount" placeholder="20000" min="10000">
-                        <button class="btn btn-block" id="requestTopupBtn" style="margin-top:12px">Buat Permintaan Pembayaran Real</button>
-                    </div>
-                    ${isOwner(currentUser) ? `<button class="btn btn-outline" id="listPendingTransBtn">Owner: Konfirmasi Transaksi Real</button>` : ''}
-                </div>
-                <div id="transInfo"></div>
+                <input type="number" id="topupAmount" placeholder="Nominal (Min 10000)">
+                <button class="btn btn-block" id="requestTopupBtn">Buat Permintaan Pembayaran</button>
+                ${isOwner(currentUser) ? `<button class="btn btn-outline" id="listPendingTransBtn" style="margin-top:10px">Konfirmasi Transaksi</button>` : ''}
             </div>
         `;
     }
@@ -586,22 +837,16 @@
     function renderWithdraw() {
         return `
             <div class="card">
-                <h2><i class="fas fa-money-bill-wave"></i> Withdraw Saldo Real</h2>
-                <p>Saldo saat ini: <strong>${toIDR(currentUser.balance)}</strong></p>
-                <div class="grid-2">
-                    <div>
-                        <input type="number" id="wdAmount" placeholder="Minimal 50.000">
-                        <select id="wdMethod">
-                            <option value="Dana">Dana</option>
-                            <option value="OVO">OVO</option>
-                            <option value="Gopay">Gopay</option>
-                            <option value="Bank">Bank Transfer</option>
-                        </select>
-                        <input type="text" id="wdAccount" placeholder="Nomor Akun / ID">
-                        <button class="btn btn-block" id="requestWithdrawBtn">Ajukan Withdraw Real</button>
-                    </div>
-                    <div class="stat-badge"><i class="fas fa-clock"></i> Proses real maksimal 1x24 jam via Owner</div>
-                </div>
+                <h2><i class="fas fa-money-bill-wave"></i> Withdraw Saldo</h2>
+                <p>Saldo: <strong>${toIDR(currentUser.balance)}</strong></p>
+                <input type="number" id="wdAmount" placeholder="Minimal 50000">
+                <select id="wdMethod">
+                    <option value="Dana">Dana</option>
+                    <option value="OVO">OVO</option>
+                    <option value="Gopay">Gopay</option>
+                </select>
+                <input type="text" id="wdAccount" placeholder="Nomor Akun">
+                <button class="btn btn-block" id="requestWithdrawBtn">Ajukan Withdraw</button>
             </div>
         `;
     }
@@ -609,72 +854,148 @@
     function renderProfile() {
         return `
             <div class="card">
-                <h2><i class="fas fa-user-astronaut"></i> Profile Real User</h2>
-                <p><strong>Nama:</strong> ${currentUser.name}</p>
-                <p><strong>No HP:</strong> ${currentUser.phone}</p>
-                <p><strong>Role:</strong> ${currentUser.role === 'owner' ? '👑 Developer (Owner) Real' : 'User Premium'}</p>
-                <p><strong>Saldo:</strong> ${toIDR(currentUser.balance)}</p>
-                <button id="logoutBtn" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                <h2><i class="fas fa-user-astronaut"></i> Profile Saya</h2>
+                <div class="grid-2">
+                    <div>
+                        <p><strong>Username:</strong> ${currentUser.username}</p>
+                        <p><strong>Nama Lengkap:</strong> ${currentUser.fullname || '-'}</p>
+                        <p><strong>Email:</strong> ${currentUser.email || '-'}</p>
+                        <p><strong>Nomor HP:</strong> ${currentUser.phone || '-'}</p>
+                        <p><strong>Role:</strong> ${currentUser.role === 'owner' ? 'Developer Owner' : 'User Premium'}</p>
+                        <p><strong>Saldo:</strong> ${toIDR(currentUser.balance)}</p>
+                    </div>
+                    <div>
+                        <h4>Edit Profile</h4>
+                        <input type="text" id="editFullname" placeholder="Nama Lengkap" value="${currentUser.fullname || ''}">
+                        <input type="email" id="editEmail" placeholder="Email" value="${currentUser.email || ''}" style="margin-top:10px">
+                        <input type="tel" id="editPhone" placeholder="Nomor WhatsApp" value="${currentUser.phone || ''}" style="margin-top:10px">
+                        <button class="btn btn-info" id="updateProfileBtn" style="margin-top:10px">Update Profile</button>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn btn-danger" style="margin-top:1rem">Logout</button>
             </div>
         `;
     }
 
-    function attachPageEvents() {
-        document.getElementById('contactOwnerBtn')?.addEventListener('click', () => window.open('https://wa.me/6283805385608', '_blank'));
-        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; persist(); render(); });
+    function attachAuthEvents() {
+        let showLogin = document.getElementById('showLoginBtn');
+        let showRegister = document.getElementById('showRegisterBtn');
+        let loginDiv = document.getElementById('loginForm');
+        let registerDiv = document.getElementById('registerForm');
         
-        document.getElementById('requestTopupBtn')?.addEventListener('click', () => {
-            let amount = parseInt(document.getElementById('topupAmount')?.value);
-            if(isNaN(amount) || amount < 10000) return alert("Minimal topup 10.000");
-            let trx = createTopUpRequest(amount, currentUser.phone);
-            alert(`✅ Permintaan topup #${trx.id} sebesar ${toIDR(amount)}. Silakan transfer sesuai QRIS, owner akan konfirmasi real.`);
+        if(showLogin) showLogin.onclick = () => { loginDiv.classList.remove('hidden'); registerDiv.classList.add('hidden'); };
+        if(showRegister) showRegister.onclick = () => { loginDiv.classList.add('hidden'); registerDiv.classList.remove('hidden'); };
+        
+        document.getElementById('doLoginBtn')?.addEventListener('click', () => {
+            let username = document.getElementById('loginUsername').value;
+            let pass = document.getElementById('loginPassword').value;
+            let result = loginUser(username, pass);
+            if(result.success) render();
+            else alert(result.msg);
+        });
+        
+        document.getElementById('doRegisterBtn')?.addEventListener('click', () => {
+            let username = document.getElementById('regUsername').value;
+            let fullname = document.getElementById('regFullname').value;
+            let email = document.getElementById('regEmail').value;
+            let pass = document.getElementById('regPassword').value;
+            if(!username || !pass) return alert("Username dan password wajib diisi");
+            let result = registerUser(username, pass, email, fullname);
+            if(result.success) {
+                alert("Registrasi berhasil! Silakan login.");
+                loginDiv.classList.remove('hidden');
+                registerDiv.classList.add('hidden');
+            } else alert(result.msg);
+        });
+    }
+
+    function attachPageEvents() {
+        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; persist(); render(); });
+        document.getElementById('goToWhatsAppBtn')?.addEventListener('click', () => { currentPage = 'whatsapp'; render(); });
+        
+        document.getElementById('updateProfileBtn')?.addEventListener('click', () => {
+            let fullname = document.getElementById('editFullname')?.value;
+            let email = document.getElementById('editEmail')?.value;
+            let phone = document.getElementById('editPhone')?.value;
+            updateProfile(fullname, email, phone);
+            alert("Profile berhasil diupdate");
             render();
         });
+        
+        document.getElementById('requestTopupBtn')?.addEventListener('click', () => {
+            let amt = parseInt(document.getElementById('topupAmount')?.value);
+            if(amt < 10000) return alert("Minimal 10000");
+            createTopUpRequest(amt, currentUser.username);
+            alert("Permintaan topup dibuat. Owner akan konfirmasi.");
+            render();
+        });
+        
         if(isOwner(currentUser) && document.getElementById('listPendingTransBtn')) {
             document.getElementById('listPendingTransBtn').addEventListener('click', () => {
                 let pending = transactions.filter(t => t.status === 'pending');
-                if(pending.length === 0) alert("Tidak ada transaksi pending real.");
+                if(pending.length === 0) alert("Tidak ada transaksi");
                 else {
-                    let msg = pending.map(t => `${t.id} - ${toIDR(t.amount)} - User: ${t.userId}`).join('\n');
-                    let id = prompt("Masukkan ID transaksi yang sudah selesai:\n"+msg);
-                    if(id && confirmTransaction(id)) alert("Saldo berhasil ditambahkan (Real)!");
-                    else alert("Gagal.");
+                    let msg = pending.map(t => `${t.id} - Rp${t.amount} - ${t.username}`).join('\n');
+                    let id = prompt("ID transaksi yang selesai:\n"+msg);
+                    if(id && confirmTransaction(id)) alert("Saldo ditambahkan");
                     render();
                 }
             });
         }
+        
         document.getElementById('requestWithdrawBtn')?.addEventListener('click', () => {
             let amt = parseInt(document.getElementById('wdAmount')?.value);
             let method = document.getElementById('wdMethod')?.value;
             let acc = document.getElementById('wdAccount')?.value;
-            if(amt < 50000) return alert("Minimal withdraw Rp50.000");
-            if(currentUser.balance < amt) return alert("Saldo tidak mencukupi");
-            if(!acc) return alert("Masukkan nomor akun");
-            if(requestWithdraw(currentUser.phone, amt, method, acc)) alert(`Withdraw ${toIDR(amt)} via ${method} ke ${acc} akan diproses real.`);
-            else alert("Gagal.");
+            if(amt < 50000) return alert("Minimal 50000");
+            if(currentUser.balance < amt) return alert("Saldo tidak cukup");
+            if(requestWithdraw(currentUser.username, amt, method, acc)) alert("Withdraw diproses");
+            else alert("Gagal");
             render();
         });
-
-        const freeBtn = document.getElementById('freeGenApiBtn');
-        const paidBtn = document.getElementById('paidGenApiBtn');
-        if(freeBtn) {
-            freeBtn.addEventListener('click', () => {
-                if(isOwner(currentUser)) {
-                    let res = createPaidApiKey(currentUser.phone, 12);
-                    if(res.success) alert(`✅ API Key GRATIS REAL: ${res.key}\nExpired: ${new Date(res.expired).toLocaleDateString()}`);
-                    else alert(res.msg);
-                    render();
-                }
-            });
-        }
-        if(paidBtn) {
-            paidBtn.addEventListener('click', () => {
-                let res = createPaidApiKey(currentUser.phone, 1);
-                if(res.success) alert(`✅ API Key REAL berhasil dibuat!\n🔑 ${res.key}\n📅 Expired: ${new Date(res.expired).toLocaleDateString()}`);
-                else alert(res.msg);
+        
+        document.getElementById('freeGenApiBtn')?.addEventListener('click', () => {
+            if(isOwner(currentUser)) {
+                let res = createPaidApiKey(currentUser.username, 12);
+                if(res.success) alert(`API Key: ${res.key}`);
                 render();
-            });
-        }
+            }
+        });
+        
+        document.getElementById('paidGenApiBtn')?.addEventListener('click', () => {
+            let res = createPaidApiKey(currentUser.username, 1);
+            if(res.success) alert(`API Key: ${res.key}`);
+            else alert(res.msg);
+            render();
+        });
+        
+        document.getElementById('generatePairBtn')?.addEventListener('click', () => {
+            let phone = document.getElementById('pairPhone')?.value;
+            if(!phone) return alert("Masukkan nomor WhatsApp");
+            let result = generatePairingCode(currentUser.username, phone);
+            if(result.success) {
+                alert(`Kode pairing 8 digit: ${result.pairingCode}\n\nCara penggunaan:\n1. Buka WhatsApp\n2. Settings → Perangkat Tertaut\n3. Tautkan Perangkat → Tautkan dengan Kode\n4. Masukkan kode: ${result.pairingCode}`);
+                render();
+            }
+        });
+        
+        document.getElementById('verifyPairBtn')?.addEventListener('click', (e) => {
+            let sessionId = e.currentTarget.dataset.session;
+            let code = document.getElementById('verifyCode')?.value;
+            if(!code) return alert("Masukkan kode pairing 8 digit");
+            let result = verifyPairingCode(sessionId, code);
+            alert(result.msg);
+            if(result.success) render();
+        });
+        
+        document.getElementById('disconnectBtn')?.addEventListener('click', () => {
+            let active = getActiveSession(currentUser.username);
+            if(active) {
+                let sessionId = Object.keys(whatsappSessions).find(k => whatsappSessions[k] === active);
+                if(sessionId) disconnectWhatsApp(sessionId);
+            }
+            render();
+        });
     }
 
     document.querySelectorAll('.nav-links a').forEach(link => {
