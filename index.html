@@ -3,22 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Autoresbot API | Dashboard & API Management</title>
+    <title>AlightMotion Real API | Xyrooo Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            user-select: none; /* Anti salin teks */
+            -webkit-tap-highlight-color: transparent;
         }
 
+        /* Anti salin - teks tidak bisa dipilih */
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0e27;
-            color: #e0e4f0;
+            background: var(--bg-body);
+            color: var(--text-primary);
             line-height: 1.5;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Tapi simbol copy tetap bisa diklik */
+        .copy-icon, .copy-btn, [data-copy] {
+            user-select: none;
+            cursor: pointer;
+        }
+
+        :root {
+            --bg-body: #0a0e27;
+            --bg-card: #0f1235;
+            --text-primary: #e0e4f0;
+            --text-secondary: #8b9ab0;
+            --border: #1f2348;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .container {
@@ -27,21 +54,125 @@
             padding: 0 1.5rem;
         }
 
-        /* Sidebar Layout */
-        .app-wrapper {
-            display: flex;
-            min-height: 100vh;
+        /* Navbar */
+        .navbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.8rem 0;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #0f1235 0%, #0a0e27 100%);
-            border-right: 1px solid rgba(255,255,255,0.08);
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Hamburger Menu (Simbol 3 Garis) */
+        .menu-toggle {
+            background: var(--primary);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.02);
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Sidebar Menu (Muncul dari kiri) */
+        .sidebar-overlay {
             position: fixed;
-            height: 100vh;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #0f1235 0%, #0a0e27 100%);
+            border-right: 1px solid var(--border);
+            z-index: 201;
+            transition: 0.3s;
             overflow-y: auto;
             padding: 1.5rem 0;
+        }
+
+        .sidebar-menu.active {
+            left: 0;
         }
 
         .sidebar-header {
@@ -50,589 +181,368 @@
             margin-bottom: 1.5rem;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .sidebar-menu .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1.5rem;
+            color: #8b9ab0;
+            text-decoration: none;
+            transition: 0.2s;
         }
 
-        .logo span {
-            font-size: 0.75rem;
-            color: #6366f1;
-            background: none;
-            -webkit-background-clip: unset;
+        .sidebar-menu .nav-item:hover, .sidebar-menu .nav-item.active {
+            background: rgba(99,102,241,0.15);
+            color: var(--primary-light);
         }
 
-        .nav-section {
-            padding: 0 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .nav-section-title {
+        .sidebar-menu .nav-section-title {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #5b6e8c;
-            padding: 0 1rem;
-            margin-bottom: 0.8rem;
+            padding: 0 1.5rem;
+            margin: 1rem 0 0.5rem;
         }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            color: #8b9ab0;
-            text-decoration: none;
-            margin-bottom: 4px;
-            transition: 0.2s;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-        }
-
-        .nav-item i {
-            width: 22px;
-        }
-
-        .upgrade-btn {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            margin: 1rem;
-            text-align: center;
-            border-radius: 40px;
-            padding: 0.75rem;
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 1.5rem;
-        }
-
-        /* Top Bar */
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: rgba(255,255,255,0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-        }
-
-        /* Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: rgba(15, 18, 53, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: #8b9ab0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-top: 0.5rem;
-        }
-
-        /* Form Elements */
-        .api-check {
-            background: rgba(15, 18, 53, 0.6);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .api-check input {
-            background: #0a0e27;
-            border: 1px solid #1f2348;
-            padding: 12px 20px;
-            border-radius: 40px;
-            width: 70%;
-            color: white;
-            font-family: monospace;
-        }
-
-        .api-check button {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+        .close-sidebar {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
             border: none;
-            padding: 12px 28px;
-            border-radius: 40px;
             color: white;
-            font-weight: 600;
+            font-size: 1.5rem;
             cursor: pointer;
-            margin-left: 10px;
         }
 
-        /* Table */
-        .feature-table {
-            width: 100%;
-            border-collapse: collapse;
+        /* Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 1.8rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
         }
 
-        .feature-table th, .feature-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
 
-        .feature-table th {
-            color: #8b9ab0;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 40px;
             font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-block { width: 100%; justify-content: center; }
+
+        input {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 24px;
+            width: 100%;
+            color: white;
         }
 
         .badge {
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.7rem;
-            font-weight: 600;
+            background: var(--primary);
         }
 
-        .badge-success { background: #10b98120; color: #10b981; }
-        .badge-warning { background: #f59e0b20; color: #f59e0b; }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
+        .copy-icon {
+            cursor: pointer;
+            color: var(--primary-light);
+            margin-left: 8px;
         }
 
-        .modal-content {
-            background: #0f1235;
-            border-radius: 28px;
-            padding: 2rem;
-            max-width: 450px;
-            width: 90%;
-            border: 1px solid #1f2348;
+        .copy-icon:hover { color: white; }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
         }
 
         .hidden { display: none; }
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 40px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-primary { background: #6366f1; color: white; }
-        .btn-danger { background: #ef4444; color: white; }
-
-        input, select {
-            background: #0a0e27;
-            border: 1px solid #1f2348;
-            padding: 12px 16px;
-            border-radius: 28px;
-            width: 100%;
-            color: white;
-        }
-
         @media (max-width: 768px) {
-            .sidebar { width: 0; display: none; }
-            .main-content { margin-left: 0; }
+            .container { padding: 0 1rem; }
+            .brand { font-size: 1rem; }
+            .logo-img { width: 36px; height: 36px; font-size: 1rem; }
         }
     </style>
 </head>
 <body>
-<div class="app-wrapper" id="app">
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">Autoresbot <span>API</span></div>
-        </div>
-        
-        <div class="nav-section">
-            <div class="nav-section-title">MAIN</div>
-            <a href="#" class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="#" class="nav-item" data-page="pricing"><i class="fas fa-tag"></i> Pricing</a>
-            <a href="#" class="nav-item" data-page="documentation"><i class="fas fa-book"></i> Documentation</a>
-        </div>
 
-        <div class="nav-section">
-            <div class="nav-section-title">API CATEGORIES</div>
-            <a href="#" class="nav-item" data-page="ai"><i class="fas fa-robot"></i> Artificial Intelligence</a>
-            <a href="#" class="nav-item" data-page="anime"><i class="fas fa-film"></i> Anime</a>
-            <a href="#" class="nav-item" data-page="convert"><i class="fas fa-exchange-alt"></i> Convert</a>
-            <a href="#" class="nav-item" data-page="database"><i class="fas fa-database"></i> Database</a>
-            <a href="#" class="nav-item" data-page="downloader"><i class="fas fa-download"></i> Downloader</a>
-            <a href="#" class="nav-item" data-page="games"><i class="fas fa-gamepad"></i> Games</a>
-            <a href="#" class="nav-item" data-page="islami"><i class="fas fa-mosque"></i> Islami</a>
-            <a href="#" class="nav-item" data-page="maker"><i class="fas fa-palette"></i> Maker</a>
-            <a href="#" class="nav-item" data-page="news"><i class="fas fa-newspaper"></i> News</a>
-            <a href="#" class="nav-item" data-page="information"><i class="fas fa-info-circle"></i> Information</a>
-            <a href="#" class="nav-item" data-page="primbon"><i class="fas fa-star"></i> Primbon</a>
-        </div>
-
-        <div class="nav-section">
-            <div class="nav-section-title">SERVICES</div>
-            <a href="#" class="nav-item" data-page="random"><i class="fas fa-dice"></i> Random</a>
-            <a href="#" class="nav-item" data-page="search"><i class="fas fa-search"></i> Search</a>
-            <a href="#" class="nav-item" data-page="stalker"><i class="fas fa-user-secret"></i> Stalker</a>
-            <a href="#" class="nav-item" data-page="tools"><i class="fas fa-tools"></i> Tools</a>
-            <a href="#" class="nav-item" data-page="text-manipulation"><i class="fas fa-i-cursor"></i> Text Manipulation</a>
-            <a href="#" class="nav-item" data-page="textpro"><i class="fas fa-text-height"></i> Textpro</a>
-            <a href="#" class="nav-item" data-page="text-to-voice"><i class="fas fa-microphone"></i> Text To Voice</a>
-        </div>
-
-        <div class="upgrade-btn" id="upgradeBtn">⬆ Upgrade Premium</div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="top-bar">
-            <h1 class="page-title" id="pageTitle">Dashboard</h1>
-            <div class="user-info" id="userInfo">
-                <i class="fas fa-user-circle"></i>
-                <span id="userName">Guest</span>
-                <button class="btn btn-primary" id="logoutBtn" style="display:none; padding:5px 12px; font-size:0.8rem">Logout</button>
+<!-- Navbar -->
+<div class="navbar">
+    <div class="container nav-inner">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button class="menu-toggle" id="menuToggleBtn">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="logo-area">
+                <div class="logo-img">AM</div>
+                <span class="brand">AlightMotion Real API</span>
             </div>
         </div>
-        <div id="pageContent"></div>
-    </main>
+        <div style="display: flex; gap: 10px;">
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
+        </div>
+    </div>
 </div>
 
+<!-- Sidebar Menu All -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar-menu" id="sidebarMenu">
+    <button class="close-sidebar" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
+    <div class="sidebar-header">
+        <div style="font-weight:800; font-size:1.2rem">Xyrooo Studio</div>
+        <div style="font-size:0.7rem; color:#8b9ab0">AlightMotion API</div>
+    </div>
+    
+    <div class="nav-section-title">MAIN MENU</div>
+    <a href="#" class="nav-item" data-page="products"><i class="fas fa-box"></i> Produk</a>
+    <a href="#" class="nav-item" data-page="orders"><i class="fas fa-shopping-cart"></i> Pesanan</a>
+    <a href="#" class="nav-item" data-page="profile"><i class="fas fa-user"></i> Profile</a>
+    <a href="#" class="nav-item" data-page="bot"><i class="fab fa-whatsapp"></i> Bot API</a>
+    
+    <div class="nav-section-title">XYROOO API SERVICES</div>
+    <a href="#" class="nav-item" data-page="xyrooo-api"><i class="fas fa-globe"></i> Xyrooo Web API</a>
+    <a href="#" class="nav-item" data-page="xyrooo-docs"><i class="fas fa-book"></i> API Documentation</a>
+    <a href="#" class="nav-item" data-page="xyrooo-pricing"><i class="fas fa-tag"></i> Pricing</a>
+    
+    <div class="nav-section-title">ALIGHTMOTION STOCK</div>
+    <a href="#" class="nav-item" data-page="alight-stock"><i class="fas fa-database"></i> Stock Produk</a>
+    <a href="#" class="nav-item" data-page="alight-template"><i class="fas fa-palette"></i> Template</a>
+    <a href="#" class="nav-item" data-page="alight-font"><i class="fas fa-font"></i> Fonts Pack</a>
+    
+    <div class="nav-section-title">SUPPORT</div>
+    <a href="#" class="nav-item" data-page="contact"><i class="fab fa-whatsapp"></i> Contact</a>
+    <a href="#" class="nav-item" data-page="upgrade"><i class="fas fa-gem"></i> Upgrade Premium</a>
+</div>
+
+<main class="container" id="appRoot">
+    <div id="pageContent"></div>
+</main>
+
+<footer>© 2026 AlightMotion Real API | Xyrooo Studio | Real API No Demo</footer>
+
 <script>
-    // ==================== SECURITY STORAGE ====================
-    let users = JSON.parse(localStorage.getItem('autoresbot_users')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('autoresbot_current')) || null;
-    let apiKeys = JSON.parse(localStorage.getItem('autoresbot_apikeys')) || [];
-    let requests = JSON.parse(localStorage.getItem('autoresbot_requests')) || { total: 45364736, today: 33476 };
+    // ==================== DATA STORAGE ====================
+    let users = JSON.parse(localStorage.getItem('am_users')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('am_current')) || null;
+    let products = JSON.parse(localStorage.getItem('am_products')) || [
+        { id: 1, name: "AlightMotion Pro Lifetime", price: 85000, stock: 25, image: "🎬" },
+        { id: 2, name: "Template Premium Pack", price: 25000, stock: 100, image: "🎨" },
+        { id: 3, name: "Fonts Pack Pro", price: 15000, stock: 50, image: "✍️" },
+        { id: 4, name: "Green Screen Pack", price: 20000, stock: 75, image: "🎥" },
+        { id: 5, name: "Sound Effects Pro", price: 18000, stock: 40, image: "🎵" },
+        { id: 6, name: "Transition Pack", price: 30000, stock: 30, image: "🔄" }
+    ];
+    let orders = JSON.parse(localStorage.getItem('am_orders')) || [];
+    let apiKeys = JSON.parse(localStorage.getItem('am_apikeys')) || [];
 
     function persist() {
-        localStorage.setItem('autoresbot_users', JSON.stringify(users));
-        localStorage.setItem('autoresbot_current', JSON.stringify(currentUser));
-        localStorage.setItem('autoresbot_apikeys', JSON.stringify(apiKeys));
-        localStorage.setItem('autoresbot_requests', JSON.stringify(requests));
+        localStorage.setItem('am_users', JSON.stringify(users));
+        localStorage.setItem('am_current', JSON.stringify(currentUser));
+        localStorage.setItem('am_products', JSON.stringify(products));
+        localStorage.setItem('am_orders', JSON.stringify(orders));
+        localStorage.setItem('am_apikeys', JSON.stringify(apiKeys));
     }
 
-    // Helper
-    function getClientIP() {
-        return "103.155.201.10";
-    }
-
-    function generateApiKey() {
-        return 'AR_' + Math.random().toString(36).substring(2, 15).toUpperCase() + '_' + Date.now().toString(36).toUpperCase();
-    }
-
-    // ==================== AUTH KETAT ====================
-    function register(username, password, email) {
-        if (username.length < 4) return { success: false, msg: "Username minimal 4 karakter" };
-        if (password.length < 8) return { success: false, msg: "Password minimal 8 karakter" };
-        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah terdaftar" };
+    // ==================== AUTH ====================
+    function register(username, password) {
+        if (username.length < 3) return { success: false, msg: "Username minimal 3 karakter" };
+        if (password.length < 6) return { success: false, msg: "Password minimal 6 karakter" };
+        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah ada" };
         
-        // Generate API key otomatis untuk user baru
-        let newApiKey = generateApiKey();
-        
-        users.push({
-            username: username,
-            password: btoa(password),
-            email: email,
-            apiKey: newApiKey,
-            limit: 5000,
-            expiration: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            role: 'user',
-            createdAt: new Date().toISOString()
-        });
-        
-        apiKeys.push({
-            key: newApiKey,
-            owner: username,
-            limit: 5000,
-            expired: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            createdAt: new Date().toISOString()
-        });
-        
+        let apiKey = "AM_" + Math.random().toString(36).substring(2, 15).toUpperCase();
+        users.push({ username, password: btoa(password), balance: 0, apiKey, role: 'user', createdAt: new Date().toISOString() });
+        apiKeys.push({ key: apiKey, owner: username, createdAt: new Date().toISOString() });
         persist();
-        return { success: true, apiKey: newApiKey };
+        return { success: true, apiKey };
     }
 
     function login(username, password) {
         let user = users.find(u => u.username === username && u.password === btoa(password));
-        if (!user) return { success: false, msg: "Username atau password salah" };
+        if (!user) return { success: false, msg: "Username/password salah" };
         currentUser = user;
         persist();
         return { success: true };
     }
 
-    function logout() {
-        currentUser = null;
-        persist();
-        render();
-    }
+    function logout() { currentUser = null; persist(); render(); }
 
-    function checkApiKey(key) {
-        let apiKey = apiKeys.find(k => k.key === key);
-        if (!apiKey) return { valid: false, msg: "API Key tidak valid" };
-        let expired = new Date(apiKey.expired) < new Date();
-        if (expired) return { valid: false, msg: "API Key sudah kadaluarsa" };
-        return { valid: true, data: apiKey };
-    }
+    // ==================== FUNGSI COPY (HANYA SIMBOL YANG BISA COPY) ====================
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text);
+        alert("✅ Tersalin: " + text);
+    };
 
-    // ==================== RENDER ENGINE ====================
-    let currentPage = "dashboard";
+    // ==================== RENDER ====================
+    let currentPage = "products";
 
     function render() {
         if (!currentUser) {
             document.getElementById('pageContent').innerHTML = renderAuth();
-            document.getElementById('pageTitle').innerText = "Login";
-            document.getElementById('userName').innerText = "Guest";
-            document.getElementById('logoutBtn').style.display = "none";
             attachAuthEvents();
             return;
         }
 
-        document.getElementById('userName').innerText = currentUser.username;
-        document.getElementById('logoutBtn').style.display = "inline-block";
-        
         let html = '';
-        if (currentPage === 'dashboard') html = renderDashboard();
-        else if (currentPage === 'pricing') html = renderPricing();
-        else if (currentPage === 'documentation') html = renderDocumentation();
-        else html = renderCategoryPage(currentPage);
+        if (currentPage === 'products') html = renderProducts();
+        else if (currentPage === 'orders') html = renderOrders();
+        else if (currentPage === 'profile') html = renderProfile();
+        else if (currentPage === 'bot') html = renderBotAPI();
+        else if (currentPage === 'xyrooo-api') html = renderXyroooAPI();
+        else if (currentPage === 'xyrooo-docs') html = renderXyroooDocs();
+        else if (currentPage === 'xyrooo-pricing') html = renderPricing();
+        else if (currentPage === 'alight-stock') html = renderStock();
+        else if (currentPage === 'alight-template') html = renderTemplate();
+        else if (currentPage === 'alight-font') html = renderFonts();
+        else if (currentPage === 'contact') html = renderContact();
+        else if (currentPage === 'upgrade') html = renderUpgrade();
+        else html = renderProducts();
         
         document.getElementById('pageContent').innerHTML = html;
-        document.getElementById('pageTitle').innerText = getPageTitle();
         attachEvents();
-    }
-
-    function getPageTitle() {
-        const titles = {
-            dashboard: 'Dashboard',
-            pricing: 'Pricing',
-            documentation: 'Documentation',
-            ai: 'Artificial Intelligence API',
-            anime: 'Anime API',
-            convert: 'Convert API',
-            database: 'Database API',
-            downloader: 'Downloader API',
-            games: 'Games API',
-            islami: 'Islami API',
-            maker: 'Maker API',
-            news: 'News API',
-            information: 'Information API',
-            primbon: 'Primbon API',
-            random: 'Random API',
-            search: 'Search API',
-            stalker: 'Stalker API',
-            tools: 'Tools API',
-            'text-manipulation': 'Text Manipulation API',
-            textpro: 'Textpro API',
-            'text-to-voice': 'Text To Voice API'
-        };
-        return titles[currentPage] || 'API Documentation';
     }
 
     function renderAuth() {
         return `
-        <div class="stat-card" style="max-width:450px; margin:2rem auto">
-            <div style="text-align:center; margin-bottom:1.5rem">
-                <h2>Autoresbot API</h2>
-                <p>Login atau Register untuk mengakses API</p>
+        <div class="card" style="max-width:450px; margin:2rem auto; text-align:center">
+            <div class="logo-img" style="margin:0 auto 1rem; width:60px; height:60px; font-size:2rem">AM</div>
+            <h2>AlightMotion Real API</h2>
+            <p>Login | Register</p>
+            <div style="display:flex; gap:10px; margin:1.5rem 0">
+                <button class="btn" id="showLoginBtn" style="flex:1">Login</button>
+                <button class="btn-outline" id="showRegBtn" style="flex:1">Register</button>
             </div>
-            <div style="display:flex; gap:10px; margin-bottom:1.5rem">
-                <button class="btn btn-primary" id="showLoginBtn" style="flex:1">Login</button>
-                <button class="btn" id="showRegBtn" style="flex:1; background:#1f2348">Register</button>
-            </div>
-            
             <div id="loginBox">
                 <input type="text" id="loginUser" placeholder="Username" style="margin-bottom:10px">
                 <input type="password" id="loginPass" placeholder="Password" style="margin-bottom:10px">
-                <button class="btn btn-primary" id="doLoginBtn" style="width:100%">Login</button>
+                <button class="btn btn-block" id="doLoginBtn">Login</button>
             </div>
-            
             <div id="regBox" class="hidden">
-                <input type="text" id="regUser" placeholder="Username (min 4)" style="margin-bottom:10px">
-                <input type="email" id="regEmail" placeholder="Email" style="margin-bottom:10px">
-                <input type="password" id="regPass" placeholder="Password (min 8)" style="margin-bottom:10px">
-                <button class="btn btn-primary" id="doRegBtn" style="width:100%">Register</button>
+                <input type="text" id="regUser" placeholder="Username (min 3)" style="margin-bottom:10px">
+                <input type="password" id="regPass" placeholder="Password (min 6)" style="margin-bottom:10px">
+                <button class="btn btn-block" id="doRegBtn">Register</button>
             </div>
         </div>
         `;
     }
 
-    function renderDashboard() {
-        let userApiKey = apiKeys.find(k => k.owner === currentUser.username);
-        let expiresIn = userApiKey ? new Date(userApiKey.expired) : new Date();
-        
+    function renderProducts() {
         return `
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">YOUR IP ADDRESS</div>
-                <div class="stat-value">${getClientIP()}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">TOTAL USERS</div>
-                <div class="stat-value">${users.length}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">REQUEST TODAY</div>
-                <div class="stat-value">${requests.today.toLocaleString()}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">TOTAL REQUEST</div>
-                <div class="stat-value">${requests.total.toLocaleString()}</div>
-            </div>
+        <div class="card">
+            <h2><i class="fas fa-box"></i> Produk AlightMotion</h2>
+            <p>Stock otomatis berkurang saat pembelian | <i class="fas fa-copy copy-icon" onclick="copyToClipboard('AlightMotion API Ready')">📋 Copy API Info</i></p>
         </div>
-        
-        <div class="api-check">
-            <h3>Check API Key</h3>
-            <div style="display:flex; gap:10px; flex-wrap:wrap">
-                <input type="text" id="checkApiKey" placeholder="Enter your API key...">
-                <button id="checkApiBtn">Check</button>
+        <div class="grid-3">
+            ${products.map(p => `
+            <div class="card">
+                <div style="font-size:3rem">${p.image}</div>
+                <h3>${p.name}</h3>
+                <p class="badge">Rp ${p.price.toLocaleString()}</p>
+                <p>Stock: ${p.stock}</p>
+                <div style="display:flex; gap:8px; margin-top:12px">
+                    <input type="number" id="qty_${p.id}" min="1" max="${p.stock}" value="1" style="width:80px">
+                    <button class="btn buy-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">Beli</button>
+                </div>
             </div>
-            <div id="checkResult" style="margin-top:1rem"></div>
-        </div>
-        
-        <div class="stat-card">
-            <h3>Welcome to Autoresbot API</h3>
-            <p>Thank you for using the services of Autoresbot API!! Please use an API key that is hard to guess, just like a strong password.</p>
-            <div style="margin-top:1rem">
-                <p><strong>API Key:</strong> <code>${userApiKey?.key || 'Belum ada'}</code></p>
-                <p><strong>Limit:</strong> ${userApiKey?.limit?.toLocaleString() || 0} requests</p>
-                <p><strong>Expiration:</strong> ${userApiKey ? new Date(userApiKey.expired).toLocaleDateString() : '-'}</p>
+            `).join('')}
+        </div>`;
+    }
+
+    function renderOrders() {
+        let myOrders = orders.filter(o => o.userId === currentUser.username);
+        return `
+        <div class="card">
+            <h2><i class="fas fa-shopping-cart"></i> Pesanan Saya</h2>
+            ${myOrders.length === 0 ? '<p>Belum ada pesanan</p>' : myOrders.map(o => `
+                <div class="card" style="margin-bottom:10px">
+                    <p><strong>${o.productName}</strong> x${o.quantity} = Rp ${o.total.toLocaleString()}</p>
+                    <p>Status: <span class="badge">${o.status}</span></p>
+                    ${o.status === 'pending' ? `<button class="btn-outline confirm-btn" data-id="${o.id}">Konfirmasi Manual</button>` : ''}
+                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('Order ID: ${o.id}')"> Copy ID</i>
+                </div>
+            `).join('')}
+        </div>`;
+    }
+
+    function renderProfile() {
+        return `
+        <div class="card">
+            <h2><i class="fas fa-user"></i> Profile</h2>
+            <p><strong>Username:</strong> ${currentUser.username} <i class="fas fa-copy copy-icon" onclick="copyToClipboard('${currentUser.username}')"></i></p>
+            <p><strong>API Key:</strong> <code>${currentUser.apiKey || 'Belum'}</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('${currentUser.apiKey}')"></i></p>
+            <p><strong>Saldo:</strong> Rp ${(currentUser.balance || 0).toLocaleString()}</p>
+            <button class="btn" id="logoutBtn">Logout</button>
+        </div>`;
+    }
+
+    function renderBotAPI() {
+        return `
+        <div class="card">
+            <h2><i class="fab fa-whatsapp"></i> Bot API Webhook</h2>
+            <p>Endpoint: <code>https://amapi.vercel.app/webhook</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('https://amapi.vercel.app/webhook')"></i></p>
+            <p>Method: POST | Header: Authorization: Bearer YOUR_TOKEN</p>
+            <div class="grid-2">
+                <div>
+                    <h3>Cek Stock</h3>
+                    <pre style="background:#0a0e27; padding:12px; border-radius:16px">{"action":"stock","product_id":1}</pre>
+                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('{\"action\":\"stock\",\"product_id\":1}')"> Copy</i>
+                </div>
+                <div>
+                    <h3>Buat Order</h3>
+                    <pre style="background:#0a0e27; padding:12px; border-radius:16px">{"action":"order","product_id":1,"qty":1}</pre>
+                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('{\"action\":\"order\",\"product_id\":1,\"qty\":1}')"> Copy</i>
+                </div>
             </div>
-        </div>
-        
-        <div class="stat-card">
-            <h3>Feature Updates</h3>
-            <table class="feature-table">
-                <thead>
-                    <tr><th>FEATURE</th><th>DATE</th><th>NOTES</th><th>PREVIEW</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Add Features</td><td>2026-05-25 17:16:36</td><td>Sticker Circle</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
-                    <tr><td>Tebakan</td><td>2026-05-25 17:14:59</td><td>fix tebak hewan, bendera, pemain bola</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
-                    <tr><td>Anime</td><td>2026-05-03 14:20:54</td><td>Fix</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
-                </tbody>
-            </table>
-        </div>
-        `;
+        </div>`;
+    }
+
+    function renderXyroooAPI() {
+        return `
+        <div class="card">
+            <h2><i class="fas fa-globe"></i> Xyrooo Web API MD</h2>
+            <p>Base URL: <code>https://xyrooo.vercel.app/api</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('https://xyrooo.vercel.app/api')"></i></p>
+            <div class="grid-2">
+                <div><h3>WhatsApp Bot</h3><p>Multi Device 20.0.4+</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Xyrooo WhatsApp Bot Ready')"></i></div>
+                <div><h3>Telegram Bot</h3><p>Support MD</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Xyrooo Telegram Bot Ready')"></i></div>
+                <div><h3>6655K+ Menu</h3><p>Downloader, AI, Games</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('6655K Menu Active')"></i></div>
+                <div><h3>Real API</h3><p>No Demo</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Real API Active')"></i></div>
+            </div>
+        </div>`;
+    }
+
+    function renderXyroooDocs() {
+        return `<div class="card"><h2>Documentation</h2><pre>GET /api/menu → Daftar menu\nGET /api/download?url=... → Downloader\nPOST /api/whatsapp/send → Kirim pesan</pre><i class="fas fa-copy copy-icon" onclick="copyToClipboard('GET /api/menu')"> Copy Endpoint</i></div>`;
     }
 
     function renderPricing() {
-        return `
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Free Tier</h3>
-                <p class="stat-value">Rp 0</p>
-                <p>5000 requests/bulan</p>
-                <p>Basic endpoints</p>
-                <button class="btn btn-primary" style="margin-top:1rem">Current Plan</button>
-            </div>
-            <div class="stat-card">
-                <h3>Pro Tier</h3>
-                <p class="stat-value">Rp 99.000</p>
-                <p>Unlimited requests</p>
-                <p>All endpoints + Priority support</p>
-                <button class="btn btn-primary" style="margin-top:1rem">Upgrade</button>
-            </div>
-            <div class="stat-card">
-                <h3>Enterprise</h3>
-                <p class="stat-value">Custom</p>
-                <p>Dedicated server</p>
-                <p>SLA 99.9%</p>
-                <button class="btn btn-primary" style="margin-top:1rem">Contact Us</button>
-            </div>
-        </div>
-        `;
+        return `<div class="grid-2"><div class="card"><h3>Free</h3><p>Rp 0</p><p>5000 request</p></div><div class="card"><h3>Pro</h3><p>Rp 99k</p><p>Unlimited</p></div></div>`;
     }
 
-    function renderDocumentation() {
-        return `
-        <div class="stat-card">
-            <h3>API Documentation</h3>
-            <p>Base URL: <code>https://api.autoresbot.com/v1</code></p>
-            <p>Authentication: <code>X-API-Key: YOUR_API_KEY</code></p>
-            <hr style="margin:1rem 0">
-            <h4>Example Request</h4>
-            <pre style="background:#0a0e27; padding:1rem; border-radius:16px; overflow-x:auto">
-curl -X GET "https://api.autoresbot.com/v1/ai/chat?message=halo" \\
-  -H "X-API-Key: AR_XXXXX"
-            </pre>
-            <hr style="margin:1rem 0">
-            <h4>Available Endpoints</h4>
-            <table class="feature-table">
-                <tr><th>Endpoint</th><th>Method</th><th>Description</th></tr>
-                <tr><td>/ai/chat</td><td>GET/POST</td><td>AI Chatbot</td></tr>
-                <tr><td>/downloader/ytmp3</td><td>GET</td><td>Download YouTube Audio</td></tr>
-                <tr><td>/anime/random</td><td>GET</td><td>Random Anime</td></tr>
-                <tr><td>/islami/jadwal-sholat</td><td>GET</td><td>Jadwal Sholat</td></tr>
-                <tr><td>/tools/shorturl</td><td>POST</td><td>Short URL</td></tr>
-            </table>
-        </div>
-        `;
-    }
-
-    function renderCategoryPage(category) {
-        const endpoints = {
-            ai: [{ name: "ChatGPT", endpoint: "/ai/chat" }, { name: "Gemini AI", endpoint: "/ai/gemini" }, { name: "Image Generation", endpoint: "/ai/image" }],
-            downloader: [{ name: "YouTube MP3", endpoint: "/downloader/ytmp3" }, { name: "YouTube MP4", endpoint: "/downloader/ytmp4" }, { name: "TikTok", endpoint: "/downloader/tiktok" }, { name: "Instagram", endpoint: "/downloader/ig" }],
-            islami: [{ name: "Jadwal Sholat", endpoint: "/islami/jadwal" }, { name: "Al-Quran", endpoint: "/islami/quran" }, { name: "Doa Harian", endpoint: "/islami/doa" }, { name: "Asmaul Husna", endpoint: "/islami/asmaul" }],
-            maker: [{ name: "Sticker Maker", endpoint: "/maker/sticker" }, { name: "Circle Sticker", endpoint: "/maker/circle" }, { name: "Text to Image", endpoint: "/maker/text2img" }],
-            stalker: [{ name: "Instagram Stalk", endpoint: "/stalker/ig" }, { name: "TikTok Stalk", endpoint: "/stalker/tiktok" }, { name: "GitHub Stalk", endpoint: "/stalker/github" }],
-            tools: [{ name: "Short URL", endpoint: "/tools/shorturl" }, { name: "QR Code", endpoint: "/tools/qrcode" }, { name: "Weather", endpoint: "/tools/weather" }]
-        };
-        
-        let items = endpoints[category] || [{ name: "Coming Soon", endpoint: "/coming-soon" }];
-        
-        return `
-        <div class="stats-grid">
-            ${items.map(item => `
-            <div class="stat-card">
-                <h3>${item.name}</h3>
-                <code>${item.endpoint}</code>
-                <p style="margin-top:0.5rem">Method: GET/POST</p>
-                <button class="btn btn-primary" style="margin-top:1rem; width:100%">Try Now</button>
-            </div>
-            `).join('')}
-        </div>
-        `;
-    }
+    function renderStock() { return `<div class="card"><h2>Stock Produk</h2>${products.map(p => `<p>${p.name}: ${p.stock} left</p>`).join('')}</div>`; }
+    function renderTemplate() { return `<div class="card"><h2>Template Pack</h2><p>500+ template AlightMotion</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Template Pack Ready')"></i></div>`; }
+    function renderFonts() { return `<div class="card"><h2>Fonts Pack</h2><p>1000+ fonts premium</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Fonts Pack 1000+')"></i></div>`; }
+    function renderContact() { return `<div class="card"><h2>Contact</h2><p>WhatsApp: 6283805385608</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('6283805385608')"> Copy Number</i></div>`; }
+    function renderUpgrade() { return `<div class="card"><h2>Upgrade Premium</h2><p>Hubungi owner untuk upgrade</p><button class="btn">Hubungi WA</button></div>`; }
 
     function attachAuthEvents() {
         document.getElementById('showLoginBtn')?.addEventListener('click', () => {
@@ -644,17 +554,11 @@ curl -X GET "https://api.autoresbot.com/v1/ai/chat?message=halo" \\
             document.getElementById('regBox').classList.remove('hidden');
         });
         document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-            let user = document.getElementById('loginUser').value;
-            let pass = document.getElementById('loginPass').value;
-            let res = login(user, pass);
-            alert(res.msg);
-            if (res.success) render();
+            let res = login(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
+            alert(res.msg); if (res.success) render();
         });
         document.getElementById('doRegBtn')?.addEventListener('click', () => {
-            let user = document.getElementById('regUser').value;
-            let email = document.getElementById('regEmail').value;
-            let pass = document.getElementById('regPass').value;
-            let res = register(user, pass, email);
+            let res = register(document.getElementById('regUser').value, document.getElementById('regPass').value);
             alert(res.msg || `Registrasi berhasil! API Key: ${res.apiKey}`);
             if (res.success) render();
         });
@@ -662,29 +566,57 @@ curl -X GET "https://api.autoresbot.com/v1/ai/chat?message=halo" \\
 
     function attachEvents() {
         document.getElementById('logoutBtn')?.addEventListener('click', logout);
-        document.getElementById('checkApiBtn')?.addEventListener('click', () => {
-            let key = document.getElementById('checkApiKey').value;
-            let result = checkApiKey(key);
-            document.getElementById('checkResult').innerHTML = result.valid ? 
-                `<span style="color:#10b981">✅ API Key valid! Limit: ${result.data.limit}</span>` :
-                `<span style="color:#ef4444">❌ ${result.msg}</span>`;
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let id = parseInt(btn.dataset.id);
+                let qty = parseInt(document.getElementById(`qty_${id}`)?.value || 1);
+                let product = products.find(p => p.id === id);
+                if (!product || product.stock < qty) return alert("Stock tidak cukup");
+                let orderId = "ORD" + Date.now();
+                orders.push({ id: orderId, userId: currentUser.username, productName: product.name, quantity: qty, total: product.price * qty, status: 'pending' });
+                product.stock -= qty;
+                persist();
+                alert(`Pesanan dibuat! ID: ${orderId}\nTotal: Rp ${(product.price * qty).toLocaleString()}`);
+                render();
+            });
+        });
+        document.querySelectorAll('.confirm-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let order = orders.find(o => o.id === btn.dataset.id);
+                if (order) { order.status = 'completed'; persist(); alert("Pesanan selesai!"); render(); }
+            });
         });
     }
 
+    // SIDEBAR TOGGLE
+    const menuToggle = document.getElementById('menuToggleBtn');
+    const sidebar = document.getElementById('sidebarMenu');
+    const overlay = document.getElementById('sidebarOverlay');
+    const closeSidebar = document.getElementById('closeSidebarBtn');
+
+    function openSidebar() { sidebar.classList.add('active'); overlay.classList.add('active'); }
+    function closeSidebarFunc() { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
+    menuToggle?.addEventListener('click', openSidebar);
+    closeSidebar?.addEventListener('click', closeSidebarFunc);
+    overlay?.addEventListener('click', closeSidebarFunc);
+
     // Sidebar navigation
-    document.querySelectorAll('.nav-item').forEach(link => {
+    document.querySelectorAll('.sidebar-menu .nav-item').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             currentPage = link.dataset.page;
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            link.classList.add('active');
+            closeSidebarFunc();
             render();
         });
     });
 
-    document.getElementById('upgradeBtn')?.addEventListener('click', () => {
-        currentPage = 'pricing';
-        render();
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        document.body.style.setProperty('--bg-body', document.body.classList.contains('dark') ? '#0a0e27' : '#f0f4f8');
+        document.body.style.setProperty('--bg-card', document.body.classList.contains('dark') ? '#0f1235' : '#ffffff');
+        document.body.style.setProperty('--text-primary', document.body.classList.contains('dark') ? '#e0e4f0' : '#1a2a3a');
     });
 
     render();
