@@ -3,1017 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Xyrooo Web API MD | WhatsApp Pairing Code 8 Digit</title>
+    <title>BotHub API | Multi-Device Bot Dashboard</title>
+    <!-- Font Awesome 6 (Free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN untuk grafik realtime -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
-            line-height: 1.5;
-            position: relative;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://files.catbox.moe/kya6b5.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        :root {
-            --bg-body: #f8fafc;
-            --bg-card: rgba(255, 255, 255, 0.94);
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --border: rgba(203, 213, 225, 0.6);
-            --primary: #25D366;
-            --primary-dark: #128C7E;
-            --primary-light: #dcf8c5;
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
-        }
-
-        body.dark {
-            --bg-body: #0b1120;
-            --bg-card: rgba(15, 23, 42, 0.94);
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --border: rgba(51, 65, 85, 0.7);
-            --primary: #25D366;
-            --primary-dark: #075E54;
-            --primary-light: #1a2a1f;
-            --shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem 1.8rem;
-        }
-
-        .navbar {
-            background: var(--bg-card);
+        /* Glassmorphism Container */
+        .glass-card {
+            background: rgba(15, 25, 45, 0.65);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
 
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
+        /* Auth container */
+        .auth-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .dashboard-container {
+            max-width: 1400px;
+            width: 100%;
+            display: none;
         }
 
-        .logo-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 16px;
-            object-fit: cover;
-            border: 2px solid var(--primary);
+        .input-field {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            padding: 0.9rem 1.2rem;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
-
-        .brand {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 800;
-            font-size: 1.6rem;
-            background: linear-gradient(135deg, #25D366, #128C7E, #075E54);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(59,130,246,0.1);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
         }
-
-        .nav-links {
-            display: flex;
-            gap: 1.2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 1rem;
+            padding: 0.85rem;
             font-weight: 600;
-            padding: 8px 14px;
-            border-radius: 40px;
+            color: white;
+            cursor: pointer;
             transition: 0.2s;
         }
-
-        .nav-links a:hover, .nav-links a.active {
-            background: var(--primary-light);
-            color: var(--primary-dark);
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            transform: scale(0.98);
         }
-
-        .theme-toggle {
-            background: var(--primary-light);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            color: var(--primary-dark);
-            font-weight: 600;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(8px);
-            border-radius: 32px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1.8rem;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.8rem;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            background: var(--primary);
-            color: #1a1a1a;
-            transition: 0.2s;
-        }
-
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
+            border: 1px solid #3b82f6;
+            border-radius: 1rem;
+            padding: 0.6rem 1rem;
+            color: #3b82f6;
+            cursor: pointer;
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: white;
+        /* stats cards */
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s;
         }
 
-        .btn-success {
-            background: var(--success);
-            color: white;
+        .device-badge {
+            background: #10b98120;
+            border-left: 3px solid #10b981;
+            padding: 0.7rem;
+            border-radius: 0.9rem;
         }
 
-        .btn-info {
-            background: var(--info);
-            color: white;
-        }
-
-        .btn-block {
-            width: 100%;
-            justify-content: center;
-        }
-
-        button:active { transform: scale(0.96); }
-
-        input, select, textarea {
-            background: var(--bg-body);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 28px;
-            width: 100%;
-            font-family: inherit;
-            color: var(--text-primary);
-        }
-
-        .stat-badge {
-            background: var(--primary-light);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .pairing-box {
-            background: var(--bg-body);
-            border-radius: 32px;
-            padding: 2rem;
-            text-align: center;
-            border: 3px solid var(--primary);
-            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.2);
-        }
-
-        .pair-code {
+        .api-endpoint {
+            background: #0f172a;
+            border-radius: 0.8rem;
+            padding: 0.6rem 1rem;
             font-family: monospace;
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 8px;
-            background: linear-gradient(135deg, #25D366, #128C7E);
+            font-size: 0.8rem;
+        }
+
+        .toast-notify {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1e293b;
+            border-left: 4px solid #3b82f6;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1rem;
             color: white;
-            padding: 20px 40px;
-            border-radius: 80px;
-            display: inline-block;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            margin: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.3s ease;
         }
 
-        .pair-code-small {
-            font-size: 2rem;
-            letter-spacing: 4px;
-            padding: 12px 24px;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .status-connected {
-            color: var(--success);
+        .response-area {
+            background: #0a0f1c;
+            border-radius: 1rem;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
         }
-
-        .status-waiting {
-            color: var(--warning);
+        ::-webkit-scrollbar {
+            width: 5px;
         }
-
-        .step-guide {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: var(--bg-body);
-            padding: 15px;
-            border-radius: 20px;
-            margin: 10px 0;
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
         }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: white;
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
         }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid var(--border);
-            margin-top: 2rem;
-            color: var(--text-secondary);
-            background: var(--bg-card);
-            backdrop-filter: blur(8px);
-        }
-
-        .hidden { display: none; }
-
-        .countdown {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--warning);
-        }
-
-        @media (max-width: 700px) {
-            .container { padding: 1rem; }
-            .nav-inner { flex-direction: column; }
-            .pair-code { font-size: 1.8rem; letter-spacing: 4px; padding: 12px 20px; }
+        @media (max-width: 768px) {
+            body { padding: 0.8rem; }
+            .stat-card { padding: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="container nav-inner">
-        <div class="logo-area">
-            <img src="https://files.catbox.moe/kya6b5.jpg" alt="Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/44?text=X'">
-            <span class="brand">Xyrooo Web API MD</span>
+<!-- AUTH WRAPPER (Login/Register) -->
+<div id="authWrapper" class="auth-container glass-card" style="padding: 2rem 1.8rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <i class="fas fa-robot" style="font-size: 3rem; color: #3b82f6;"></i>
+        <h2 style="color: white; margin-top: 0.5rem;">BotHub API</h2>
+        <p style="color: #94a3b8;">Multi-Device · Real-time · All Features</p>
+    </div>
+    <!-- Toggle Form: Login / Register -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid #334155;">
+        <button id="loginTabBtn" class="auth-tab" style="background: none; border: none; color: white; font-weight: 600; padding: 0.5rem 0; cursor: pointer; border-bottom: 2px solid #3b82f6;">Login</button>
+        <button id="registerTabBtn" class="auth-tab" style="background: none; border: none; color: #94a3b8; padding: 0.5rem 0; cursor: pointer;">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+        <div style="margin-bottom: 1rem;">
+            <input type="text" id="loginUsername" class="input-field" style="width: 100%;" placeholder="Username">
         </div>
-        <div class="nav-links">
-            <a href="#" data-page="rumah"><i class="fas fa-home"></i> Rumah</a>
-            <a href="#" data-page="buy"><i class="fas fa-shopping-cart"></i> Buy API</a>
-            <a href="#" data-page="withdraw"><i class="fas fa-wallet"></i> Withdraw</a>
-            <a href="#" data-page="profile"><i class="fas fa-user"></i> Profile</a>
-            <a href="#" data-page="api"><i class="fas fa-code-branch"></i> API</a>
-            <a href="#" data-page="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Bot</a>
-            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
+        <div style="margin-bottom: 1.5rem;">
+            <input type="password" id="loginPassword" class="input-field" style="width: 100%;" placeholder="Password">
+        </div>
+        <button id="doLoginBtn" class="btn-primary" style="width: 100%;">Login <i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <!-- REGISTER FORM (default hidden) -->
+    <div id="registerForm" style="display: none;">
+        <div style="margin-bottom: 1rem;">
+            <input type="text" id="regUsername" class="input-field" style="width: 100%;" placeholder="Username">
+        </div>
+        <div style="margin-bottom: 1rem;">
+            <input type="password" id="regPassword" class="input-field" style="width: 100%;" placeholder="Password">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <input type="password" id="regConfirm" class="input-field" style="width: 100%;" placeholder="Konfirmasi Password">
+        </div>
+        <button id="doRegisterBtn" class="btn-primary" style="width: 100%;">Daftar Sekarang</button>
+    </div>
+    <p style="color: #64748b; font-size: 0.75rem; text-align: center; margin-top: 1.5rem;">Demo API: multi-device ready, endpoint lengkap</p>
+</div>
+
+<!-- DASHBOARD (setelah login sukses) -->
+<div id="dashboardContainer" class="dashboard-container">
+    <div class="glass-card" style="padding: 1.5rem;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 1.8rem;">
+            <div>
+                <h2 style="color: white;"><i class="fas fa-microchip"></i> BotHub Multi-Device</h2>
+                <p style="color: #94a3b8;">Welcome, <span id="currentUserSpan">User</span> | Real-time API Engine</p>
+            </div>
+            <button id="logoutBtn" class="btn-outline"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+
+        <!-- Statistik realtime + chart -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="stat-card">
+                <i class="fas fa-mobile-alt" style="color: #3b82f6; font-size: 1.8rem;"></i>
+                <h3 style="color: white; margin-top: 0.5rem;" id="deviceCount">0</h3>
+                <p style="color: #94a3b8;">Perangkat Terhubung</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exchange-alt" style="color: #10b981; font-size: 1.8rem;"></i>
+                <h3 style="color: white;" id="totalRequests">0</h3>
+                <p style="color: #94a3b8;">Total API Request</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock" style="color: #f59e0b; font-size: 1.8rem;"></i>
+                <h3 style="color: white;" id="onlineDevices">0</h3>
+                <p style="color: #94a3b8;">Online / Active</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-plug" style="color: #ec489a; font-size: 1.8rem;"></i>
+                <h3 style="color: white;" id="endpointCount">6</h3>
+                <p style="color: #94a3b8;">Endpoint Active</p>
+            </div>
+        </div>
+
+        <!-- Chart realtime -->
+        <div style="background: rgba(0,0,0,0.3); border-radius: 1.5rem; padding: 1rem; margin-bottom: 2rem;">
+            <h4 style="color: white; margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Request per Menit (Real-time)</h4>
+            <canvas id="reqChart" style="max-height: 250px; width: 100%;"></canvas>
+        </div>
+
+        <!-- Multi Device List & Endpoint Tester -->
+        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; flex-wrap: wrap;">
+            <!-- Daftar Device -->
+            <div>
+                <h4 style="color: white; margin-bottom: 0.8rem;"><i class="fas fa-list-ul"></i> Perangkat Multi-Device</h4>
+                <div id="deviceListContainer" style="max-height: 280px; overflow-y: auto; background: rgba(0,0,0,0.25); border-radius: 1rem; padding: 0.5rem;">
+                    <!-- dynamic device list -->
+                    <div style="text-align: center; color: #94a3b8; padding: 1rem;">Memuat perangkat...</div>
+                </div>
+                <button id="addDeviceBtn" class="btn-primary" style="width: 100%; margin-top: 0.8rem; padding: 0.7rem;"><i class="fas fa-plus-circle"></i> Tambah Device Baru (Simulasi)</button>
+            </div>
+
+            <!-- API Endpoint Tester -->
+            <div>
+                <h4 style="color: white; margin-bottom: 0.8rem;"><i class="fas fa-code-branch"></i> All Endpoints (Support URL)</h4>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                    <select id="endpointSelect" class="input-field" style="flex:2; padding: 0.6rem;">
+                        <option value="GET /api/devices">GET /api/devices - Semua device</option>
+                        <option value="POST /api/devices">POST /api/devices - Tambah device</option>
+                        <option value="GET /api/stats">GET /api/stats - Statistik lengkap</option>
+                        <option value="POST /api/message">POST /api/message - Kirim pesan antar device</option>
+                        <option value="GET /api/health">GET /api/health - Cek status</option>
+                        <option value="DELETE /api/devices">DELETE /api/devices - Hapus device (id)</option>
+                    </select>
+                    <button id="testEndpointBtn" class="btn-primary" style="padding: 0 1rem;"><i class="fas fa-paper-plane"></i> Send</button>
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
+                    <input type="text" id="customUrlInput" class="input-field" style="flex:3;" placeholder="Custom URL endpoint (contoh: /api/health)">
+                    <button id="customEndpointBtn" class="btn-outline">GO</button>
+                </div>
+                <div class="response-area" id="apiResponseArea">
+                    <span style="color:#9ca3af;">📡 Response akan tampil disini...</span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 1.5rem; background: rgba(59,130,246,0.1); border-radius: 1rem; padding: 0.8rem;">
+            <p style="color:#b9c3da; font-size:0.75rem;"><i class="fas fa-globe"></i> <strong>Support Endpoint URL:</strong> /api/devices, /api/stats, /api/message (JSON), /api/health, DELETE support with body param "deviceId". Real-time & multi-device ready!</p>
         </div>
     </div>
 </div>
 
-<main class="container" id="appRoot">
-    <div id="pageContent">Memuat Xyrooo Web API MD...</div>
-</main>
-
-<footer>
-    <p>© 2026 Xyrooo API MD | Real API | Support WhatsApp Multi Device 20.0.4+ | 6655K+ Menu</p>
-    <p><i class="fab fa-whatsapp"></i> <i class="fab fa-telegram"></i> Contact Dev: 6283805385608</p>
-</footer>
-
 <script>
-    // ==================== STORAGE ====================
-    let users = JSON.parse(localStorage.getItem('xyrooo_users')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('xyrooo_current')) || null;
-    let apikeys = JSON.parse(localStorage.getItem('xyrooo_apikeys')) || [];
-    let transactions = JSON.parse(localStorage.getItem('xyrooo_transactions')) || [];
-    let whatsappSessions = JSON.parse(localStorage.getItem('xyrooo_whatsapp')) || {};
+    // ---------- SIMULASI DATABASE / STATE (IN-MEMORY) ----------
+    // users: array of {username, password}
+    let users = JSON.parse(localStorage.getItem("buthub_users")) || [
+        { username: "admin", password: "admin123" },
+        { username: "demo", password: "demo123" }
+    ];
+    // session token sederhana
+    let currentSessionUser = localStorage.getItem("buthub_session") || null;
 
-    function persist() {
-        localStorage.setItem('xyrooo_users', JSON.stringify(users));
-        localStorage.setItem('xyrooo_current', JSON.stringify(currentUser));
-        localStorage.setItem('xyrooo_apikeys', JSON.stringify(apikeys));
-        localStorage.setItem('xyrooo_transactions', JSON.stringify(transactions));
-        localStorage.setItem('xyrooo_whatsapp', JSON.stringify(whatsappSessions));
+    // Data API: devices (multi device)
+    let devices = JSON.parse(localStorage.getItem("buthub_devices")) || [
+        { id: "d1", name: "WhatsApp Bot Utama", status: "online", lastSeen: new Date().toISOString() },
+        { id: "d2", name: "Telegram Bridge", status: "online", lastSeen: new Date().toISOString() },
+        { id: "d3", name: "LINE Official", status: "offline", lastSeen: new Date(Date.now() - 3600000).toISOString() }
+    ];
+    // statistics request counter
+    let totalApiRequests = parseInt(localStorage.getItem("buthub_requests")) || 1248;
+    let requestTimestamps = JSON.parse(localStorage.getItem("buthub_timestamps")) || [];
+    // realtime chart update interval
+    let chartInstance = null;
+
+    // fungsi helper simpan
+    function persistDevices() { localStorage.setItem("buthub_devices", JSON.stringify(devices)); }
+    function persistStats() { 
+        localStorage.setItem("buthub_requests", totalApiRequests);
+        // keep only last 30 timestamps
+        if(requestTimestamps.length > 30) requestTimestamps = requestTimestamps.slice(-30);
+        localStorage.setItem("buthub_timestamps", JSON.stringify(requestTimestamps));
+    }
+    function persistUsers() { localStorage.setItem("buthub_users", JSON.stringify(users)); }
+
+    // increment request & record timestamp
+    function recordRequest() {
+        totalApiRequests++;
+        requestTimestamps.push(Date.now());
+        persistStats();
+        updateStatsUI();
+        updateChartData();
     }
 
-    const OWNER_USERNAME = "xyrooo";
-    const BASE_URL = "https://xyrooo.my.id/api/v1";
-
-    function toIDR(amount) {
-        return 'Rp ' + amount.toLocaleString('id-ID');
+    // update stat card
+    function updateStatsUI() {
+        document.getElementById("totalRequests").innerText = totalApiRequests;
+        const onlineCount = devices.filter(d => d.status === "online").length;
+        document.getElementById("onlineDevices").innerText = onlineCount;
+        document.getElementById("deviceCount").innerText = devices.length;
     }
 
-    function generateApiKey() {
-        return 'XYR-' + Math.random().toString(36).substring(2, 12).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
-    }
-
-    function getExpiryDate(months = 1) {
-        let d = new Date();
-        d.setMonth(d.getMonth() + months);
-        return d.toISOString();
-    }
-
-    function isOwner(user) {
-        return user && user.username === OWNER_USERNAME;
-    }
-
-    // ==================== AUTH SYSTEM ====================
-    function registerUser(username, password, email, fullname) {
-        username = username.toLowerCase().trim();
-        if (username.length < 3) return { success: false, msg: "Username minimal 3 karakter" };
-        if (password.length < 6) return { success: false, msg: "Password minimal 6 karakter" };
-        
-        let existing = users.find(u => u.username === username);
-        if (existing) return { success: false, msg: "Username sudah terdaftar" };
-        
-        let newUser = {
-            username: username,
-            password: btoa(password),
-            email: email || "",
-            fullname: fullname || username,
-            balance: 0,
-            role: username === OWNER_USERNAME ? 'owner' : 'user',
-            registeredAt: new Date().toISOString(),
-            phone: "",
-            isVerified: true
-        };
-        users.push(newUser);
-        persist();
-        return { success: true, user: newUser };
-    }
-
-    function loginUser(username, password) {
-        username = username.toLowerCase().trim();
-        let user = users.find(u => u.username === username);
-        if (!user) return { success: false, msg: "Username tidak ditemukan" };
-        if (user.password !== btoa(password)) return { success: false, msg: "Password salah" };
-        
-        currentUser = user;
-        persist();
-        return { success: true, user };
-    }
-
-    function updateProfile(fullname, email, phone) {
-        if (currentUser) {
-            currentUser.fullname = fullname || currentUser.fullname;
-            currentUser.email = email || currentUser.email;
-            currentUser.phone = phone || currentUser.phone;
-            persist();
-            return true;
+    function renderDeviceList() {
+        const container = document.getElementById("deviceListContainer");
+        if(!container) return;
+        if(devices.length === 0) {
+            container.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:1rem;">Tidak ada device</div>';
+            return;
         }
-        return false;
+        let html = '';
+        devices.forEach(dev => {
+            const statusIcon = dev.status === 'online' ? '<i class="fas fa-circle" style="color:#10b981; font-size:0.7rem;"></i>' : '<i class="fas fa-circle" style="color:#ef4444; font-size:0.7rem;"></i>';
+            html += `
+                <div class="device-badge" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+                    <div>
+                        <strong style="color:white;">${escapeHtml(dev.name)}</strong><br>
+                        <span style="font-size:0.7rem; color:#94a3b8;">ID: ${dev.id}  ${statusIcon} ${dev.status}</span>
+                    </div>
+                    <button class="delete-device-btn" data-id="${dev.id}" style="background:#ef444420; border:none; border-radius:2rem; padding:0.3rem 0.7rem; color:#f87171; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        // attach delete events
+        document.querySelectorAll('.delete-device-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = btn.getAttribute('data-id');
+                deleteDeviceById(id);
+            });
+        });
     }
 
-    // ==================== WHATSAPP PAIRING CODE 8 DIGIT (REAL SUPPORT) ====================
-    function generate8DigitCode() {
-        // Generate 8 digit random number
-        return Math.floor(10000000 + Math.random() * 90000000).toString();
-    }
-
-    function generatePairingCode(username, phoneNumber) {
-        let cleanNumber = phoneNumber.replace(/\D/g, '');
-        if (!cleanNumber.startsWith('62')) cleanNumber = '62' + cleanNumber;
-        
-        let pairingCode = generate8DigitCode();
-        let sessionId = 'wa_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
-        
-        whatsappSessions[sessionId] = {
-            username: username,
-            phone: cleanNumber,
-            pairingCode: pairingCode,
-            status: 'waiting',
-            createdAt: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString() // 10 minutes expiry
-        };
-        persist();
-        
-        // Simulate real WhatsApp pairing (in production, this would call WhatsApp API)
-        console.log(`[PAIRING] Kode untuk ${cleanNumber}: ${pairingCode}`);
-        
-        return { success: true, pairingCode, sessionId, expiresIn: 600 };
-    }
-
-    function verifyPairingCode(sessionId, inputCode) {
-        let session = whatsappSessions[sessionId];
-        if (!session) return { success: false, msg: "Sesi tidak ditemukan" };
-        
-        let now = new Date();
-        let expiry = new Date(session.expiresAt);
-        
-        if (now > expiry) return { success: false, msg: "Kode pairing sudah kadaluarsa (10 menit)" };
-        
-        if (session.pairingCode !== inputCode) return { success: false, msg: "Kode pairing salah" };
-        
-        session.status = 'connected';
-        session.verifiedAt = new Date().toISOString();
-        persist();
-        
-        return { success: true, msg: "WhatsApp berhasil terhubung! Bot siap digunakan." };
-    }
-
-    function disconnectWhatsApp(sessionId) {
-        if (whatsappSessions[sessionId]) {
-            delete whatsappSessions[sessionId];
-            persist();
-            return true;
+    function deleteDeviceById(id) {
+        const idx = devices.findIndex(d => d.id === id);
+        if(idx !== -1) {
+            devices.splice(idx, 1);
+            persistDevices();
+            renderDeviceList();
+            updateStatsUI();
+            showToast("Device berhasil dihapus", "success");
+            recordRequest(); // setiap delete dianggap request API
+        } else {
+            showToast("Device tidak ditemukan", "error");
         }
-        return false;
     }
 
-    function getActiveSession(username) {
-        let sessions = Object.values(whatsappSessions).filter(s => s.username === username);
-        return sessions.find(s => s.status === 'connected');
+    function addDeviceSimulate() {
+        const newId = "dev_" + Math.random().toString(36).substr(2, 6);
+        const newName = "Device " + (devices.length+1);
+        devices.push({
+            id: newId,
+            name: newName,
+            status: Math.random() > 0.3 ? "online" : "offline",
+            lastSeen: new Date().toISOString()
+        });
+        persistDevices();
+        renderDeviceList();
+        updateStatsUI();
+        recordRequest();
+        showToast(`Perangkat ${newName} ditambahkan (Multi-Device)`, "success");
     }
 
-    function getPendingSession(username) {
-        let sessions = Object.values(whatsappSessions).filter(s => s.username === username);
-        let now = new Date();
-        return sessions.find(s => s.status === 'waiting' && new Date(s.expiresAt) > now);
-    }
-
-    // ==================== API & PAYMENT ====================
-    function createPaidApiKey(username, months = 1) {
-        const cost = 15000 * months;
-        let user = users.find(u => u.username === username);
-        if (!user) return { success: false, msg: "User tidak ditemukan" };
-        if (!isOwner(currentUser) && user.balance < cost) return { success: false, msg: `Saldo tidak cukup, perlu ${toIDR(cost)}` };
-        if (!isOwner(currentUser)) user.balance -= cost;
-        const newKey = {
-            key: generateApiKey(),
-            userId: user.username,
-            expiredAt: getExpiryDate(months),
-            createdAt: new Date().toISOString(),
-            menuAccess: "6655K+ Menu Lengkap, WhatsApp Bot MD"
-        };
-        apikeys.push(newKey);
-        persist();
-        return { success: true, key: newKey.key };
-    }
-
-    function createTopUpRequest(amount, username) {
-        const id = 'TRX' + Date.now() + Math.floor(Math.random()*1000);
-        const newTrans = { id, username, amount, status: 'pending', createdAt: new Date().toISOString() };
-        transactions.push(newTrans);
-        persist();
-        return newTrans;
-    }
-
-    function confirmTransaction(transId) {
-        let trans = transactions.find(t => t.id === transId);
-        if (!trans) return false;
-        if (trans.status === 'pending') {
-            trans.status = 'completed';
-            let user = users.find(u => u.username === trans.username);
-            if (user) user.balance += trans.amount;
-            persist();
-            return true;
+    // API SIMULASI (support semua endpoint dengan logic)
+    function simulateAPI(endpoint, method, body = null) {
+        recordRequest(); // setiap panggilan api tercatat
+        // routing based on path
+        const url = endpoint.toLowerCase();
+        if(url === '/api/devices' && method === 'GET') {
+            return { success: true, data: devices, total: devices.length };
         }
-        return false;
+        else if(url === '/api/devices' && method === 'POST') {
+            // add device from body
+            if(body && body.name) {
+                const newDev = { id: "dev_"+Date.now(), name: body.name, status: "online", lastSeen: new Date().toISOString() };
+                devices.push(newDev);
+                persistDevices();
+                renderDeviceList();
+                updateStatsUI();
+                return { success: true, message: "Device added", device: newDev };
+            }
+            return { success: false, error: "Body need { name }" };
+        }
+        else if(url === '/api/stats') {
+            return { success: true, stats: { totalRequests: totalApiRequests, devicesCount: devices.length, onlineDevices: devices.filter(d=>d.status==='online').length, endpointsActive: 6 } };
+        }
+        else if(url === '/api/message' && method === 'POST') {
+            if(body && body.from && body.to && body.message) {
+                // simple log
+                return { success: true, message: `Pesan terkirim dari ${body.from} ke ${body.to}: "${body.message}"` };
+            }
+            return { success: false, error: "Format: { from, to, message }" };
+        }
+        else if(url === '/api/health') {
+            return { success: true, status: "healthy", uptime: "99.9%", timestamp: new Date().toISOString() };
+        }
+        else if(url === '/api/devices' && method === 'DELETE') {
+            if(body && body.deviceId) {
+                const index = devices.findIndex(d => d.id === body.deviceId);
+                if(index !== -1) {
+                    devices.splice(index,1);
+                    persistDevices();
+                    renderDeviceList();
+                    updateStatsUI();
+                    return { success: true, message: `Device ${body.deviceId} deleted` };
+                } else { return { success: false, error: "device not found" }; }
+            } else { return { success: false, error: "Provide deviceId in body" }; }
+        }
+        else {
+            return { success: false, error: "Endpoint tidak dikenali, coba /api/health, /api/devices, dll" };
+        }
     }
 
-    function requestWithdraw(username, amount, method, account) {
-        let user = users.find(u => u.username === username);
-        if (!user) return false;
-        if (user.balance < amount) return false;
-        user.balance -= amount;
-        let wdList = JSON.parse(localStorage.getItem('withdraws') || '[]');
-        wdList.push({ username, amount, method, account, date: new Date().toISOString(), status: 'processed' });
-        localStorage.setItem('withdraws', JSON.stringify(wdList));
-        persist();
+    async function callEndpoint(method, path, bodyObj = null) {
+        // mirip fetch API tapi internal
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const result = simulateAPI(path, method, bodyObj);
+                resolve(result);
+            }, 200);
+        });
+    }
+
+    // UI response show
+    async function executeEndpointTest() {
+        const select = document.getElementById("endpointSelect");
+        const selectedVal = select.value;
+        let method = selectedVal.split(" ")[0];
+        let path = selectedVal.split(" ")[1];
+        let bodyData = null;
+        if(method === "POST" && path === "/api/devices") {
+            const namePrompt = prompt("Nama device baru:", "SmartDevice");
+            if(namePrompt) bodyData = { name: namePrompt };
+            else return;
+        } else if(method === "POST" && path === "/api/message") {
+            bodyData = { from: "dashboard", to: "device", message: prompt("Pesan: ", "Halo dari BotHub!") };
+            if(!bodyData.message) return;
+        } else if(method === "DELETE" && path === "/api/devices") {
+            const devId = prompt("Masukkan ID device yang akan dihapus:", devices[0]?.id);
+            if(devId) bodyData = { deviceId: devId };
+            else return;
+        }
+        const response = await callEndpoint(method, path, bodyData);
+        document.getElementById("apiResponseArea").innerHTML = `<pre style="color:#cbd5e1;">${JSON.stringify(response, null, 2)}</pre>`;
+        if(response.success) showToast("Request berhasil", "info");
+        else showToast("Error: " + (response.error || "unknown"), "error");
+        updateStatsUI();
+    }
+
+    async function customUrlHandler() {
+        let customPath = document.getElementById("customUrlInput").value.trim();
+        if(!customPath) return showToast("Masukkan endpoint path", "error");
+        if(!customPath.startsWith("/")) customPath = "/" + customPath;
+        const method = "GET"; // default get dukungan post bisa diperluas, namun support untuk demo
+        const result = await callEndpoint(method, customPath, null);
+        document.getElementById("apiResponseArea").innerHTML = `<pre style="color:#cbd5e1;">${JSON.stringify(result, null, 2)}</pre>`;
+        showToast("Custom endpoint executed", "info");
+    }
+
+    function showToast(msg, type="info") {
+        const toast = document.createElement("div");
+        toast.className = "toast-notify";
+        toast.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i> ${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 2800);
+    }
+
+    // Chart realtime
+    function initChart() {
+        const ctx = document.getElementById('reqChart').getContext('2d');
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array(10).fill(''),
+                datasets: [{ label: 'Requests (last 10 min)', data: [0,0,0,0,0,0,0,0,0,0], borderColor: '#3b82f6', tension: 0.3, fill: true, backgroundColor: '#3b82f620' }]
+            },
+            options: { responsive: true, maintainAspectRatio: true, scales: { y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: 'white' } }, x: { ticks: { color: '#94a3b8' } } } }
+        });
+    }
+    function updateChartData() {
+        if(!chartInstance) return;
+        const now = Date.now();
+        const minuteAgo = now - 600000;
+        const recent = requestTimestamps.filter(ts => ts > minuteAgo);
+        const labels = Array.from({length: 10}, (_,i)=> `${i*1}`);
+        const buckets = Array(10).fill(0);
+        recent.forEach(ts => {
+            const diffSec = (now - ts) / 1000;
+            const idx = Math.min(9, Math.floor(diffSec / 60));
+            if(idx>=0 && idx<10) buckets[9-idx]++;
+        });
+        chartInstance.data.datasets[0].data = buckets;
+        chartInstance.update();
+    }
+    // dashboard refresh loop realtime
+    let intervalRefresh;
+    function startRealTimeUpdates() {
+        if(intervalRefresh) clearInterval(intervalRefresh);
+        intervalRefresh = setInterval(() => {
+            if(document.getElementById("dashboardContainer").style.display === "block") {
+                updateStatsUI();
+                renderDeviceList();
+                updateChartData();
+            }
+        }, 4000);
+    }
+
+    // Auth logic
+    function saveSession(username) {
+        currentSessionUser = username;
+        localStorage.setItem("buthub_session", username);
+    }
+    function logout() {
+        localStorage.removeItem("buthub_session");
+        currentSessionUser = null;
+        document.getElementById("dashboardContainer").style.display = "none";
+        document.getElementById("authWrapper").style.display = "block";
+        showToast("Logout berhasil", "success");
+        if(intervalRefresh) clearInterval(intervalRefresh);
+    }
+    function login(username, pass) {
+        const user = users.find(u => u.username === username && u.password === pass);
+        if(user) {
+            saveSession(username);
+            document.getElementById("authWrapper").style.display = "none";
+            document.getElementById("dashboardContainer").style.display = "block";
+            document.getElementById("currentUserSpan").innerText = username;
+            renderDeviceList();
+            updateStatsUI();
+            startRealTimeUpdates();
+            updateChartData();
+            showToast(`Selamat datang, ${username}`, "success");
+            return true;
+        } else {
+            showToast("Username atau password salah", "error");
+            return false;
+        }
+    }
+    function register(username, pass, confirm) {
+        if(pass !== confirm) { showToast("Password tidak cocok", "error"); return false; }
+        if(users.find(u => u.username === username)) { showToast("Username sudah ada", "error"); return false; }
+        if(username.length<3) { showToast("Username min 3 karakter", "error"); return false; }
+        users.push({ username, password: pass });
+        persistUsers();
+        showToast("Registrasi berhasil! Silakan login.", "success");
         return true;
     }
 
-    // ==================== RENDER ENGINE ====================
-    let currentPage = "rumah";
-    let countdownInterval = null;
-    
-    function render() {
-        if (!currentUser) {
-            document.getElementById('pageContent').innerHTML = renderAuthPage();
-            attachAuthEvents();
-            return;
+    // Event binding
+    document.getElementById("doLoginBtn").onclick = () => {
+        const user = document.getElementById("loginUsername").value;
+        const pwd = document.getElementById("loginPassword").value;
+        login(user, pwd);
+    };
+    document.getElementById("doRegisterBtn").onclick = () => {
+        const user = document.getElementById("regUsername").value;
+        const pwd = document.getElementById("regPassword").value;
+        const conf = document.getElementById("regConfirm").value;
+        if(register(user, pwd, conf)) {
+            document.getElementById("loginTabBtn").click();
         }
+    };
+    document.getElementById("loginTabBtn").onclick = () => {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+        document.getElementById("loginTabBtn").style.borderBottom = "2px solid #3b82f6";
+        document.getElementById("registerTabBtn").style.borderBottom = "none";
+        document.getElementById("registerTabBtn").style.color = "#94a3b8";
+        document.getElementById("loginTabBtn").style.color = "white";
+    };
+    document.getElementById("registerTabBtn").onclick = () => {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+        document.getElementById("registerTabBtn").style.borderBottom = "2px solid #3b82f6";
+        document.getElementById("loginTabBtn").style.borderBottom = "none";
+        document.getElementById("registerTabBtn").style.color = "white";
+        document.getElementById("loginTabBtn").style.color = "#94a3b8";
+    };
+    document.getElementById("logoutBtn")?.addEventListener("click", logout);
+    document.getElementById("addDeviceBtn")?.addEventListener("click", addDeviceSimulate);
+    document.getElementById("testEndpointBtn")?.addEventListener("click", executeEndpointTest);
+    document.getElementById("customEndpointBtn")?.addEventListener("click", customUrlHandler);
 
-        document.querySelectorAll('.nav-links a').forEach(a => {
-            a.classList.remove('active');
-            if(a.dataset.page === currentPage) a.classList.add('active');
-        });
-
-        let html = '';
-        if (currentPage === 'rumah') html = renderDashboard();
-        else if (currentPage === 'buy') html = renderBuy();
-        else if (currentPage === 'withdraw') html = renderWithdraw();
-        else if (currentPage === 'profile') html = renderProfile();
-        else if (currentPage === 'api') html = renderApiEndpoints();
-        else if (currentPage === 'whatsapp') html = renderWhatsAppBot();
-        else html = renderDashboard();
-        
-        document.getElementById('pageContent').innerHTML = html;
-        attachPageEvents();
-        
-        // Start countdown if there's a pending session
-        startCountdownIfNeeded();
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    // check session di awal
+    if(currentSessionUser) {
+        document.getElementById("authWrapper").style.display = "none";
+        document.getElementById("dashboardContainer").style.display = "block";
+        document.getElementById("currentUserSpan").innerText = currentSessionUser;
+        renderDeviceList();
+        updateStatsUI();
+        initChart();
+        startRealTimeUpdates();
+        updateChartData();
+    } else {
+        document.getElementById("dashboardContainer").style.display = "none";
+        document.getElementById("authWrapper").style.display = "block";
+        initChart(); // pre init
     }
-
-    function startCountdownIfNeeded() {
-        if (countdownInterval) clearInterval(countdownInterval);
-        
-        let pending = getPendingSession(currentUser?.username);
-        if (pending && document.getElementById('countdownTimer')) {
-            countdownInterval = setInterval(() => {
-                let expiry = new Date(pending.expiresAt);
-                let now = new Date();
-                let diff = Math.max(0, Math.floor((expiry - now) / 1000));
-                let minutes = Math.floor(diff / 60);
-                let seconds = diff % 60;
-                
-                let timerEl = document.getElementById('countdownTimer');
-                if (timerEl) {
-                    timerEl.innerHTML = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                }
-                
-                if (diff <= 0) {
-                    clearInterval(countdownInterval);
-                    render();
-                }
-            }, 1000);
-        }
-    }
-
-    function renderAuthPage() {
-        return `
-            <div class="card" style="max-width:500px; margin:2rem auto">
-                <div style="text-align:center">
-                    <img src="https://files.catbox.moe/kya6b5.jpg" style="width:80px; border-radius:20px">
-                    <h2>Xyrooo Web API MD</h2>
-                    <p>Akses Real API | WhatsApp Bot Multi Device 20.0.4+</p>
-                </div>
-                
-                <div style="display:flex; gap:10px; margin:20px 0">
-                    <button class="btn" id="showLoginBtn" style="flex:1">Login</button>
-                    <button class="btn btn-outline" id="showRegisterBtn" style="flex:1">Register</button>
-                </div>
-                
-                <div id="loginForm">
-                    <h3>Login ke Akun</h3>
-                    <input type="text" id="loginUsername" placeholder="Username" style="margin:10px 0">
-                    <input type="password" id="loginPassword" placeholder="Password" style="margin:10px 0">
-                    <button class="btn btn-block" id="doLoginBtn">Login</button>
-                </div>
-                
-                <div id="registerForm" class="hidden">
-                    <h3>Daftar Akun Baru</h3>
-                    <input type="text" id="regUsername" placeholder="Username (min 3 karakter)" style="margin:10px 0">
-                    <input type="text" id="regFullname" placeholder="Nama Lengkap" style="margin:10px 0">
-                    <input type="email" id="regEmail" placeholder="Email (opsional)" style="margin:10px 0">
-                    <input type="password" id="regPassword" placeholder="Password (min 6 karakter)" style="margin:10px 0">
-                    <button class="btn btn-block btn-success" id="doRegisterBtn">Daftar Sekarang</button>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderDashboard() {
-        let myKeys = apikeys.filter(k => k.userId === currentUser.username);
-        let activeSession = getActiveSession(currentUser.username);
-        return `
-            <div class="card">
-                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center">
-                    <h2><i class="fas fa-home"></i> Dashboard Xyrooo</h2>
-                    <div class="stat-badge"><i class="fas fa-bolt"></i> 6655K+ Menu</div>
-                </div>
-                <div class="grid-3" style="margin-top:1.5rem">
-                    <div><i class="fas fa-user"></i> Username: <strong>${currentUser.username}</strong></div>
-                    <div><i class="fas fa-coins"></i> Saldo: <strong>${toIDR(currentUser.balance)}</strong></div>
-                    <div><i class="fas fa-key"></i> Total API Keys: ${myKeys.length}</div>
-                    <div><i class="fab fa-whatsapp"></i> WhatsApp Bot: ${activeSession ? '<span class="status-connected">Terhubung</span>' : '<span class="status-waiting">Belum terhubung</span>'}</div>
-                    <div><i class="fas fa-calendar"></i> Bergabung: ${new Date(currentUser.registeredAt).toLocaleDateString()}</div>
-                    <div><i class="fas fa-trophy"></i> Role: ${currentUser.role === 'owner' ? 'Developer Owner' : 'User Premium'}</div>
-                </div>
-            </div>
-            <div class="card">
-                <h3><i class="fas fa-robot"></i> Fitur WhatsApp Bot</h3>
-                <div class="grid-3">
-                    <div>🎵 Downloader YT/TikTok/IG</div>
-                    <div>🤖 AI ChatGPT & Gemini</div>
-                    <div>👥 Group Management</div>
-                    <div>🎮 Games & Fun</div>
-                    <div>🖼️ Sticker Maker</div>
-                    <div>📡 Tools & Utilities</div>
-                    <div>🕌 Islamic Content</div>
-                    <div>🎬 Anime & Quotes</div>
-                    <div>🏪 Store System</div>
-                </div>
-                <button class="btn btn-outline" id="goToWhatsAppBtn" style="margin-top:15px"><i class="fab fa-whatsapp"></i> Hubungkan WhatsApp Sekarang</button>
-            </div>
-        `;
-    }
-
-    function renderWhatsAppBot() {
-        let activeSession = getActiveSession(currentUser.username);
-        let pendingSession = getPendingSession(currentUser.username);
-        
-        if (activeSession) {
-            return `
-                <div class="card">
-                    <h2><i class="fab fa-whatsapp"></i> WhatsApp Bot Status</h2>
-                    <div class="pairing-box">
-                        <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success);"></i>
-                        <h3 class="status-connected">Bot Terhubung</h3>
-                        <p>Nomor: <strong>${activeSession.phone}</strong></p>
-                        <p>Terhubung sejak: ${new Date(activeSession.verifiedAt).toLocaleString()}</p>
-                        <button class="btn btn-danger" id="disconnectBtn"><i class="fas fa-plug"></i> Putuskan Koneksi</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>Fitur Bot Aktif</h3>
-                    <div class="grid-3">
-                        <div>📥 Download Media</div>
-                        <div>💬 Auto Reply</div>
-                        <div>👥 Anti Link/Spam</div>
-                        <div>🎮 Game Interaktif</div>
-                        <div>🖼️ Sticker to Image</div>
-                        <div>🔍 Stalker IG/TT</div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        if (pendingSession) {
-            let expiry = new Date(pendingSession.expiresAt);
-            return `
-                <div class="card">
-                    <h2><i class="fab fa-whatsapp"></i> WhatsApp Pairing Code</h2>
-                    <div class="pairing-box">
-                        <h3>Menunggu Pairing</h3>
-                        <div class="pair-code">${pendingSession.pairingCode}</div>
-                        <p style="margin: 15px 0">Kode berlaku: <span id="countdownTimer" class="countdown">10:00</span></p>
-                        
-                        <div style="text-align: left; max-width: 400px; margin: 20px auto">
-                            <div class="step-guide">
-                                <div class="step-number">1</div>
-                                <div>Buka WhatsApp di HP</div>
-                            </div>
-                            <div class="step-guide">
-                                <div class="step-number">2</div>
-                                <div>Tap menu <strong>▪️</strong> → <strong>Perangkat Tertaut</strong></div>
-                            </div>
-                            <div class="step-guide">
-                                <div class="step-number">3</div>
-                                <div>Tap <strong>Tautkan Perangkat</strong> → <strong>Tautkan dengan Kode</strong></div>
-                            </div>
-                            <div class="step-guide">
-                                <div class="step-number">4</div>
-                                <div>Masukkan kode: <strong>${pendingSession.pairingCode}</strong></div>
-                            </div>
-                        </div>
-                        
-                        <hr style="margin: 20px 0">
-                        
-                        <h4>Verifikasi Koneksi</h4>
-                        <input type="text" id="verifyCode" placeholder="Masukkan kode pairing 8 digit" style="text-align: center; font-size: 1.2rem; letter-spacing: 4px;">
-                        <button class="btn btn-success btn-block" id="verifyPairBtn" data-session="${Object.keys(whatsappSessions).find(k => whatsappSessions[k] === pendingSession)}" style="margin-top: 10px">
-                            <i class="fas fa-check"></i> Verifikasi & Hubungkan
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-        
-        return `
-            <div class="card">
-                <h2><i class="fab fa-whatsapp"></i> WhatsApp Bot Auto Pairing</h2>
-                <p>Support WhatsApp Original, WhatsApp Business, Multi Device 20.0.4+</p>
-            </div>
-            
-            <div class="card pairing-box">
-                <h3><i class="fas fa-link"></i> Hubungkan WhatsApp Bot</h3>
-                <p style="margin-bottom: 20px">Masukkan nomor WhatsApp kamu untuk mendapatkan kode pairing 8 digit</p>
-                
-                <div style="max-width: 350px; margin: 0 auto">
-                    <input type="tel" id="pairPhone" placeholder="Contoh: 628123456789" style="text-align: center;">
-                    <button class="btn btn-info btn-block" id="generatePairBtn" style="margin-top: 15px">
-                        <i class="fab fa-whatsapp"></i> Generate Pairing Code
-                    </button>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Cara Menghubungkan WhatsApp Bot</h3>
-                <div class="step-guide">
-                    <div class="step-number">1</div>
-                    <div>Masukkan nomor WhatsApp kamu di atas</div>
-                </div>
-                <div class="step-guide">
-                    <div class="step-number">2</div>
-                    <div>Klik <strong>Generate Pairing Code</strong></div>
-                </div>
-                <div class="step-guide">
-                    <div class="step-number">3</div>
-                    <div>Buka WhatsApp di HP → Pengaturan → Perangkat Tertaut</div>
-                </div>
-                <div class="step-guide">
-                    <div class="step-number">4</div>
-                    <div>Pilih <strong>Tautkan Perangkat</strong> → <strong>Tautkan dengan Kode 8 Digit</strong></div>
-                </div>
-                <div class="step-guide">
-                    <div class="step-number">5</div>
-                    <div>Masukkan kode yang muncul di web ini</div>
-                </div>
-                <div class="step-guide">
-                    <div class="step-number">6</div>
-                    <div>Verifikasi kode di web untuk mengaktifkan bot</div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderApiEndpoints() {
-        let myKeys = apikeys.filter(k => k.userId === currentUser.username);
-        let sampleKey = myKeys.length > 0 ? myKeys[0].key : 'BELUM_ADA';
-        return `
-            <div class="card">
-                <h2><i class="fas fa-globe"></i> REST API Endpoint</h2>
-                <p><strong>Base URL:</strong> <code>${BASE_URL}</code></p>
-                <p>Header: <code>X-API-Key: your_key</code></p>
-            </div>
-            <div class="card">
-                <h3>Generate API Key</h3>
-                ${isOwner(currentUser) ? 
-                    `<button class="btn" id="freeGenApiBtn"><i class="fas fa-gem"></i> Generate API Key Gratis</button>` : 
-                    `<button class="btn" id="paidGenApiBtn"><i class="fas fa-shopping-cart"></i> Buat API Key (15000/bulan)</button>
-                     <p>Saldo: ${toIDR(currentUser.balance)}</p>`
-                }
-            </div>
-            ${myKeys.length > 0 ? `
-            <div class="card">
-                <h3>API Key Aktif</h3>
-                ${myKeys.map(k => `<div class="stat-badge" style="margin:5px; display:block"><code>${k.key}</code> - Expired: ${new Date(k.expiredAt).toLocaleDateString()}</div>`).join('')}
-            </div>
-            ` : ''}
-        `;
-    }
-
-    function renderBuy() {
-        return `
-            <div class="card">
-                <h2><i class="fas fa-credit-card"></i> Top Up Saldo</h2>
-                <div style="text-align:center">
-                    <img src="https://files.catbox.moe/5yo2ci.jpg" alt="QRIS" style="max-width:200px; border-radius:20px">
-                </div>
-                <input type="number" id="topupAmount" placeholder="Nominal (Min 10000)">
-                <button class="btn btn-block" id="requestTopupBtn">Buat Permintaan Pembayaran</button>
-                ${isOwner(currentUser) ? `<button class="btn btn-outline" id="listPendingTransBtn" style="margin-top:10px">Konfirmasi Transaksi</button>` : ''}
-            </div>
-        `;
-    }
-
-    function renderWithdraw() {
-        return `
-            <div class="card">
-                <h2><i class="fas fa-money-bill-wave"></i> Withdraw Saldo</h2>
-                <p>Saldo: <strong>${toIDR(currentUser.balance)}</strong></p>
-                <input type="number" id="wdAmount" placeholder="Minimal 50000">
-                <select id="wdMethod">
-                    <option value="Dana">Dana</option>
-                    <option value="OVO">OVO</option>
-                    <option value="Gopay">Gopay</option>
-                </select>
-                <input type="text" id="wdAccount" placeholder="Nomor Akun">
-                <button class="btn btn-block" id="requestWithdrawBtn">Ajukan Withdraw</button>
-            </div>
-        `;
-    }
-
-    function renderProfile() {
-        return `
-            <div class="card">
-                <h2><i class="fas fa-user-astronaut"></i> Profile Saya</h2>
-                <div class="grid-2">
-                    <div>
-                        <p><strong>Username:</strong> ${currentUser.username}</p>
-                        <p><strong>Nama Lengkap:</strong> ${currentUser.fullname || '-'}</p>
-                        <p><strong>Email:</strong> ${currentUser.email || '-'}</p>
-                        <p><strong>Nomor HP:</strong> ${currentUser.phone || '-'}</p>
-                        <p><strong>Role:</strong> ${currentUser.role === 'owner' ? 'Developer Owner' : 'User Premium'}</p>
-                        <p><strong>Saldo:</strong> ${toIDR(currentUser.balance)}</p>
-                    </div>
-                    <div>
-                        <h4>Edit Profile</h4>
-                        <input type="text" id="editFullname" placeholder="Nama Lengkap" value="${currentUser.fullname || ''}">
-                        <input type="email" id="editEmail" placeholder="Email" value="${currentUser.email || ''}" style="margin-top:10px">
-                        <input type="tel" id="editPhone" placeholder="Nomor WhatsApp" value="${currentUser.phone || ''}" style="margin-top:10px">
-                        <button class="btn btn-info" id="updateProfileBtn" style="margin-top:10px">Update Profile</button>
-                    </div>
-                </div>
-                <button id="logoutBtn" class="btn btn-danger" style="margin-top:1rem">Logout</button>
-            </div>
-        `;
-    }
-
-    function attachAuthEvents() {
-        let showLogin = document.getElementById('showLoginBtn');
-        let showRegister = document.getElementById('showRegisterBtn');
-        let loginDiv = document.getElementById('loginForm');
-        let registerDiv = document.getElementById('registerForm');
-        
-        if(showLogin) showLogin.onclick = () => { loginDiv.classList.remove('hidden'); registerDiv.classList.add('hidden'); };
-        if(showRegister) showRegister.onclick = () => { loginDiv.classList.add('hidden'); registerDiv.classList.remove('hidden'); };
-        
-        document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-            let username = document.getElementById('loginUsername').value;
-            let pass = document.getElementById('loginPassword').value;
-            let result = loginUser(username, pass);
-            if(result.success) render();
-            else alert(result.msg);
-        });
-        
-        document.getElementById('doRegisterBtn')?.addEventListener('click', () => {
-            let username = document.getElementById('regUsername').value;
-            let fullname = document.getElementById('regFullname').value;
-            let email = document.getElementById('regEmail').value;
-            let pass = document.getElementById('regPassword').value;
-            if(!username || !pass) return alert("Username dan password wajib diisi");
-            let result = registerUser(username, pass, email, fullname);
-            if(result.success) {
-                alert("Registrasi berhasil! Silakan login.");
-                loginDiv.classList.remove('hidden');
-                registerDiv.classList.add('hidden');
-            } else alert(result.msg);
-        });
-    }
-
-    function attachPageEvents() {
-        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; persist(); render(); });
-        document.getElementById('goToWhatsAppBtn')?.addEventListener('click', () => { currentPage = 'whatsapp'; render(); });
-        
-        document.getElementById('updateProfileBtn')?.addEventListener('click', () => {
-            let fullname = document.getElementById('editFullname')?.value;
-            let email = document.getElementById('editEmail')?.value;
-            let phone = document.getElementById('editPhone')?.value;
-            updateProfile(fullname, email, phone);
-            alert("Profile berhasil diupdate");
-            render();
-        });
-        
-        document.getElementById('requestTopupBtn')?.addEventListener('click', () => {
-            let amt = parseInt(document.getElementById('topupAmount')?.value);
-            if(amt < 10000) return alert("Minimal 10000");
-            createTopUpRequest(amt, currentUser.username);
-            alert("Permintaan topup dibuat. Owner akan konfirmasi.");
-            render();
-        });
-        
-        if(isOwner(currentUser) && document.getElementById('listPendingTransBtn')) {
-            document.getElementById('listPendingTransBtn').addEventListener('click', () => {
-                let pending = transactions.filter(t => t.status === 'pending');
-                if(pending.length === 0) alert("Tidak ada transaksi");
-                else {
-                    let msg = pending.map(t => `${t.id} - Rp${t.amount} - ${t.username}`).join('\n');
-                    let id = prompt("ID transaksi yang selesai:\n"+msg);
-                    if(id && confirmTransaction(id)) alert("Saldo ditambahkan");
-                    render();
-                }
-            });
-        }
-        
-        document.getElementById('requestWithdrawBtn')?.addEventListener('click', () => {
-            let amt = parseInt(document.getElementById('wdAmount')?.value);
-            let method = document.getElementById('wdMethod')?.value;
-            let acc = document.getElementById('wdAccount')?.value;
-            if(amt < 50000) return alert("Minimal 50000");
-            if(currentUser.balance < amt) return alert("Saldo tidak cukup");
-            if(requestWithdraw(currentUser.username, amt, method, acc)) alert("Withdraw diproses");
-            else alert("Gagal");
-            render();
-        });
-        
-        document.getElementById('freeGenApiBtn')?.addEventListener('click', () => {
-            if(isOwner(currentUser)) {
-                let res = createPaidApiKey(currentUser.username, 12);
-                if(res.success) alert(`API Key: ${res.key}`);
-                render();
-            }
-        });
-        
-        document.getElementById('paidGenApiBtn')?.addEventListener('click', () => {
-            let res = createPaidApiKey(currentUser.username, 1);
-            if(res.success) alert(`API Key: ${res.key}`);
-            else alert(res.msg);
-            render();
-        });
-        
-        document.getElementById('generatePairBtn')?.addEventListener('click', () => {
-            let phone = document.getElementById('pairPhone')?.value;
-            if(!phone) return alert("Masukkan nomor WhatsApp");
-            let result = generatePairingCode(currentUser.username, phone);
-            if(result.success) {
-                alert(`Kode pairing 8 digit: ${result.pairingCode}\n\nCara penggunaan:\n1. Buka WhatsApp\n2. Settings → Perangkat Tertaut\n3. Tautkan Perangkat → Tautkan dengan Kode\n4. Masukkan kode: ${result.pairingCode}`);
-                render();
-            }
-        });
-        
-        document.getElementById('verifyPairBtn')?.addEventListener('click', (e) => {
-            let sessionId = e.currentTarget.dataset.session;
-            let code = document.getElementById('verifyCode')?.value;
-            if(!code) return alert("Masukkan kode pairing 8 digit");
-            let result = verifyPairingCode(sessionId, code);
-            alert(result.msg);
-            if(result.success) render();
-        });
-        
-        document.getElementById('disconnectBtn')?.addEventListener('click', () => {
-            let active = getActiveSession(currentUser.username);
-            if(active) {
-                let sessionId = Object.keys(whatsappSessions).find(k => whatsappSessions[k] === active);
-                if(sessionId) disconnectWhatsApp(sessionId);
-            }
-            render();
-        });
-    }
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentPage = link.dataset.page;
-            render();
-        });
-    });
-
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-    });
-    if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
-
-    render();
+    // additional update chart interval
+    setInterval(() => { if(chartInstance && document.getElementById("dashboardContainer").style.display === "block") updateChartData(); }, 5000);
 </script>
 </body>
 </html>
