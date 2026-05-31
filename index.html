@@ -3,306 +3,658 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>XYRO MD API | Multi Device Rest API Platform</title>
-    <!-- Google Fonts + Tailwind + Font Awesome -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AlightMotion Real API | Stock Produk & Payment Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-xyz"></script>
     <style>
-        * { font-family: 'Inter', sans-serif; }
-        body { background: #0a0c12; overflow-x: hidden; }
-        /* custom scroll */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #1e1f2c; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        /* glassmorphism effect */
-        .glass-panel { background: rgba(18, 20, 28, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(59,130,246,0.2); }
-        .stat-card { transition: all 0.2s ease; border-bottom: 2px solid transparent; }
-        .stat-card:hover { border-bottom-color: #3b82f6; transform: translateY(-2px); background: rgba(59,130,246,0.05); }
-        .sidebar-transition { transition: transform 0.25s ease-in-out; }
-        .api-badge { background: linear-gradient(135deg, #0f172a, #1e293b); border-left: 3px solid #3b82f6; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-primary: #1a2a3a;
+            --text-secondary: #4a627a;
+            --border: #e2e8f0;
+            --primary: #6c5ce7;
+            --primary-dark: #5b4bc4;
+            --primary-light: #e8e6fc;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        body.dark {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #2e1a5e;
+            --shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .navbar {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 40px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: var(--primary-light);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 1.8rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.8rem;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        input, select, textarea {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 24px;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-stock { background: var(--success); color: white; }
+        .badge-low { background: var(--warning); color: white; }
+        .badge-out { background: var(--danger); color: white; }
+
+        .product-card {
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 700px) {
+            .container { padding: 1rem; }
+            .nav-inner { flex-direction: column; }
+        }
     </style>
 </head>
-<body class="text-gray-200">
+<body>
 
-    <!-- overlay untuk mobile sidebar -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-all"></div>
-
-    <!-- SIDEBAR KIRI dengan garis 3 (hamburger) di kiri atas -->
-    <aside id="mainSidebar" class="fixed top-0 left-0 h-full w-72 bg-[#0c0f17] border-r border-gray-800 z-50 transform -translate-x-full sidebar-transition shadow-2xl">
-        <div class="flex flex-col h-full">
-            <!-- header sidebar -->
-            <div class="p-5 border-b border-gray-800 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-bolt text-cyan-400 text-2xl"></i>
-                    <span class="font-bold text-xl bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">XYRO MD API</span>
-                </div>
-                <button id="closeSidebarBtn" class="text-gray-400 hover:text-white md:hidden"><i class="fas fa-times text-xl"></i></button>
-            </div>
-            <!-- menu kategori lengkap seperti pada gambar (AI, Anime, Downloader, dll) -->
-            <div class="flex-1 overflow-y-auto py-4 px-3">
-                <div class="mb-6">
-                    <p class="text-xs uppercase tracking-wider text-gray-500 px-3 mb-2">MAIN</p>
-                    <a href="#" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="dashboard"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
-                    <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="pricing"><i class="fas fa-tag w-5"></i> Pricing</a>
-                    <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="documentation"><i class="fas fa-book-open w-5"></i> Documentation</a>
-                </div>
-                <div class="mb-6">
-                    <p class="text-xs uppercase tracking-wider text-gray-500 px-3 mb-2">API CATEGORIES</p>
-                    <div class="space-y-1">
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="ai"><i class="fas fa-microchip w-4 text-cyan-400"></i> Artificial Intelligence</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="anime"><i class="fas fa-dragon w-4 text-pink-400"></i> Anime</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="convert"><i class="fas fa-exchange-alt w-4 text-green-400"></i> Convert</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="database"><i class="fas fa-database w-4 text-yellow-400"></i> Database</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="downloader"><i class="fas fa-download w-4 text-blue-400"></i> Downloader</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="games"><i class="fas fa-gamepad w-4 text-purple-400"></i> Games</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="islami"><i class="fas fa-mosque w-4 text-emerald-400"></i> Islami</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="maker"><i class="fas fa-palette w-4 text-orange-400"></i> Maker</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="news"><i class="fas fa-newspaper w-4 text-red-400"></i> News</a>
-                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="primbon"><i class="fas fa-star-and-crescent w-4 text-indigo-400"></i> Primbon</a>
-                    </div>
-                </div>
-                <div class="pt-4 border-t border-gray-800/60">
-                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-600/30 to-indigo-600/30 text-white font-semibold"><i class="fas fa-gem"></i> Upgrade Premium</a>
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-800 text-xs text-gray-500">
-                <i class="fas fa-shield-alt"></i> Multi Device Ready • REST API v2
-            </div>
+<div class="navbar">
+    <div class="container nav-inner">
+        <div class="logo-area">
+            <div class="logo-img">AM</div>
+            <span class="brand">AlightMotion Real API</span>
         </div>
-    </aside>
-
-    <!-- KONTEN UTAMA -->
-    <div class="ml-0 md:ml-72 transition-all duration-300" id="mainContent">
-        <!-- Navbar dengan 3 garis di kiri (hamburger) -->
-        <header class="sticky top-0 z-30 bg-[#0a0c12]/90 backdrop-blur-md border-b border-gray-800 px-5 py-3 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <button id="hamburgerBtn" class="text-2xl focus:outline-none hover:text-blue-400 transition">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="hidden md:block text-xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">XYRO MD | <span class="text-sm font-normal text-gray-400">Multi Device API Platform</span></div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div id="userNavGuest" class="flex gap-2">
-                    <button id="openLoginModalBtn" class="px-4 py-1.5 rounded-lg border border-blue-500 hover:bg-blue-600/20 transition"><i class="fas fa-sign-in-alt"></i> Login</button>
-                    <button id="openRegisterModalBtn" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700"><i class="fas fa-user-plus"></i> Register</button>
-                </div>
-                <div id="userNavAuth" class="hidden items-center gap-3">
-                    <span id="greetingUser" class="text-sm bg-gray-800 px-3 py-1.5 rounded-full"><i class="fas fa-user-check text-green-400"></i> <span id="userNameNav">User</span></span>
-                    <button id="logoutHeaderBtn" class="text-red-400 hover:text-red-300 text-sm"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-                </div>
-            </div>
-        </header>
-
-        <!-- MAIN PANEL: Dashboard, Pricing, Docs, dll dinamis -->
-        <div class="p-5 md:p-7">
-            <!-- Dashboard Section (default) -->
-            <div id="dashboardSection" class="content-section">
-                <div class="mb-6">
-                    <h1 class="text-3xl font-extrabold">Dashboard</h1>
-                    <p class="text-gray-400">Welcome to XYRO MD API — Multi Device endpoint management</p>
-                </div>
-
-                <!-- Kartu statistik seperti contoh (IP, Users, Request Today, Total Request) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-network-wired text-cyan-400 text-2xl mb-2 block"></i><p class="text-gray-400 text-sm">YOUR IP ADDRESS</p><p id="userIpDisplay" class="text-2xl font-mono font-bold">103.155.201.10</p></div>
-                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-users text-blue-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">TOTAL USERS</p><p id="totalUsersStat" class="text-2xl font-bold">0</p></div>
-                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-chart-line text-green-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">REQUEST TODAY</p><p id="requestsTodayStat" class="text-2xl font-bold">0</p></div>
-                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-globe text-purple-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">TOTAL REQUEST</p><p id="totalRequestsStat" class="text-2xl font-bold">0</p></div>
-                </div>
-
-                <!-- Check API Key + Info akun -->
-                <div class="glass-panel rounded-2xl p-6 mb-8">
-                    <h3 class="text-xl font-semibold mb-3"><i class="fas fa-key text-yellow-400"></i> Check API Key & Limit</h3>
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div class="flex-1"><input type="text" id="apikeyCheckInput" placeholder="Enter your API key..." class="w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500"></div>
-                        <button id="checkApiKeyBtn" class="bg-blue-600 hover:bg-blue-700 px-6 py-2.5 rounded-xl font-semibold"><i class="fas fa-search"></i> Check</button>
-                    </div>
-                    <div id="apiKeyResult" class="mt-4 text-sm text-gray-300 hidden api-badge p-3 rounded-lg"></div>
-                </div>
-
-                <!-- User API Info setelah login -->
-                <div id="userApiInfoBox" class="glass-panel rounded-2xl p-6 mb-8 hidden">
-                    <div class="flex flex-wrap gap-5 justify-between items-center">
-                        <div><span class="text-gray-400 text-sm">API Key :</span> <code id="userApiKeyValue" class="bg-black/60 px-2 py-1 rounded font-mono text-cyan-300">-</code></div>
-                        <div><span class="text-gray-400 text-sm">Limit Request :</span> <span id="userLimitValue" class="font-bold">10,000 / bulan</span></div>
-                        <div><span class="text-gray-400 text-sm">Expiration :</span> <span id="userExpValue" class="font-mono">2026-12-31</span></div>
-                        <button id="regenerateUserKeyBtn" class="text-xs bg-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-600"><i class="fas fa-sync-alt"></i> Regenerate</button>
-                    </div>
-                </div>
-
-                <!-- Feature Updates Table (mirip contoh) -->
-                <div class="glass-panel rounded-2xl p-6">
-                    <h3 class="text-xl font-bold mb-4"><i class="fas fa-rocket text-indigo-400"></i> Feature Updates</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="border-b border-gray-700"><tr><th class="pb-2">FEATURE</th><th>DATE</th><th>NOTES</th><th>PREVIEW</th></tr></thead>
-                            <tbody id="updateTableBody">
-                                <tr><td class="py-2">Sticker Circle</td><td>2026-05-25 17:16:36</td><td>New MD Support</td><td><span class="text-blue-400 cursor-pointer">View</span></td></tr>
-                                <tr><td class="py-2">Tebakan</td><td>2026-05-25 17:14:59</td><td>fix hewan & bendera</td><td><span class="text-blue-400">View</span></td></tr>
-                                <tr><td class="py-2">Anime</td><td>2026-05-03 14:20:54</td><td>Multi device api</td><td><span class="text-blue-400">View</span></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pricing & Documentation Section (sederhana namun menarik) -->
-            <div id="pricingSection" class="content-section hidden">
-                <div class="glass-panel p-6 rounded-2xl"><h2 class="text-2xl font-bold">Pricing Plan</h2><p class="mt-2">Free Tier: 10rb request/bulan | Premium Unlimited: $9.9/bln</p><div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="border border-blue-800 rounded-xl p-4"><i class="fas fa-key"></i> Basic API Key - 10k request</div><div class="border border-blue-800 rounded-xl p-4 bg-blue-900/20"><i class="fas fa-crown text-yellow-400"></i> Pro - Unlimited + Semua kategori</div></div></div>
-            </div>
-            <div id="documentationSection" class="content-section hidden">
-                <div class="glass-panel p-6 rounded-2xl"><h2 class="text-2xl font-bold">📘 API Documentation</h2><pre class="bg-black/50 p-4 rounded-xl mt-3 text-sm">Endpoint: https://xyro-md.api/v1/{category}?api_key=YOUR_KEY<br>Categories: /ai, /anime, /downloader, /islami, dll. Semua response JSON dengan status multi device.</pre></div>
-            </div>
-            <!-- categories dynamic section (dummy) -->
-            <div id="categoryContent" class="content-section hidden"><div class="glass-panel p-6 rounded-2xl"><h2 id="catTitle" class="text-2xl font-bold"></h2><p class="text-gray-300 mt-2">Endpoint untuk kategori ini tersedia. Gunakan api key untuk akses penuh multi device.</p><div class="mt-4 bg-black/30 p-3 rounded"><code>GET /api/v1/{category}/list</code></div></div></div>
+        <div class="nav-links">
+            <a href="#" data-page="products">Produk</a>
+            <a href="#" data-page="orders">Pesanan</a>
+            <a href="#" data-page="profile">Profile</a>
+            <a href="#" data-page="bot">Bot API</a>
+            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
         </div>
     </div>
+</div>
 
-    <!-- MODAL LOGIN & REGISTER (Ketat dengan validasi) -->
-    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center">
-        <div class="bg-[#11141f] rounded-2xl w-full max-w-md p-6 border border-gray-700 shadow-2xl"><h3 class="text-2xl font-bold mb-4"><i class="fas fa-lock"></i> Login XYRO MD</h3><input type="email" id="loginEmail" placeholder="Email" class="w-full bg-black/40 border border-gray-600 rounded-xl p-3 mb-3"><input type="password" id="loginPass" placeholder="Password (min 6 karakter)" class="w-full bg-black/40 border border-gray-600 rounded-xl p-3 mb-5"><button id="submitLoginBtn" class="w-full bg-blue-600 py-2.5 rounded-xl font-bold">Login</button><p class="text-center mt-4 text-sm">Belum punya akun? <span id="modalSwitchRegister" class="text-blue-400 cursor-pointer">Daftar disini</span></p><button class="absolute top-3 right-4 text-gray-400" id="closeLoginModal"><i class="fas fa-times"></i></button></div>
-    </div>
-    <div id="registerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center">
-        <div class="bg-[#11141f] rounded-2xl w-full max-w-md p-6 border border-gray-700"><h3 class="text-2xl font-bold mb-4"><i class="fas fa-user-shield"></i> Register Ketat</h3><input type="text" id="regName" placeholder="Nama Lengkap" class="w-full bg-black/40 border p-3 rounded-xl mb-2"><input type="email" id="regEmail" placeholder="Email Valid" class="w-full bg-black/40 border p-3 rounded-xl mb-2"><input type="password" id="regPass" placeholder="Password (min 6 karakter, kuat)" class="w-full bg-black/40 border p-3 rounded-xl mb-5"><button id="submitRegisterBtn" class="w-full bg-emerald-600 py-2.5 rounded-xl font-bold">Daftar & Dapatkan API Key</button><p class="text-center mt-3 text-sm">Sudah punya akun? <span id="modalSwitchLogin" class="text-blue-400 cursor-pointer">Login</span></p><button class="absolute top-3 right-4 text-gray-400" id="closeRegisterModal"><i class="fas fa-times"></i></button></div>
-    </div>
+<main class="container" id="appRoot"><div id="pageContent"></div></main>
+<footer>© 2026 AlightMotion Real API | Stock Otomatis | Payment Gateway | Bot WA/Telegram</footer>
 
-    <script>
-        // --------------------- MOCK DATABASE (localStorage dengan validasi ketat) -----------------
-        let currentUser = null;
-        // inisialisasi default
-        function initData() {
-            if(!localStorage.getItem("xyro_users")) {
-                let defaultUsers = [
-                    { id: "1", name: "Admin MD", email: "admin@xyro.com", password: "admin123", apiKey: "XYRO-MD-ADMIN-2025", requests_today: 128, total_requests: 4520, limit_per_month: 10000, expires: "2026-12-31" },
-                    { id: "2", name: "TestUser", email: "test@xyro.com", password: "test123", apiKey: "TEST-MD-KEY001", requests_today: 34, total_requests: 234, limit_per_month: 10000, expires: "2026-12-31" }
-                ];
-                localStorage.setItem("xyro_users", JSON.stringify(defaultUsers));
-                localStorage.setItem("xyro_stats", JSON.stringify({ totalUsers: 20587, totalRequestsAll: 45364736, dailyRequests: 33476 }));
-            }
-        }
-        initData();
+<script>
+    // ==================== DATA STORAGE ====================
+    let users = JSON.parse(localStorage.getItem('am_users')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('am_current')) || null;
+    let products = JSON.parse(localStorage.getItem('am_products')) || [
+        { id: 1, name: "AlightMotion Pro Lifetime", category: "Akun", price: 85000, stock: 25, image: "🎬", description: "Akun AlightMotion Pro seumur hidup" },
+        { id: 2, name: "Template Premium Pack", category: "Template", price: 25000, stock: 100, image: "🎨", description: "500+ template AM terbaru" },
+        { id: 3, name: "Fonts Pack Pro", category: "Fonts", price: 15000, stock: 50, image: "✍️", description: "1000+ fonts keren" },
+        { id: 4, name: "Green Screen Pack", category: "Stock", price: 20000, stock: 75, image: "🎥", description: "200+ green screen video" },
+        { id: 5, name: "Sound Effects Pro", category: "Audio", price: 18000, stock: 40, image: "🎵", description: "500+ SFX premium" },
+        { id: 6, name: "Transition Pack", category: "Preset", price: 30000, stock: 30, image: "🔄", description: "300+ transisi keren" }
+    ];
+    let orders = JSON.parse(localStorage.getItem('am_orders')) || [];
+    let botTokens = JSON.parse(localStorage.getItem('am_bot_tokens')) || [];
+    let transactions = JSON.parse(localStorage.getItem('am_payments')) || [];
 
-        function getUsers() { return JSON.parse(localStorage.getItem("xyro_users")); }
-        function saveUsers(users) { localStorage.setItem("xyro_users", JSON.stringify(users)); updateGlobalStats(); }
-        function getStats() { return JSON.parse(localStorage.getItem("xyro_stats")); }
-        function updateGlobalStats() {
-            let users = getUsers();
-            let totalReqAll = users.reduce((acc, u) => acc + (u.total_requests || 0), 0);
-            let daily = users.reduce((acc, u) => acc + (u.requests_today || 0), 0);
-            localStorage.setItem("xyro_stats", JSON.stringify({ totalUsers: users.length, totalRequestsAll: totalReqAll, dailyRequests: daily }));
-            renderDashboardStats();
-        }
+    function persist() {
+        localStorage.setItem('am_users', JSON.stringify(users));
+        localStorage.setItem('am_current', JSON.stringify(currentUser));
+        localStorage.setItem('am_products', JSON.stringify(products));
+        localStorage.setItem('am_orders', JSON.stringify(orders));
+        localStorage.setItem('am_bot_tokens', JSON.stringify(botTokens));
+        localStorage.setItem('am_payments', JSON.stringify(transactions));
+    }
 
-        function renderDashboardStats() {
-            let stats = getStats();
-            document.getElementById("totalUsersStat").innerText = stats.totalUsers.toLocaleString();
-            document.getElementById("requestsTodayStat").innerText = stats.dailyRequests.toLocaleString();
-            document.getElementById("totalRequestsStat").innerText = stats.totalRequestsAll.toLocaleString();
-            // IP STATIC
-            fetch('https://api.ipify.org?format=json').then(res=>res.json()).then(data=>{ if(data.ip) document.getElementById("userIpDisplay").innerText = data.ip; }).catch(()=>document.getElementById("userIpDisplay").innerText = "103.155.201.10");
-        }
+    // ==================== AUTH ====================
+    function register(username, password, email) {
+        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah ada" };
+        users.push({ username, password: btoa(password), email, balance: 0, role: 'user', createdAt: new Date().toISOString() });
+        persist();
+        return { success: true };
+    }
 
-        function updateUserDashboardUI() {
-            if(currentUser) {
-                document.getElementById("userNavGuest").classList.add("hidden");
-                document.getElementById("userNavAuth").classList.remove("hidden");
-                document.getElementById("userNameNav").innerText = currentUser.name;
-                document.getElementById("userApiInfoBox").classList.remove("hidden");
-                document.getElementById("userApiKeyValue").innerText = currentUser.apiKey;
-                document.getElementById("userLimitValue").innerText = `${currentUser.limit_per_month.toLocaleString()} / bulan`;
-                document.getElementById("userExpValue").innerText = currentUser.expires;
-                // isi check api key box user
-                document.getElementById("apikeyCheckInput").value = currentUser.apiKey;
-            } else {
-                document.getElementById("userNavGuest").classList.remove("hidden");
-                document.getElementById("userNavAuth").classList.add("hidden");
-                document.getElementById("userApiInfoBox").classList.add("hidden");
-            }
-        }
+    function login(username, password) {
+        let user = users.find(u => u.username === username && u.password === btoa(password));
+        if (!user) return { success: false, msg: "Username/password salah" };
+        currentUser = user;
+        persist();
+        return { success: true };
+    }
 
-        function regenerateApiKey() {
-            if(!currentUser) return;
-            let newKey = "XYRO-"+Math.random().toString(36).substring(2,15).toUpperCase()+"-MD";
-            let users = getUsers();
-            let idx = users.findIndex(u=>u.email === currentUser.email);
-            if(idx !== -1) { users[idx].apiKey = newKey; saveUsers(users); currentUser.apiKey = newKey; updateUserDashboardUI(); alert("API Key berhasil diregenerate!"); }
-        }
-
-        function login(email, pass) {
-            let users = getUsers();
-            let found = users.find(u=>u.email === email && u.password === pass);
-            if(found) { currentUser = {...found}; updateUserDashboardUI(); renderDashboardStats(); closeAllModals(); document.getElementById("dashboardSection").classList.remove("hidden"); document.getElementById("pricingSection").classList.add("hidden"); document.getElementById("documentationSection").classList.add("hidden"); document.getElementById("categoryContent").classList.add("hidden"); setActiveSidebar('dashboard'); return true; }
-            else { alert("Email atau password salah! Akses ditolak."); return false; }
-        }
-
-        function register(name, email, pass) {
-            if(name.length<2) { alert("Nama minimal 2 karakter"); return false; }
-            if(!email.includes("@") || !email.includes(".")) { alert("Email tidak valid"); return false; }
-            if(pass.length < 6) { alert("Password harus minimal 6 karakter (ketat)"); return false; }
-            let users = getUsers();
-            if(users.find(u=>u.email === email)) { alert("Email sudah terdaftar!"); return false; }
-            let newApiKey = "XYRO-"+Math.random().toString(36).substring(2,12).toUpperCase()+"-MD";
-            let newUser = { id: Date.now().toString(), name, email, password: pass, apiKey: newApiKey, requests_today: 0, total_requests: 0, limit_per_month: 10000, expires: "2026-12-31" };
-            users.push(newUser);
-            saveUsers(users);
-            alert("Registrasi berhasil! Silakan login dengan akun baru.");
+    // ==================== PRODUK & STOCK OTOMATIS ====================
+    function updateStock(productId, qty) {
+        let product = products.find(p => p.id === productId);
+        if (product && product.stock >= qty) {
+            product.stock -= qty;
+            persist();
             return true;
         }
+        return false;
+    }
 
-        function checkApiKeyManual(apikey) {
-            let users = getUsers();
-            let user = users.find(u=>u.apiKey === apikey);
-            let resultDiv = document.getElementById("apiKeyResult");
-            if(user) { resultDiv.innerHTML = `<i class="fas fa-check-circle text-green-400"></i> API Key valid! Pemilik: ${user.name} | Limit: ${user.limit_per_month} request/bulan | Sisa hari aktif.`; resultDiv.classList.remove("hidden"); }
-            else { resultDiv.innerHTML = `<i class="fas fa-times-circle text-red-400"></i> API Key tidak dikenal!`; resultDiv.classList.remove("hidden"); }
+    function restockProduct(productId, addStock) {
+        let product = products.find(p => p.id === productId);
+        if (product) {
+            product.stock += addStock;
+            persist();
+            return true;
         }
+        return false;
+    }
 
-        // sidebar dan konten
-        function setActiveSidebar(section) {
-            document.querySelectorAll(".content-section").forEach(sec=>sec.classList.add("hidden"));
-            if(section === "dashboard") document.getElementById("dashboardSection").classList.remove("hidden");
-            else if(section === "pricing") document.getElementById("pricingSection").classList.remove("hidden");
-            else if(section === "documentation") document.getElementById("documentationSection").classList.remove("hidden");
-            else { document.getElementById("categoryContent").classList.remove("hidden"); document.getElementById("catTitle").innerText = section.toUpperCase() + " API"; }
-        }
-
-        function closeAllModals() { document.getElementById("loginModal").classList.add("hidden"); document.getElementById("registerModal").classList.add("hidden"); document.body.style.overflow = "auto"; }
-
-        // event binding
-        window.onload = () => {
-            renderDashboardStats();
-            // hamburger & sidebar
-            const sidebar = document.getElementById("mainSidebar");
-            const overlay = document.getElementById("sidebarOverlay");
-            function openSidebar() { sidebar.classList.remove("-translate-x-full"); overlay.classList.remove("hidden"); document.body.style.overflow = "hidden"; }
-            function closeSidebar() { sidebar.classList.add("-translate-x-full"); overlay.classList.add("hidden"); document.body.style.overflow = "auto"; }
-            document.getElementById("hamburgerBtn").onclick = openSidebar;
-            document.getElementById("closeSidebarBtn").onclick = closeSidebar;
-            overlay.onclick = closeSidebar;
-            // navigasi link
-            document.querySelectorAll(".sidebar-link").forEach(link=>{
-                link.addEventListener("click",(e)=>{
-                    let section = link.getAttribute("data-section");
-                    let cat = link.getAttribute("data-cat");
-                    if(section) { setActiveSidebar(section); closeSidebar(); }
-                    else if(cat) { setActiveSidebar(cat); closeSidebar(); }
-                });
-            });
-            // modal logic
-            document.getElementById("openLoginModalBtn").onclick = ()=>document.getElementById("loginModal").classList.remove("hidden");
-            document.getElementById("openRegisterModalBtn").onclick = ()=>document.getElementById("registerModal").classList.remove("hidden");
-            document.getElementById("closeLoginModal").onclick = closeAllModals;
-            document.getElementById("closeRegisterModal").onclick = closeAllModals;
-            document.getElementById("modalSwitchRegister").onclick = ()=>{ closeAllModals(); document.getElementById("registerModal").classList.remove("hidden"); };
-            document.getElementById("modalSwitchLogin").onclick = ()=>{ closeAllModals(); document.getElementById("loginModal").classList.remove("hidden"); };
-            document.getElementById("submitLoginBtn").onclick = ()=>{ let email=document.getElementById("loginEmail").value; let pass=document.getElementById("loginPass").value; if(login(email,pass)) closeAllModals(); };
-            document.getElementById("submitRegisterBtn").onclick = ()=>{ let name=document.getElementById("regName").value; let email=document.getElementById("regEmail").value; let pass=document.getElementById("regPass").value; if(register(name,email,pass)) { closeAllModals(); document.getElementById("loginModal").classList.remove("hidden"); } };
-            document.getElementById("checkApiKeyBtn").onclick = ()=>{ let key=document.getElementById("apikeyCheckInput").value; if(key) checkApiKeyManual(key); else alert("Masukkan API key"); };
-            document.getElementById("regenerateUserKeyBtn") && (document.getElementById("regenerateUserKeyBtn").onclick = ()=>regenerateApiKey());
-            document.getElementById("logoutHeaderBtn").onclick = ()=>{ currentUser=null; updateUserDashboardUI(); setActiveSidebar("dashboard"); alert("Logout berhasil"); };
-            updateUserDashboardUI();
+    // ==================== ORDER & PAYMENT ====================
+    function createOrder(userId, productId, quantity, paymentMethod) {
+        let product = products.find(p => p.id === productId);
+        if (!product) return { success: false, msg: "Produk tidak ditemukan" };
+        if (product.stock < quantity) return { success: false, msg: "Stock tidak mencukupi" };
+        
+        const total = product.price * quantity;
+        const orderId = "AM" + Date.now() + Math.floor(Math.random() * 1000);
+        
+        let order = {
+            id: orderId,
+            userId: userId,
+            productId: productId,
+            productName: product.name,
+            quantity: quantity,
+            total: total,
+            paymentMethod: paymentMethod,
+            status: 'pending',
+            createdAt: new Date().toISOString()
         };
-    </script>
+        orders.push(order);
+        persist();
+        return { success: true, orderId: orderId, total: total };
+    }
+
+    function confirmPayment(orderId, paymentProof) {
+        let order = orders.find(o => o.id === orderId);
+        if (!order) return { success: false, msg: "Order tidak ditemukan" };
+        if (order.status !== 'pending') return { success: false, msg: "Order sudah diproses" };
+        
+        order.status = 'paid';
+        order.paymentProof = paymentProof;
+        order.paidAt = new Date().toISOString();
+        
+        // Kurangi stock
+        let product = products.find(p => p.id === order.productId);
+        if (product) {
+            product.stock -= order.quantity;
+        }
+        
+        // Tambah transaksi
+        transactions.push({
+            id: "TRX" + Date.now(),
+            orderId: orderId,
+            amount: order.total,
+            status: 'completed',
+            createdAt: new Date().toISOString()
+        });
+        
+        persist();
+        return { success: true, msg: "Pembayaran dikonfirmasi" };
+    }
+
+    function manualPayment(orderId) {
+        let order = orders.find(o => o.id === orderId);
+        if (!order) return false;
+        if (order.status === 'pending') {
+            order.status = 'completed';
+            order.completedAt = new Date().toISOString();
+            persist();
+            return true;
+        }
+        return false;
+    }
+
+    // ==================== BOT API WEBHOOK ====================
+    function generateBotToken() {
+        return "AM_" + Math.random().toString(36).substring(2, 15).toUpperCase();
+    }
+
+    function registerBot(userId, botName, webhookUrl) {
+        let token = generateBotToken();
+        botTokens.push({ userId, botName, token, webhookUrl, createdAt: new Date().toISOString() });
+        persist();
+        return token;
+    }
+
+    function processWebhook(token, action, data) {
+        let bot = botTokens.find(b => b.token === token);
+        if (!bot) return { success: false, msg: "Invalid token" };
+        
+        if (action === 'check_stock') {
+            let product = products.find(p => p.id == data.productId);
+            return { success: true, stock: product ? product.stock : 0 };
+        }
+        if (action === 'order') {
+            let result = createOrder(bot.userId, data.productId, data.quantity, 'bot');
+            return result;
+        }
+        if (action === 'status') {
+            let order = orders.find(o => o.id === data.orderId);
+            return { success: true, status: order ? order.status : 'not_found' };
+        }
+        return { success: false, msg: "Unknown action" };
+    }
+
+    // ==================== RENDER ====================
+    let currentPage = "products";
+
+    function render() {
+        if (!currentUser) {
+            document.getElementById('pageContent').innerHTML = renderAuth();
+            document.getElementById('loginBtn')?.addEventListener('click', () => {
+                let res = login(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
+                alert(res.msg || "Login berhasil");
+                if (res.success) render();
+            });
+            document.getElementById('regBtn')?.addEventListener('click', () => {
+                let res = register(document.getElementById('regUser').value, document.getElementById('regPass').value, document.getElementById('regEmail').value);
+                alert(res.msg || "Registrasi berhasil, silakan login");
+                if (res.success) render();
+            });
+            return;
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.classList.remove('active');
+            if(a.dataset.page === currentPage) a.classList.add('active');
+        });
+
+        let html = currentPage === 'products' ? renderProducts() :
+                   currentPage === 'orders' ? renderOrders() :
+                   currentPage === 'profile' ? renderProfile() : renderBotAPI();
+        document.getElementById('pageContent').innerHTML = html;
+        attachEvents();
+    }
+
+    function renderAuth() {
+        return `
+        <div class="card" style="max-width:450px; margin:2rem auto">
+            <h2 style="text-align:center">AlightMotion Real API</h2>
+            <div style="display:flex; gap:10px; margin:20px 0">
+                <button class="btn" id="showLogin" style="flex:1">Login</button>
+                <button class="btn-outline" id="showReg" style="flex:1">Register</button>
+            </div>
+            <div id="loginBox">
+                <input type="text" id="loginUser" placeholder="Username" style="margin:10px 0">
+                <input type="password" id="loginPass" placeholder="Password" style="margin:10px 0">
+                <button class="btn btn-block" id="loginBtn">Login</button>
+            </div>
+            <div id="regBox" class="hidden">
+                <input type="text" id="regUser" placeholder="Username" style="margin:10px 0">
+                <input type="email" id="regEmail" placeholder="Email" style="margin:10px 0">
+                <input type="password" id="regPass" placeholder="Password" style="margin:10px 0">
+                <button class="btn btn-block" id="regBtn">Daftar</button>
+            </div>
+        </div>
+        <script>
+            document.getElementById('showLogin')?.onclick = () => {
+                document.getElementById('loginBox').classList.remove('hidden');
+                document.getElementById('regBox').classList.add('hidden');
+            };
+            document.getElementById('showReg')?.onclick = () => {
+                document.getElementById('loginBox').classList.add('hidden');
+                document.getElementById('regBox').classList.remove('hidden');
+            };
+        <\/script>`;
+    }
+
+    function renderProducts() {
+        return `
+        <div class="card">
+            <h2><i class="fas fa-box"></i> Produk AlightMotion</h2>
+            <p>Stock otomatis berkurang saat pembelian | Payment Gateway otomatis & manual</p>
+        </div>
+        <div class="grid-3">
+            ${products.map(p => `
+            <div class="product-card">
+                <div style="font-size:3rem">${p.image}</div>
+                <h3>${p.name}</h3>
+                <p class="price">Rp ${p.price.toLocaleString()}</p>
+                <p>${p.description}</p>
+                <p>Stock: <span class="badge ${p.stock > 10 ? 'badge-stock' : p.stock > 0 ? 'badge-low' : 'badge-out'}">${p.stock}</span></p>
+                <div style="display:flex; gap:8px; margin-top:12px">
+                    <input type="number" id="qty_${p.id}" min="1" max="${p.stock}" value="1" style="width:80px">
+                    <button class="btn buy-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">Beli</button>
+                </div>
+            </div>
+            `).join('')}
+        </div>
+        <div class="card" id="paymentModal" class="hidden">
+            <h3>Pilih Metode Pembayaran</h3>
+            <button class="btn btn-success" id="payAuto">💳 Auto Payment (Midtrans/QRIS)</button>
+            <button class="btn btn-outline" id="payManual">📝 Manual Transfer</button>
+        </div>`;
+    }
+
+    function renderOrders() {
+        let myOrders = orders.filter(o => o.userId === currentUser.username);
+        return `
+        <div class="card">
+            <h2><i class="fas fa-shopping-cart"></i> Pesanan Saya</h2>
+            ${myOrders.length === 0 ? '<p>Belum ada pesanan</p>' : `
+            <table style="width:100%; border-collapse:collapse">
+                <tr style="border-bottom:1px solid var(--border)">
+                    <th>ID</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th><th>Aksi</th>
+                </tr>
+                ${myOrders.map(o => `
+                <tr style="border-bottom:1px solid var(--border)">
+                    <td>${o.id}</td><td>${o.productName}</td><td>${o.quantity}</td><td>Rp ${o.total.toLocaleString()}</td>
+                    <td><span class="badge ${o.status === 'completed' ? 'badge-stock' : 'badge-warning'}">${o.status}</span></td>
+                    <td>${o.status === 'pending' ? `<button class="btn-outline confirm-manual" data-id="${o.id}">Konfirmasi Manual</button>` : '-'}</td>
+                </tr>
+                `).join('')}
+            </table>
+            `}
+        </div>`;
+    }
+
+    function renderProfile() {
+        return `
+        <div class="card">
+            <h2><i class="fas fa-user"></i> Profile</h2>
+            <p><strong>Username:</strong> ${currentUser.username}</p>
+            <p><strong>Email:</strong> ${currentUser.email || '-'}</p>
+            <p><strong>Saldo:</strong> Rp ${(currentUser.balance || 0).toLocaleString()}</p>
+            <button class="btn btn-danger" id="logoutBtn">Logout</button>
+        </div>
+        <div class="card">
+            <h3>Bot API Token</h3>
+            ${botTokens.filter(b => b.userId === currentUser.username).map(b => `
+                <div class="badge" style="background:var(--primary); color:white; margin:5px">Token: ${b.token} | Bot: ${b.botName}</div>
+            `).join('') || '<p>Belum punya token bot</p>'}
+            <input type="text" id="botName" placeholder="Nama Bot"><br><br>
+            <input type="text" id="webhookUrl" placeholder="Webhook URL (opsional)">
+            <button class="btn" id="createBotBtn">Buat Token Bot</button>
+        </div>`;
+    }
+
+    function renderBotAPI() {
+        return `
+        <div class="card">
+            <h2><i class="fab fa-whatsapp"></i> Bot API Webhook</h2>
+            <p>Konekkan bot WhatsApp/Telegram Anda ke API ini</p>
+            <div class="grid-2">
+                <div>
+                    <h3>Endpoint API</h3>
+                    <code style="background:var(--bg-body); padding:8px; display:block; border-radius:12px">POST /api/webhook</code>
+                    <p style="margin-top:10px">Headers: <code>Authorization: Bearer YOUR_TOKEN</code></p>
+                    <p>Body JSON: <code>{"action":"check_stock","productId":1}</code></p>
+                </div>
+                <div>
+                    <h3>Contoh Request</h3>
+                    <pre style="background:var(--bg-body); padding:12px; border-radius:12px; font-size:12px">
+curl -X POST https://amapi.vercel.app/api/webhook \
+  -H "Authorization: Bearer AM_XXXXX" \
+  -H "Content-Type: application/json" \
+  -d '{"action":"check_stock","productId":1}'
+                    </pre>
+                </div>
+            </div>
+            <hr style="margin:1rem 0">
+            <h3>Test Webhook</h3>
+            <input type="text" id="testToken" placeholder="Masukkan Token Bot">
+            <select id="testAction">
+                <option value="check_stock">Cek Stock</option>
+                <option value="order">Buat Order</option>
+                <option value="status">Cek Status</option>
+            </select>
+            <input type="text" id="testProductId" placeholder="Product ID (1-6)">
+            <button class="btn" id="testWebhookBtn">Test Request</button>
+            <div id="testResult" class="card" style="margin-top:1rem"></div>
+        </div>`;
+    }
+
+    let selectedProduct = null;
+    let selectedQty = null;
+
+    function attachEvents() {
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let id = parseInt(btn.dataset.id);
+                let qty = parseInt(document.getElementById(`qty_${id}`)?.value || 1);
+                let product = products.find(p => p.id === id);
+                if (!product || product.stock < qty) return alert("Stock tidak mencukupi");
+                selectedProduct = product;
+                selectedQty = qty;
+                showPaymentOptions(product, qty);
+            });
+        });
+
+        document.getElementById('payAuto')?.addEventListener('click', () => {
+            if (!selectedProduct) return;
+            let total = selectedProduct.price * selectedQty;
+            let orderRes = createOrder(currentUser.username, selectedProduct.id, selectedQty, 'auto');
+            if (orderRes.success) {
+                alert(`Pesanan dibuat! ID: ${orderRes.orderId}\nTotal: Rp ${total.toLocaleString()}\nSilakan transfer ke rekening yang tersedia.`);
+                // Simulasi auto payment (di real integrasi Midtrans)
+                setTimeout(() => {
+                    confirmPayment(orderRes.orderId, "auto_success");
+                    render();
+                }, 2000);
+            } else alert(orderRes.msg);
+        });
+
+        document.getElementById('payManual')?.addEventListener('click', () => {
+            if (!selectedProduct) return;
+            let orderRes = createOrder(currentUser.username, selectedProduct.id, selectedQty, 'manual');
+            if (orderRes.success) {
+                alert(`Pesanan dibuat! ID: ${orderRes.orderId}\nTotal: Rp {(selectedProduct.price * selectedQty).toLocaleString()}\nTransfer ke BCA 1234567890 a.n AlightMotion\nSetelah transfer, konfirmasi di menu Pesanan`);
+                render();
+            } else alert(orderRes.msg);
+        });
+
+        document.querySelectorAll('.confirm-manual').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let orderId = btn.dataset.id;
+                if (manualPayment(orderId)) alert("Pesanan selesai! Produk akan dikirim.");
+                else alert("Gagal");
+                render();
+            });
+        });
+
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+            currentUser = null;
+            persist();
+            render();
+        });
+
+        document.getElementById('createBotBtn')?.addEventListener('click', () => {
+            let botName = document.getElementById('botName')?.value || "MyBot";
+            let webhook = document.getElementById('webhookUrl')?.value || "";
+            let token = registerBot(currentUser.username, botName, webhook);
+            alert(`Token Bot: ${token}\nSimpan token ini untuk koneksi bot Anda!`);
+            render();
+        });
+
+        document.getElementById('testWebhookBtn')?.addEventListener('click', () => {
+            let token = document.getElementById('testToken')?.value;
+            let action = document.getElementById('testAction')?.value;
+            let productId = parseInt(document.getElementById('testProductId')?.value);
+            if (!token) return alert("Masukkan token");
+            let result = processWebhook(token, action, { productId, quantity: 1 });
+            document.getElementById('testResult').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        });
+    }
+
+    function showPaymentOptions(product, qty) {
+        let modal = document.getElementById('paymentModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = link.dataset.page;
+            render();
+        });
+    });
+
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+
+    render();
+</script>
 </body>
 </html>
