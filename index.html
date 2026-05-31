@@ -3,362 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Autoresbot API - Platform REST API Multi Layanan</title>
+    <title>XYRO MD API | Multi Device Rest API Platform</title>
     <!-- Google Fonts + Tailwind + Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Inter', sans-serif; }
-        body { background: #f1f5f9; }
-        .sidebar-gradient {
-            background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
-        }
-        .card-hover:hover {
-            transform: translateY(-2px);
-            transition: all 0.2s ease;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-        }
-        .api-badge {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-        }
-        .stat-card {
-            transition: all 0.2s;
-        }
-        .stat-card:hover {
-            transform: scale(1.02);
-            background: white;
-        }
-        .category-active {
-            background: #3b82f6;
-            color: white;
-            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-        }
-        .scrollbar-hide::-webkit-scrollbar { width: 4px; }
-        .scrollbar-hide::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
-        .scrollbar-hide::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
-        pre {
-            background: #0f172a;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            overflow-x: auto;
-            font-size: 0.8rem;
-            font-family: 'Monaco', 'Menlo', monospace;
-        }
-        .glass-effect {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-        }
+        body { background: #0a0c12; overflow-x: hidden; }
+        /* custom scroll */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1e1f2c; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        /* glassmorphism effect */
+        .glass-panel { background: rgba(18, 20, 28, 0.8); backdrop-filter: blur(4px); border: 1px solid rgba(59,130,246,0.2); }
+        .stat-card { transition: all 0.2s ease; border-bottom: 2px solid transparent; }
+        .stat-card:hover { border-bottom-color: #3b82f6; transform: translateY(-2px); background: rgba(59,130,246,0.05); }
+        .sidebar-transition { transition: transform 0.25s ease-in-out; }
+        .api-badge { background: linear-gradient(135deg, #0f172a, #1e293b); border-left: 3px solid #3b82f6; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-200">
 
-    <!-- Layout Sidebar + Main Content -->
-    <div class="flex h-screen overflow-hidden">
-        <!-- SIDEBAR (seperti gambar Autoresbot) -->
-        <aside class="w-72 sidebar-gradient text-white flex-shrink-0 overflow-y-auto shadow-2xl z-10">
-            <div class="p-6 border-b border-white/10">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-robot text-3xl text-blue-400"></i>
-                    <div>
-                        <h1 class="text-xl font-bold tracking-tight">Autoresbot</h1>
-                        <p class="text-xs text-blue-300">REST API Platform</p>
+    <!-- overlay untuk mobile sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-all"></div>
+
+    <!-- SIDEBAR KIRI dengan garis 3 (hamburger) di kiri atas -->
+    <aside id="mainSidebar" class="fixed top-0 left-0 h-full w-72 bg-[#0c0f17] border-r border-gray-800 z-50 transform -translate-x-full sidebar-transition shadow-2xl">
+        <div class="flex flex-col h-full">
+            <!-- header sidebar -->
+            <div class="p-5 border-b border-gray-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-bolt text-cyan-400 text-2xl"></i>
+                    <span class="font-bold text-xl bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">XYRO MD API</span>
+                </div>
+                <button id="closeSidebarBtn" class="text-gray-400 hover:text-white md:hidden"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <!-- menu kategori lengkap seperti pada gambar (AI, Anime, Downloader, dll) -->
+            <div class="flex-1 overflow-y-auto py-4 px-3">
+                <div class="mb-6">
+                    <p class="text-xs uppercase tracking-wider text-gray-500 px-3 mb-2">MAIN</p>
+                    <a href="#" class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="dashboard"><i class="fas fa-tachometer-alt w-5"></i> Dashboard</a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="pricing"><i class="fas fa-tag w-5"></i> Pricing</a>
+                    <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-300 hover:bg-blue-600/20 transition" data-section="documentation"><i class="fas fa-book-open w-5"></i> Documentation</a>
+                </div>
+                <div class="mb-6">
+                    <p class="text-xs uppercase tracking-wider text-gray-500 px-3 mb-2">API CATEGORIES</p>
+                    <div class="space-y-1">
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="ai"><i class="fas fa-microchip w-4 text-cyan-400"></i> Artificial Intelligence</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="anime"><i class="fas fa-dragon w-4 text-pink-400"></i> Anime</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="convert"><i class="fas fa-exchange-alt w-4 text-green-400"></i> Convert</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="database"><i class="fas fa-database w-4 text-yellow-400"></i> Database</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="downloader"><i class="fas fa-download w-4 text-blue-400"></i> Downloader</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="games"><i class="fas fa-gamepad w-4 text-purple-400"></i> Games</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="islami"><i class="fas fa-mosque w-4 text-emerald-400"></i> Islami</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="maker"><i class="fas fa-palette w-4 text-orange-400"></i> Maker</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="news"><i class="fas fa-newspaper w-4 text-red-400"></i> News</a>
+                        <a href="#" class="sidebar-link flex items-center gap-3 px-3 py-2 rounded-lg text-sm" data-cat="primbon"><i class="fas fa-star-and-crescent w-4 text-indigo-400"></i> Primbon</a>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-gray-800/60">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-600/30 to-indigo-600/30 text-white font-semibold"><i class="fas fa-gem"></i> Upgrade Premium</a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-gray-800 text-xs text-gray-500">
+                <i class="fas fa-shield-alt"></i> Multi Device Ready • REST API v2
+            </div>
+        </div>
+    </aside>
+
+    <!-- KONTEN UTAMA -->
+    <div class="ml-0 md:ml-72 transition-all duration-300" id="mainContent">
+        <!-- Navbar dengan 3 garis di kiri (hamburger) -->
+        <header class="sticky top-0 z-30 bg-[#0a0c12]/90 backdrop-blur-md border-b border-gray-800 px-5 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button id="hamburgerBtn" class="text-2xl focus:outline-none hover:text-blue-400 transition">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="hidden md:block text-xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">XYRO MD | <span class="text-sm font-normal text-gray-400">Multi Device API Platform</span></div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div id="userNavGuest" class="flex gap-2">
+                    <button id="openLoginModalBtn" class="px-4 py-1.5 rounded-lg border border-blue-500 hover:bg-blue-600/20 transition"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <button id="openRegisterModalBtn" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700"><i class="fas fa-user-plus"></i> Register</button>
+                </div>
+                <div id="userNavAuth" class="hidden items-center gap-3">
+                    <span id="greetingUser" class="text-sm bg-gray-800 px-3 py-1.5 rounded-full"><i class="fas fa-user-check text-green-400"></i> <span id="userNameNav">User</span></span>
+                    <button id="logoutHeaderBtn" class="text-red-400 hover:text-red-300 text-sm"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN PANEL: Dashboard, Pricing, Docs, dll dinamis -->
+        <div class="p-5 md:p-7">
+            <!-- Dashboard Section (default) -->
+            <div id="dashboardSection" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-extrabold">Dashboard</h1>
+                    <p class="text-gray-400">Welcome to XYRO MD API — Multi Device endpoint management</p>
+                </div>
+
+                <!-- Kartu statistik seperti contoh (IP, Users, Request Today, Total Request) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-network-wired text-cyan-400 text-2xl mb-2 block"></i><p class="text-gray-400 text-sm">YOUR IP ADDRESS</p><p id="userIpDisplay" class="text-2xl font-mono font-bold">103.155.201.10</p></div>
+                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-users text-blue-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">TOTAL USERS</p><p id="totalUsersStat" class="text-2xl font-bold">0</p></div>
+                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-chart-line text-green-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">REQUEST TODAY</p><p id="requestsTodayStat" class="text-2xl font-bold">0</p></div>
+                    <div class="glass-panel rounded-2xl p-5 stat-card"><i class="fas fa-globe text-purple-400 text-2xl mb-2"></i><p class="text-gray-400 text-sm">TOTAL REQUEST</p><p id="totalRequestsStat" class="text-2xl font-bold">0</p></div>
+                </div>
+
+                <!-- Check API Key + Info akun -->
+                <div class="glass-panel rounded-2xl p-6 mb-8">
+                    <h3 class="text-xl font-semibold mb-3"><i class="fas fa-key text-yellow-400"></i> Check API Key & Limit</h3>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1"><input type="text" id="apikeyCheckInput" placeholder="Enter your API key..." class="w-full bg-black/40 border border-gray-700 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-500"></div>
+                        <button id="checkApiKeyBtn" class="bg-blue-600 hover:bg-blue-700 px-6 py-2.5 rounded-xl font-semibold"><i class="fas fa-search"></i> Check</button>
+                    </div>
+                    <div id="apiKeyResult" class="mt-4 text-sm text-gray-300 hidden api-badge p-3 rounded-lg"></div>
+                </div>
+
+                <!-- User API Info setelah login -->
+                <div id="userApiInfoBox" class="glass-panel rounded-2xl p-6 mb-8 hidden">
+                    <div class="flex flex-wrap gap-5 justify-between items-center">
+                        <div><span class="text-gray-400 text-sm">API Key :</span> <code id="userApiKeyValue" class="bg-black/60 px-2 py-1 rounded font-mono text-cyan-300">-</code></div>
+                        <div><span class="text-gray-400 text-sm">Limit Request :</span> <span id="userLimitValue" class="font-bold">10,000 / bulan</span></div>
+                        <div><span class="text-gray-400 text-sm">Expiration :</span> <span id="userExpValue" class="font-mono">2026-12-31</span></div>
+                        <button id="regenerateUserKeyBtn" class="text-xs bg-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-600"><i class="fas fa-sync-alt"></i> Regenerate</button>
+                    </div>
+                </div>
+
+                <!-- Feature Updates Table (mirip contoh) -->
+                <div class="glass-panel rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-4"><i class="fas fa-rocket text-indigo-400"></i> Feature Updates</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="border-b border-gray-700"><tr><th class="pb-2">FEATURE</th><th>DATE</th><th>NOTES</th><th>PREVIEW</th></tr></thead>
+                            <tbody id="updateTableBody">
+                                <tr><td class="py-2">Sticker Circle</td><td>2026-05-25 17:16:36</td><td>New MD Support</td><td><span class="text-blue-400 cursor-pointer">View</span></td></tr>
+                                <tr><td class="py-2">Tebakan</td><td>2026-05-25 17:14:59</td><td>fix hewan & bendera</td><td><span class="text-blue-400">View</span></td></tr>
+                                <tr><td class="py-2">Anime</td><td>2026-05-03 14:20:54</td><td>Multi device api</td><td><span class="text-blue-400">View</span></td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            
-            <nav class="p-4 space-y-1">
-                <p class="text-xs uppercase tracking-wider text-gray-400 px-3 mt-2 mb-2">MAIN</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 transition-all" data-page="dashboard">
-                    <i class="fas fa-tachometer-alt w-5"></i> <span>Dashboard</span>
-                </a>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 transition-all" data-page="pricing">
-                    <i class="fas fa-tag w-5"></i> <span>Pricing</span>
-                </a>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 transition-all" data-page="documentation">
-                    <i class="fas fa-book-open w-5"></i> <span>Documentation</span>
-                </a>
-                
-                <p class="text-xs uppercase tracking-wider text-gray-400 px-3 mt-6 mb-2">API CATEGORIES</p>
-                <div id="categoriesList" class="space-y-1">
-                    <!-- Dinamis dari JS -->
-                </div>
-                
-                <div class="pt-6 mt-4 border-t border-white/10">
-                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 transition-all">
-                        <i class="fas fa-gem"></i> <span>Upgrade Premium</span>
-                        <i class="fas fa-arrow-right text-xs ml-auto"></i>
-                    </a>
-                </div>
-            </nav>
-        </aside>
 
-        <!-- MAIN CONTENT -->
-        <main class="flex-1 overflow-y-auto bg-gray-50">
-            <!-- Header -->
-            <header class="glass-effect sticky top-0 z-20 px-8 py-4 flex justify-between items-center border-b border-gray-200 shadow-sm">
-                <div>
-                    <h2 class="text-2xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent" id="pageTitle">Dashboard</h2>
-                    <p class="text-sm text-gray-500">Kelola API key & pantau penggunaan realtime</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="relative">
-                        <i class="fas fa-bell text-gray-500 hover:text-gray-800 cursor-pointer"></i>
-                        <span class="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white rounded-full pl-3 pr-2 py-1 shadow-sm">
-                        <i class="fas fa-user-circle text-2xl text-blue-600"></i>
-                        <span class="text-sm font-medium" id="userGreeting">Developer</span>
-                        <i class="fas fa-chevron-down text-xs text-gray-500 ml-1"></i>
-                    </div>
-                </div>
-            </header>
-
-            <div class="p-6 md:p-8" id="dynamicContent">
-                <!-- konten dinamis via JS (Dashboard, Pricing, Documentation) -->
+            <!-- Pricing & Documentation Section (sederhana namun menarik) -->
+            <div id="pricingSection" class="content-section hidden">
+                <div class="glass-panel p-6 rounded-2xl"><h2 class="text-2xl font-bold">Pricing Plan</h2><p class="mt-2">Free Tier: 10rb request/bulan | Premium Unlimited: $9.9/bln</p><div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"><div class="border border-blue-800 rounded-xl p-4"><i class="fas fa-key"></i> Basic API Key - 10k request</div><div class="border border-blue-800 rounded-xl p-4 bg-blue-900/20"><i class="fas fa-crown text-yellow-400"></i> Pro - Unlimited + Semua kategori</div></div></div>
             </div>
-        </main>
+            <div id="documentationSection" class="content-section hidden">
+                <div class="glass-panel p-6 rounded-2xl"><h2 class="text-2xl font-bold">📘 API Documentation</h2><pre class="bg-black/50 p-4 rounded-xl mt-3 text-sm">Endpoint: https://xyro-md.api/v1/{category}?api_key=YOUR_KEY<br>Categories: /ai, /anime, /downloader, /islami, dll. Semua response JSON dengan status multi device.</pre></div>
+            </div>
+            <!-- categories dynamic section (dummy) -->
+            <div id="categoryContent" class="content-section hidden"><div class="glass-panel p-6 rounded-2xl"><h2 id="catTitle" class="text-2xl font-bold"></h2><p class="text-gray-300 mt-2">Endpoint untuk kategori ini tersedia. Gunakan api key untuk akses penuh multi device.</p><div class="mt-4 bg-black/30 p-3 rounded"><code>GET /api/v1/{category}/list</code></div></div></div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN & REGISTER (Ketat dengan validasi) -->
+    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="bg-[#11141f] rounded-2xl w-full max-w-md p-6 border border-gray-700 shadow-2xl"><h3 class="text-2xl font-bold mb-4"><i class="fas fa-lock"></i> Login XYRO MD</h3><input type="email" id="loginEmail" placeholder="Email" class="w-full bg-black/40 border border-gray-600 rounded-xl p-3 mb-3"><input type="password" id="loginPass" placeholder="Password (min 6 karakter)" class="w-full bg-black/40 border border-gray-600 rounded-xl p-3 mb-5"><button id="submitLoginBtn" class="w-full bg-blue-600 py-2.5 rounded-xl font-bold">Login</button><p class="text-center mt-4 text-sm">Belum punya akun? <span id="modalSwitchRegister" class="text-blue-400 cursor-pointer">Daftar disini</span></p><button class="absolute top-3 right-4 text-gray-400" id="closeLoginModal"><i class="fas fa-times"></i></button></div>
+    </div>
+    <div id="registerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center">
+        <div class="bg-[#11141f] rounded-2xl w-full max-w-md p-6 border border-gray-700"><h3 class="text-2xl font-bold mb-4"><i class="fas fa-user-shield"></i> Register Ketat</h3><input type="text" id="regName" placeholder="Nama Lengkap" class="w-full bg-black/40 border p-3 rounded-xl mb-2"><input type="email" id="regEmail" placeholder="Email Valid" class="w-full bg-black/40 border p-3 rounded-xl mb-2"><input type="password" id="regPass" placeholder="Password (min 6 karakter, kuat)" class="w-full bg-black/40 border p-3 rounded-xl mb-5"><button id="submitRegisterBtn" class="w-full bg-emerald-600 py-2.5 rounded-xl font-bold">Daftar & Dapatkan API Key</button><p class="text-center mt-3 text-sm">Sudah punya akun? <span id="modalSwitchLogin" class="text-blue-400 cursor-pointer">Login</span></p><button class="absolute top-3 right-4 text-gray-400" id="closeRegisterModal"><i class="fas fa-times"></i></button></div>
     </div>
 
     <script>
-        // ------------- MOCK DATA & SIMULASI API LENGKAP -------------
-        // Data Statistik Dashboard
-        let stats = {
-            ip: "103.155.201.10",
-            totalUsers: 20587,
-            requestToday: 33476,
-            totalRequest: 45364736
+        // --------------------- MOCK DATABASE (localStorage dengan validasi ketat) -----------------
+        let currentUser = null;
+        // inisialisasi default
+        function initData() {
+            if(!localStorage.getItem("xyro_users")) {
+                let defaultUsers = [
+                    { id: "1", name: "Admin MD", email: "admin@xyro.com", password: "admin123", apiKey: "XYRO-MD-ADMIN-2025", requests_today: 128, total_requests: 4520, limit_per_month: 10000, expires: "2026-12-31" },
+                    { id: "2", name: "TestUser", email: "test@xyro.com", password: "test123", apiKey: "TEST-MD-KEY001", requests_today: 34, total_requests: 234, limit_per_month: 10000, expires: "2026-12-31" }
+                ];
+                localStorage.setItem("xyro_users", JSON.stringify(defaultUsers));
+                localStorage.setItem("xyro_stats", JSON.stringify({ totalUsers: 20587, totalRequestsAll: 45364736, dailyRequests: 33476 }));
+            }
+        }
+        initData();
+
+        function getUsers() { return JSON.parse(localStorage.getItem("xyro_users")); }
+        function saveUsers(users) { localStorage.setItem("xyro_users", JSON.stringify(users)); updateGlobalStats(); }
+        function getStats() { return JSON.parse(localStorage.getItem("xyro_stats")); }
+        function updateGlobalStats() {
+            let users = getUsers();
+            let totalReqAll = users.reduce((acc, u) => acc + (u.total_requests || 0), 0);
+            let daily = users.reduce((acc, u) => acc + (u.requests_today || 0), 0);
+            localStorage.setItem("xyro_stats", JSON.stringify({ totalUsers: users.length, totalRequestsAll: totalReqAll, dailyRequests: daily }));
+            renderDashboardStats();
+        }
+
+        function renderDashboardStats() {
+            let stats = getStats();
+            document.getElementById("totalUsersStat").innerText = stats.totalUsers.toLocaleString();
+            document.getElementById("requestsTodayStat").innerText = stats.dailyRequests.toLocaleString();
+            document.getElementById("totalRequestsStat").innerText = stats.totalRequestsAll.toLocaleString();
+            // IP STATIC
+            fetch('https://api.ipify.org?format=json').then(res=>res.json()).then(data=>{ if(data.ip) document.getElementById("userIpDisplay").innerText = data.ip; }).catch(()=>document.getElementById("userIpDisplay").innerText = "103.155.201.10");
+        }
+
+        function updateUserDashboardUI() {
+            if(currentUser) {
+                document.getElementById("userNavGuest").classList.add("hidden");
+                document.getElementById("userNavAuth").classList.remove("hidden");
+                document.getElementById("userNameNav").innerText = currentUser.name;
+                document.getElementById("userApiInfoBox").classList.remove("hidden");
+                document.getElementById("userApiKeyValue").innerText = currentUser.apiKey;
+                document.getElementById("userLimitValue").innerText = `${currentUser.limit_per_month.toLocaleString()} / bulan`;
+                document.getElementById("userExpValue").innerText = currentUser.expires;
+                // isi check api key box user
+                document.getElementById("apikeyCheckInput").value = currentUser.apiKey;
+            } else {
+                document.getElementById("userNavGuest").classList.remove("hidden");
+                document.getElementById("userNavAuth").classList.add("hidden");
+                document.getElementById("userApiInfoBox").classList.add("hidden");
+            }
+        }
+
+        function regenerateApiKey() {
+            if(!currentUser) return;
+            let newKey = "XYRO-"+Math.random().toString(36).substring(2,15).toUpperCase()+"-MD";
+            let users = getUsers();
+            let idx = users.findIndex(u=>u.email === currentUser.email);
+            if(idx !== -1) { users[idx].apiKey = newKey; saveUsers(users); currentUser.apiKey = newKey; updateUserDashboardUI(); alert("API Key berhasil diregenerate!"); }
+        }
+
+        function login(email, pass) {
+            let users = getUsers();
+            let found = users.find(u=>u.email === email && u.password === pass);
+            if(found) { currentUser = {...found}; updateUserDashboardUI(); renderDashboardStats(); closeAllModals(); document.getElementById("dashboardSection").classList.remove("hidden"); document.getElementById("pricingSection").classList.add("hidden"); document.getElementById("documentationSection").classList.add("hidden"); document.getElementById("categoryContent").classList.add("hidden"); setActiveSidebar('dashboard'); return true; }
+            else { alert("Email atau password salah! Akses ditolak."); return false; }
+        }
+
+        function register(name, email, pass) {
+            if(name.length<2) { alert("Nama minimal 2 karakter"); return false; }
+            if(!email.includes("@") || !email.includes(".")) { alert("Email tidak valid"); return false; }
+            if(pass.length < 6) { alert("Password harus minimal 6 karakter (ketat)"); return false; }
+            let users = getUsers();
+            if(users.find(u=>u.email === email)) { alert("Email sudah terdaftar!"); return false; }
+            let newApiKey = "XYRO-"+Math.random().toString(36).substring(2,12).toUpperCase()+"-MD";
+            let newUser = { id: Date.now().toString(), name, email, password: pass, apiKey: newApiKey, requests_today: 0, total_requests: 0, limit_per_month: 10000, expires: "2026-12-31" };
+            users.push(newUser);
+            saveUsers(users);
+            alert("Registrasi berhasil! Silakan login dengan akun baru.");
+            return true;
+        }
+
+        function checkApiKeyManual(apikey) {
+            let users = getUsers();
+            let user = users.find(u=>u.apiKey === apikey);
+            let resultDiv = document.getElementById("apiKeyResult");
+            if(user) { resultDiv.innerHTML = `<i class="fas fa-check-circle text-green-400"></i> API Key valid! Pemilik: ${user.name} | Limit: ${user.limit_per_month} request/bulan | Sisa hari aktif.`; resultDiv.classList.remove("hidden"); }
+            else { resultDiv.innerHTML = `<i class="fas fa-times-circle text-red-400"></i> API Key tidak dikenal!`; resultDiv.classList.remove("hidden"); }
+        }
+
+        // sidebar dan konten
+        function setActiveSidebar(section) {
+            document.querySelectorAll(".content-section").forEach(sec=>sec.classList.add("hidden"));
+            if(section === "dashboard") document.getElementById("dashboardSection").classList.remove("hidden");
+            else if(section === "pricing") document.getElementById("pricingSection").classList.remove("hidden");
+            else if(section === "documentation") document.getElementById("documentationSection").classList.remove("hidden");
+            else { document.getElementById("categoryContent").classList.remove("hidden"); document.getElementById("catTitle").innerText = section.toUpperCase() + " API"; }
+        }
+
+        function closeAllModals() { document.getElementById("loginModal").classList.add("hidden"); document.getElementById("registerModal").classList.add("hidden"); document.body.style.overflow = "auto"; }
+
+        // event binding
+        window.onload = () => {
+            renderDashboardStats();
+            // hamburger & sidebar
+            const sidebar = document.getElementById("mainSidebar");
+            const overlay = document.getElementById("sidebarOverlay");
+            function openSidebar() { sidebar.classList.remove("-translate-x-full"); overlay.classList.remove("hidden"); document.body.style.overflow = "hidden"; }
+            function closeSidebar() { sidebar.classList.add("-translate-x-full"); overlay.classList.add("hidden"); document.body.style.overflow = "auto"; }
+            document.getElementById("hamburgerBtn").onclick = openSidebar;
+            document.getElementById("closeSidebarBtn").onclick = closeSidebar;
+            overlay.onclick = closeSidebar;
+            // navigasi link
+            document.querySelectorAll(".sidebar-link").forEach(link=>{
+                link.addEventListener("click",(e)=>{
+                    let section = link.getAttribute("data-section");
+                    let cat = link.getAttribute("data-cat");
+                    if(section) { setActiveSidebar(section); closeSidebar(); }
+                    else if(cat) { setActiveSidebar(cat); closeSidebar(); }
+                });
+            });
+            // modal logic
+            document.getElementById("openLoginModalBtn").onclick = ()=>document.getElementById("loginModal").classList.remove("hidden");
+            document.getElementById("openRegisterModalBtn").onclick = ()=>document.getElementById("registerModal").classList.remove("hidden");
+            document.getElementById("closeLoginModal").onclick = closeAllModals;
+            document.getElementById("closeRegisterModal").onclick = closeAllModals;
+            document.getElementById("modalSwitchRegister").onclick = ()=>{ closeAllModals(); document.getElementById("registerModal").classList.remove("hidden"); };
+            document.getElementById("modalSwitchLogin").onclick = ()=>{ closeAllModals(); document.getElementById("loginModal").classList.remove("hidden"); };
+            document.getElementById("submitLoginBtn").onclick = ()=>{ let email=document.getElementById("loginEmail").value; let pass=document.getElementById("loginPass").value; if(login(email,pass)) closeAllModals(); };
+            document.getElementById("submitRegisterBtn").onclick = ()=>{ let name=document.getElementById("regName").value; let email=document.getElementById("regEmail").value; let pass=document.getElementById("regPass").value; if(register(name,email,pass)) { closeAllModals(); document.getElementById("loginModal").classList.remove("hidden"); } };
+            document.getElementById("checkApiKeyBtn").onclick = ()=>{ let key=document.getElementById("apikeyCheckInput").value; if(key) checkApiKeyManual(key); else alert("Masukkan API key"); };
+            document.getElementById("regenerateUserKeyBtn") && (document.getElementById("regenerateUserKeyBtn").onclick = ()=>regenerateApiKey());
+            document.getElementById("logoutHeaderBtn").onclick = ()=>{ currentUser=null; updateUserDashboardUI(); setActiveSidebar("dashboard"); alert("Logout berhasil"); };
+            updateUserDashboardUI();
         };
-        
-        // API Categories & Features (berdasarkan gambar: AI, Anime, Convert, Database, Downloader, Games, Islami, Maker, News, Information, Primbon dll)
-        const apiCategories = [
-            { name: "Artificial Intelligence", icon: "fa-microchip", color: "purple", endpoints: ["/ai/chatgpt", "/ai/image-gen", "/ai/translate"] },
-            { name: "Anime", icon: "fa-japan", color: "pink", endpoints: ["/anime/search", "/anime/character", "/anime/recommend"] },
-            { name: "Convert", icon: "fa-exchange-alt", color: "blue", endpoints: ["/convert/currency", "/convert/unit"] },
-            { name: "Database", icon: "fa-database", color: "cyan", endpoints: ["/db/query", "/db/backup"] },
-            { name: "Downloader", icon: "fa-download", color: "green", endpoints: ["/downloader/ytmp3", "/downloader/ig", "/downloader/tiktok"] },
-            { name: "Games", icon: "fa-gamepad", color: "indigo", endpoints: ["/games/tebak", "/games/suit", "/games/quiz"] },
-            { name: "Islami", icon: "fa-mosque", color: "emerald", endpoints: ["/islami/jadwal-sholat", "/islami/quran", "/islami/doa"] },
-            { name: "Maker", icon: "fa-magic", color: "orange", endpoints: ["/maker/sticker", "/maker/meme", "/maker/logo"] },
-            { name: "News", icon: "fa-newspaper", color: "red", endpoints: ["/news/terkini", "/news/technology", "/news/sports"] },
-            { name: "Information", icon: "fa-info-circle", color: "slate", endpoints: ["/info/weather", "/info/currency", "/info/ip"] },
-            { name: "Primbon", icon: "fa-star-of-life", color: "yellow", endpoints: ["/primbon/jodoh", "/primbon/weton", "/primbon/zodiac"] },
-            { name: "Random", icon: "fa-random", color: "teal", endpoints: ["/random/quote", "/random/image", "/random/name"] },
-            { name: "Search", icon: "fa-search", color: "gray", endpoints: ["/search/google", "/search/image"] },
-            { name: "Stalker", icon: "fa-eye", color: "rose", endpoints: ["/stalk/ig", "/stalk/tiktok", "/stalk/github"] },
-            { name: "Tools", icon: "fa-tools", color: "amber", endpoints: ["/tools/shortlink", "/tools/qrcode", "/tools/password"] },
-            { name: "Text Manipulation", icon: "fa-i-cursor", color: "lime", endpoints: ["/text/uppercase", "/text/reverse", "/text/count"] },
-            { name: "Textpro", icon: "fa-font", color: "fuchsia", endpoints: ["/textpro/glitch", "/textpro/3d", "/textpro/fire"] },
-            { name: "Text To Voice", icon: "fa-microphone-alt", color: "sky", endpoints: ["/tts/indonesia", "/tts/english"] }
-        ];
-        
-        // Feature Updates data (mirip tabel)
-        let featureUpdates = [
-            { feature: "Add Features", date: "2026-05-25 17:16:36", notes: "Sticker Circle", previewLink: "#" },
-            { feature: "Tebakan", date: "2026-05-25 17:14:59", notes: "fix tebak hewan, bendera, pemain bola", previewLink: "#" },
-            { feature: "Anime", date: "2026-05-03 14:20:54", notes: "Fix endpoint & response", previewLink: "#" },
-            { feature: "Maker Tools", date: "2026-04-28 09:12:33", notes: "Tambah watermark & sticker wm", previewLink: "#" },
-            { feature: "Downloader", date: "2026-04-20 18:45:12", notes: "Support youtube playlist", previewLink: "#" }
-        ];
-        
-        // API Key management (simulasi)
-        let currentApiKey = localStorage.getItem("autoresbot_api_key") || "AUTORES-LIVE-KEY-7X9F2M";
-        let apiLimit = localStorage.getItem("api_limit") || "50,000 requests/month";
-        let expiration = localStorage.getItem("api_expiration") || "2027-01-01";
-        
-        // Fungsi untuk render UI halaman
-        function renderDashboard() {
-            let content = `
-                <div class="space-y-6">
-                    <!-- STATS GRID -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 stat-card">
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-gray-500 text-sm">YOUR IP ADDRESS</p><h3 class="text-2xl font-bold mt-1">${stats.ip}</h3></div>
-                                <i class="fas fa-network-wired text-3xl text-blue-400 opacity-70"></i>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 stat-card">
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-gray-500 text-sm">TOTAL USERS</p><h3 class="text-2xl font-bold mt-1">${stats.totalUsers.toLocaleString()}</h3></div>
-                                <i class="fas fa-users text-3xl text-emerald-400 opacity-70"></i>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 stat-card">
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-gray-500 text-sm">REQUEST TODAY</p><h3 class="text-2xl font-bold mt-1">${stats.requestToday.toLocaleString()}</h3></div>
-                                <i class="fas fa-chart-line text-3xl text-orange-400 opacity-70"></i>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 stat-card">
-                            <div class="flex items-center justify-between">
-                                <div><p class="text-gray-500 text-sm">TOTAL REQUEST</p><h3 class="text-2xl font-bold mt-1">${stats.totalRequest.toLocaleString()}</h3></div>
-                                <i class="fas fa-rocket text-3xl text-purple-500 opacity-70"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- API KEY SECTION -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex flex-wrap justify-between items-start gap-4">
-                            <div><h3 class="text-xl font-bold"><i class="fas fa-key text-blue-500 mr-2"></i>Check API Key</h3>
-                            <p class="text-gray-500 text-sm">Enter your API key to validate & manage limits</p></div>
-                            <div class="flex gap-2 w-full md:w-auto"><input type="text" id="apiKeyInput" class="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-400" placeholder="Enter your API key..." value="${currentApiKey}">
-                            <button id="checkApiKeyBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl transition"><i class="fas fa-check-circle"></i> Check</button></div>
-                        </div>
-                        <div class="mt-5 bg-gray-50 rounded-xl p-4 border border-gray-200">
-                            <p class="text-sm text-gray-600"><i class="fas fa-info-circle text-blue-500"></i> <strong>Welcome to Autoresbot API!!</strong> Thank you for using the services of Autoresbot API!! Please use an API key that is hard to guess, just like a strong password.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                <div><span class="text-xs text-gray-500">API Key</span><p class="font-mono text-sm font-semibold bg-white p-2 rounded border">${currentApiKey}</p></div>
-                                <div><span class="text-xs text-gray-500">Limit</span><p class="font-semibold">${apiLimit}</p></div>
-                                <div><span class="text-xs text-gray-500">Expiration</span><p class="font-semibold">${expiration}</p></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- FEATURE UPDATES TABLE -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <h3 class="text-xl font-bold mb-4"><i class="fas fa-list-ul text-indigo-500 mr-2"></i>Feature Updates</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-sm">
-                                <thead class="bg-gray-100 rounded-xl"><tr><th class="px-4 py-3 text-left">FEATURE</th><th class="px-4 py-3 text-left">DATE</th><th class="px-4 py-3 text-left">NOTES</th><th class="px-4 py-3">PREVIEW</th></tr></thead>
-                                <tbody>
-                                    ${featureUpdates.map(f => `<tr class="border-b border-gray-100 hover:bg-gray-50"><td class="px-4 py-3 font-medium">${f.feature}</td><td class="px-4 py-3 text-gray-500">${f.date}</td><td class="px-4 py-3">${f.notes}</td><td class="px-4 py-3 text-center"><a href="${f.previewLink}" class="text-blue-500 hover:underline">View</a></td></tr>`).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- REST API Layanan Populer -->
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border">
-                        <h3 class="text-xl font-bold mb-3"><i class="fas fa-microphone-alt text-green-500"></i> Live API Demo (Endpoint Testing)</h3>
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <select id="demoEndpoint" class="border rounded-xl px-3 py-2 bg-gray-50 flex-1"><option value="/api/islami/jadwal-sholat">🌙 Islami - Jadwal Sholat</option><option value="/api/maker/sticker">🎨 Maker - Sticker</option><option value="/api/downloader/ytmp3">📥 Downloader - YT MP3</option><option value="/api/ai/chatgpt">🤖 AI - Chat GPT</option></select>
-                            <button id="testApiBtn" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2 rounded-xl font-semibold"><i class="fas fa-play"></i> Test Endpoint</button>
-                        </div>
-                        <pre id="apiResponseDemo" class="mt-4 text-xs">💡 Klik "Test Endpoint" untuk melihat response realtime (simulasi). Gunakan API key di header.</pre>
-                    </div>
-                </div>
-            `;
-            document.getElementById("dynamicContent").innerHTML = content;
-            attachDashboardEvents();
-        }
-        
-        function attachDashboardEvents() {
-            document.getElementById("checkApiKeyBtn")?.addEventListener("click", () => {
-                let newKey = document.getElementById("apiKeyInput").value;
-                if(newKey.trim()) {
-                    currentApiKey = newKey;
-                    localStorage.setItem("autoresbot_api_key", newKey);
-                    alert(`✅ API Key updated: ${newKey}\nLimit: ${apiLimit}\nStatus: Active`);
-                    renderDashboard(); // refresh
-                } else alert("Masukkan API key yang valid!");
-            });
-            document.getElementById("testApiBtn")?.addEventListener("click", async () => {
-                let endpoint = document.getElementById("demoEndpoint").value;
-                let pre = document.getElementById("apiResponseDemo");
-                pre.innerText = "⏳ Memproses request... (simulasi multi device API)";
-                setTimeout(() => {
-                    let mockResponses = {
-                        "/api/islami/jadwal-sholat": { status: "success", city: "Jakarta", jadwal: { subuh: "04:30", dzuhur: "12:00", ashar: "15:30", maghrib: "18:00", isya: "19:20" } },
-                        "/api/maker/sticker": { status: "success", url_sticker: "https://example.com/sticker.webp", message: "Sticker berhasil dibuat (Multi Device)" },
-                        "/api/downloader/ytmp3": { status: "success", title: "Sample Song", download_url: "https://dl.example.com/audio.mp3" },
-                        "/api/ai/chatgpt": { status: "success", response: "Halo! Saya asisten AI dari Autoresbot, gunakan API key untuk akses penuh." }
-                    };
-                    let response = mockResponses[endpoint] || { status: "success", message: "Endpoint siap digunakan, silakan integrasikan dengan API key", docs: "https://docs.autoresbot.com" };
-                    pre.innerText = JSON.stringify({ ...response, timestamp: new Date().toISOString(), api_key_used: currentApiKey.slice(0,8)+"..." }, null, 2);
-                }, 600);
-            });
-        }
-        
-        // Halaman Pricing
-        function renderPricing() {
-            document.getElementById("dynamicContent").innerHTML = `
-                <div class="max-w-5xl mx-auto">
-                    <div class="text-center mb-10"><h2 class="text-3xl font-black">Pilih Paket Sesuai Kebutuhan</h2><p class="text-gray-500">Akses penuh ke 18+ kategori API & support multi device</p></div>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="bg-white rounded-2xl p-6 shadow-lg border"><div class="text-center"><i class="fas fa-seedling text-3xl text-green-500"></i><h3 class="text-xl font-bold mt-2">Free</h3><p class="text-3xl font-bold mt-2">Rp0<span class="text-sm">/bulan</span></p><hr class="my-4"/><ul class="space-y-2 text-sm"><li><i class="fas fa-check-circle text-green-500"></i> 1,000 request/hari</li><li><i class="fas fa-check-circle text-green-500"></i> 10 endpoint dasar</li><li>Support komunitas</li></ul><button class="mt-6 w-full bg-gray-200 py-2 rounded-xl">Aktifkan</button></div></div>
-                        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 shadow-xl border-2 border-indigo-300 relative"><div class="absolute -top-3 right-4 bg-indigo-600 text-white px-3 py-1 rounded-full text-xs">POPULER</div><div class="text-center"><i class="fas fa-rocket text-4xl text-indigo-600"></i><h3 class="text-xl font-bold mt-2">Pro</h3><p class="text-3xl font-bold">Rp99k<span class="text-sm">/bulan</span></p><hr class="my-4"/><ul class="space-y-2 text-sm"><li><i class="fas fa-check-circle text-indigo-500"></i> 50,000 request/hari</li><li><i class="fas fa-check-circle text-indigo-500"></i> Semua endpoint (50+)</li><li><i class="fas fa-check-circle text-indigo-500"></i> Priority support + Multi Device</li></ul><button class="mt-6 w-full bg-indigo-600 text-white py-2 rounded-xl hover:bg-indigo-700">Upgrade Now</button></div></div>
-                        <div class="bg-white rounded-2xl p-6 shadow-lg"><div class="text-center"><i class="fas fa-crown text-3xl text-yellow-500"></i><h3 class="text-xl font-bold mt-2">Enterprise</h3><p class="text-3xl font-bold">Custom</p><hr class="my-4"/><ul class="space-y-2 text-sm"><li><i class="fas fa-check-circle text-yellow-500"></i> Unlimited request</li><li><i class="fas fa-check-circle text-yellow-500"></i> Dedicated Server</li><li>SLA 99.9%</li></ul><button class="mt-6 w-full bg-gray-200 py-2 rounded-xl">Hubungi Sales</button></div></div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Documentation Halaman lengkap
-        function renderDocumentation() {
-            let catsHtml = apiCategories.map(cat => `<div class="border-b pb-2 mb-3"><div class="flex items-center gap-2"><i class="fas ${cat.icon} text-blue-600"></i><h3 class="font-bold text-lg">${cat.name}</h3></div><div class="ml-6 space-x-2 text-sm"><code class="bg-gray-100 px-2 py-1 rounded">${cat.endpoints.join('</code> <code class="bg-gray-100 px-2 py-1 rounded">')}</code></div></div>`).join('');
-            document.getElementById("dynamicContent").innerHTML = `
-                <div class="max-w-6xl mx-auto">
-                    <div class="bg-white rounded-2xl p-6 shadow-sm mb-6"><h1 class="text-2xl font-bold">📘 Dokumentasi API Lengkap</h1><p class="text-gray-500">Autentikasi menggunakan header <code class="bg-gray-200 px-1">X-API-Key: YOUR_KEY</code> atau query <code>?api_key=...</code>. Base URL: <code>https://api.autoresbot.com/v1</code></p></div>
-                    <div class="bg-white rounded-2xl p-6 shadow-sm mb-6"><h2 class="text-xl font-bold mb-3"><i class="fas fa-key"></i> Cara Penggunaan</h2><pre>curl -X GET "https://api.autoresbot.com/v1/islami/jadwal-sholat?kota=Jakarta" -H "X-API-Key: ${currentApiKey}"</pre><pre># Response contoh: { "status": "success", "data": {...} }</pre></div>
-                    <div class="bg-white rounded-2xl p-6 shadow-sm"><h2 class="text-xl font-bold mb-4">📂 Kategori Endpoint (Multi Device Ready)</h2>${catsHtml}<div class="mt-5 p-3 bg-blue-50 rounded-xl"><i class="fas fa-globe"></i> Semua endpoint mendukung WhatsApp Bot & Multi Device Integration secara realtime.</div></div>
-                </div>
-            `;
-        }
-        
-        // Sidebar Navigation & Categories Rendering
-        function buildSidebarCategories() {
-            const container = document.getElementById("categoriesList");
-            if(container) {
-                container.innerHTML = apiCategories.map(cat => `
-                    <a href="#" class="category-item flex items-center gap-3 px-3 py-2 rounded-xl text-gray-300 hover:bg-white/10 transition-all text-sm" data-category="${cat.name}">
-                        <i class="fas ${cat.icon} w-5"></i> <span>${cat.name}</span>
-                    </a>
-                `).join('');
-                // event listener untuk kategori (sebagai demo redirect ke doc)
-                document.querySelectorAll('.category-item').forEach(el => {
-                    el.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        let catName = el.getAttribute('data-category');
-                        renderDocumentation();
-                        setTimeout(() => {
-                            document.getElementById("pageTitle").innerText = `Documentation: ${catName}`;
-                        }, 50);
-                        setActiveNav(null);
-                    });
-                });
-            }
-        }
-        
-        function setActiveNav(activeId) {
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('bg-white/20', 'text-white'));
-            if(activeId) {
-                let activeLink = document.querySelector(`.nav-link[data-page="${activeId}"]`);
-                if(activeLink) activeLink.classList.add('bg-white/20', 'text-white');
-            }
-        }
-        
-        function loadPage(page) {
-            if(page === 'dashboard') { renderDashboard(); document.getElementById("pageTitle").innerHTML = "Dashboard"; setActiveNav('dashboard'); }
-            else if(page === 'pricing') { renderPricing(); document.getElementById("pageTitle").innerHTML = "Pricing"; setActiveNav('pricing'); }
-            else if(page === 'documentation') { renderDocumentation(); document.getElementById("pageTitle").innerHTML = "Documentation"; setActiveNav('documentation'); }
-        }
-        
-        // event listeners untuk sidebar link
-        function bindNavEvents() {
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    let page = link.getAttribute('data-page');
-                    if(page) loadPage(page);
-                });
-            });
-        }
-        
-        // Inisialisasi & Update user greeting
-        function init() {
-            buildSidebarCategories();
-            bindNavEvents();
-            loadPage('dashboard');
-            document.getElementById("userGreeting").innerText = "API User";
-            // Simulate IP Fetch (already shown)
-        }
-        
-        init();
     </script>
 </body>
 </html>
