@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AlightMotion Real API | Stock Produk & Payment Gateway</title>
+    <title>Autoresbot API | Dashboard & API Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-xyz"></script>
     <style>
         * {
             margin: 0;
@@ -17,642 +16,676 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
+            background: #0a0e27;
+            color: #e0e4f0;
             line-height: 1.5;
-        }
-
-        :root {
-            --bg-body: #f0f4f8;
-            --bg-card: #ffffff;
-            --text-primary: #1a2a3a;
-            --text-secondary: #4a627a;
-            --border: #e2e8f0;
-            --primary: #6c5ce7;
-            --primary-dark: #5b4bc4;
-            --primary-light: #e8e6fc;
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-
-        body.dark {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border: #334155;
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
-            --primary-light: #2e1a5e;
-            --shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
+            padding: 0 1.5rem;
         }
 
-        .navbar {
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
-        }
-
-        .nav-inner {
+        /* Sidebar Layout */
+        .app-wrapper {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
+            min-height: 100vh;
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #0f1235 0%, #0a0e27 100%);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 1.5rem 0;
         }
 
-        .logo-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--primary), #00b894);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: white;
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 1.5rem;
         }
 
-        .brand {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 800;
+        .logo {
             font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), #00b894);
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .nav-links {
+        .logo span {
+            font-size: 0.75rem;
+            color: #6366f1;
+            background: none;
+            -webkit-background-clip: unset;
+        }
+
+        .nav-section {
+            padding: 0 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5b6e8c;
+            padding: 0 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .nav-item {
             display: flex;
-            gap: 1rem;
             align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
+            gap: 12px;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            color: #8b9ab0;
             text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            padding: 8px 16px;
+            margin-bottom: 4px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+        }
+
+        .nav-item i {
+            width: 22px;
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            margin: 1rem;
+            text-align: center;
             border-radius: 40px;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .theme-toggle {
-            background: var(--primary-light);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            margin-bottom: 1.8rem;
-        }
-
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            background: var(--primary);
+            padding: 0.75rem;
             color: white;
+            font-weight: 600;
         }
 
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-warning { background: var(--warning); color: white; }
-        .btn-block { width: 100%; justify-content: center; }
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 1.5rem;
+        }
 
-        input, select, textarea {
-            background: var(--bg-body);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(15, 18, 53, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #8b9ab0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        /* Form Elements */
+        .api-check {
+            background: rgba(15, 18, 53, 0.6);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .api-check input {
+            background: #0a0e27;
+            border: 1px solid #1f2348;
+            padding: 12px 20px;
+            border-radius: 40px;
+            width: 70%;
+            color: white;
+            font-family: monospace;
+        }
+
+        .api-check button {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* Table */
+        .feature-table {
             width: 100%;
-            font-family: inherit;
+            border-collapse: collapse;
+        }
+
+        .feature-table th, .feature-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .feature-table th {
+            color: #8b9ab0;
+            font-weight: 600;
         }
 
         .badge {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
         }
-        .badge-stock { background: var(--success); color: white; }
-        .badge-low { background: var(--warning); color: white; }
-        .badge-out { background: var(--danger); color: white; }
 
-        .product-card {
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.2rem;
-            text-align: center;
+        .badge-success { background: #10b98120; color: #10b981; }
+        .badge-warning { background: #f59e0b20; color: #f59e0b; }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
         }
 
-        .price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        footer {
-            text-align: center;
+        .modal-content {
+            background: #0f1235;
+            border-radius: 28px;
             padding: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
+            max-width: 450px;
+            width: 90%;
+            border: 1px solid #1f2348;
         }
 
         .hidden { display: none; }
 
-        @media (max-width: 700px) {
-            .container { padding: 1rem; }
-            .nav-inner { flex-direction: column; }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary { background: #6366f1; color: white; }
+        .btn-danger { background: #ef4444; color: white; }
+
+        input, select {
+            background: #0a0e27;
+            border: 1px solid #1f2348;
+            padding: 12px 16px;
+            border-radius: 28px;
+            width: 100%;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 0; display: none; }
+            .main-content { margin-left: 0; }
         }
     </style>
 </head>
 <body>
+<div class="app-wrapper" id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Autoresbot <span>API</span></div>
+        </div>
+        
+        <div class="nav-section">
+            <div class="nav-section-title">MAIN</div>
+            <a href="#" class="nav-item" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="nav-item" data-page="pricing"><i class="fas fa-tag"></i> Pricing</a>
+            <a href="#" class="nav-item" data-page="documentation"><i class="fas fa-book"></i> Documentation</a>
+        </div>
 
-<div class="navbar">
-    <div class="container nav-inner">
-        <div class="logo-area">
-            <div class="logo-img">AM</div>
-            <span class="brand">AlightMotion Real API</span>
+        <div class="nav-section">
+            <div class="nav-section-title">API CATEGORIES</div>
+            <a href="#" class="nav-item" data-page="ai"><i class="fas fa-robot"></i> Artificial Intelligence</a>
+            <a href="#" class="nav-item" data-page="anime"><i class="fas fa-film"></i> Anime</a>
+            <a href="#" class="nav-item" data-page="convert"><i class="fas fa-exchange-alt"></i> Convert</a>
+            <a href="#" class="nav-item" data-page="database"><i class="fas fa-database"></i> Database</a>
+            <a href="#" class="nav-item" data-page="downloader"><i class="fas fa-download"></i> Downloader</a>
+            <a href="#" class="nav-item" data-page="games"><i class="fas fa-gamepad"></i> Games</a>
+            <a href="#" class="nav-item" data-page="islami"><i class="fas fa-mosque"></i> Islami</a>
+            <a href="#" class="nav-item" data-page="maker"><i class="fas fa-palette"></i> Maker</a>
+            <a href="#" class="nav-item" data-page="news"><i class="fas fa-newspaper"></i> News</a>
+            <a href="#" class="nav-item" data-page="information"><i class="fas fa-info-circle"></i> Information</a>
+            <a href="#" class="nav-item" data-page="primbon"><i class="fas fa-star"></i> Primbon</a>
         </div>
-        <div class="nav-links">
-            <a href="#" data-page="products">Produk</a>
-            <a href="#" data-page="orders">Pesanan</a>
-            <a href="#" data-page="profile">Profile</a>
-            <a href="#" data-page="bot">Bot API</a>
-            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
+
+        <div class="nav-section">
+            <div class="nav-section-title">SERVICES</div>
+            <a href="#" class="nav-item" data-page="random"><i class="fas fa-dice"></i> Random</a>
+            <a href="#" class="nav-item" data-page="search"><i class="fas fa-search"></i> Search</a>
+            <a href="#" class="nav-item" data-page="stalker"><i class="fas fa-user-secret"></i> Stalker</a>
+            <a href="#" class="nav-item" data-page="tools"><i class="fas fa-tools"></i> Tools</a>
+            <a href="#" class="nav-item" data-page="text-manipulation"><i class="fas fa-i-cursor"></i> Text Manipulation</a>
+            <a href="#" class="nav-item" data-page="textpro"><i class="fas fa-text-height"></i> Textpro</a>
+            <a href="#" class="nav-item" data-page="text-to-voice"><i class="fas fa-microphone"></i> Text To Voice</a>
         </div>
-    </div>
+
+        <div class="upgrade-btn" id="upgradeBtn">⬆ Upgrade Premium</div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <div class="user-info" id="userInfo">
+                <i class="fas fa-user-circle"></i>
+                <span id="userName">Guest</span>
+                <button class="btn btn-primary" id="logoutBtn" style="display:none; padding:5px 12px; font-size:0.8rem">Logout</button>
+            </div>
+        </div>
+        <div id="pageContent"></div>
+    </main>
 </div>
 
-<main class="container" id="appRoot"><div id="pageContent"></div></main>
-<footer>© 2026 AlightMotion Real API | Stock Otomatis | Payment Gateway | Bot WA/Telegram</footer>
-
 <script>
-    // ==================== DATA STORAGE ====================
-    let users = JSON.parse(localStorage.getItem('am_users')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('am_current')) || null;
-    let products = JSON.parse(localStorage.getItem('am_products')) || [
-        { id: 1, name: "AlightMotion Pro Lifetime", category: "Akun", price: 85000, stock: 25, image: "🎬", description: "Akun AlightMotion Pro seumur hidup" },
-        { id: 2, name: "Template Premium Pack", category: "Template", price: 25000, stock: 100, image: "🎨", description: "500+ template AM terbaru" },
-        { id: 3, name: "Fonts Pack Pro", category: "Fonts", price: 15000, stock: 50, image: "✍️", description: "1000+ fonts keren" },
-        { id: 4, name: "Green Screen Pack", category: "Stock", price: 20000, stock: 75, image: "🎥", description: "200+ green screen video" },
-        { id: 5, name: "Sound Effects Pro", category: "Audio", price: 18000, stock: 40, image: "🎵", description: "500+ SFX premium" },
-        { id: 6, name: "Transition Pack", category: "Preset", price: 30000, stock: 30, image: "🔄", description: "300+ transisi keren" }
-    ];
-    let orders = JSON.parse(localStorage.getItem('am_orders')) || [];
-    let botTokens = JSON.parse(localStorage.getItem('am_bot_tokens')) || [];
-    let transactions = JSON.parse(localStorage.getItem('am_payments')) || [];
+    // ==================== SECURITY STORAGE ====================
+    let users = JSON.parse(localStorage.getItem('autoresbot_users')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('autoresbot_current')) || null;
+    let apiKeys = JSON.parse(localStorage.getItem('autoresbot_apikeys')) || [];
+    let requests = JSON.parse(localStorage.getItem('autoresbot_requests')) || { total: 45364736, today: 33476 };
 
     function persist() {
-        localStorage.setItem('am_users', JSON.stringify(users));
-        localStorage.setItem('am_current', JSON.stringify(currentUser));
-        localStorage.setItem('am_products', JSON.stringify(products));
-        localStorage.setItem('am_orders', JSON.stringify(orders));
-        localStorage.setItem('am_bot_tokens', JSON.stringify(botTokens));
-        localStorage.setItem('am_payments', JSON.stringify(transactions));
+        localStorage.setItem('autoresbot_users', JSON.stringify(users));
+        localStorage.setItem('autoresbot_current', JSON.stringify(currentUser));
+        localStorage.setItem('autoresbot_apikeys', JSON.stringify(apiKeys));
+        localStorage.setItem('autoresbot_requests', JSON.stringify(requests));
     }
 
-    // ==================== AUTH ====================
+    // Helper
+    function getClientIP() {
+        return "103.155.201.10";
+    }
+
+    function generateApiKey() {
+        return 'AR_' + Math.random().toString(36).substring(2, 15).toUpperCase() + '_' + Date.now().toString(36).toUpperCase();
+    }
+
+    // ==================== AUTH KETAT ====================
     function register(username, password, email) {
-        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah ada" };
-        users.push({ username, password: btoa(password), email, balance: 0, role: 'user', createdAt: new Date().toISOString() });
+        if (username.length < 4) return { success: false, msg: "Username minimal 4 karakter" };
+        if (password.length < 8) return { success: false, msg: "Password minimal 8 karakter" };
+        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah terdaftar" };
+        
+        // Generate API key otomatis untuk user baru
+        let newApiKey = generateApiKey();
+        
+        users.push({
+            username: username,
+            password: btoa(password),
+            email: email,
+            apiKey: newApiKey,
+            limit: 5000,
+            expiration: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            role: 'user',
+            createdAt: new Date().toISOString()
+        });
+        
+        apiKeys.push({
+            key: newApiKey,
+            owner: username,
+            limit: 5000,
+            expired: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            createdAt: new Date().toISOString()
+        });
+        
         persist();
-        return { success: true };
+        return { success: true, apiKey: newApiKey };
     }
 
     function login(username, password) {
         let user = users.find(u => u.username === username && u.password === btoa(password));
-        if (!user) return { success: false, msg: "Username/password salah" };
+        if (!user) return { success: false, msg: "Username atau password salah" };
         currentUser = user;
         persist();
         return { success: true };
     }
 
-    // ==================== PRODUK & STOCK OTOMATIS ====================
-    function updateStock(productId, qty) {
-        let product = products.find(p => p.id === productId);
-        if (product && product.stock >= qty) {
-            product.stock -= qty;
-            persist();
-            return true;
-        }
-        return false;
-    }
-
-    function restockProduct(productId, addStock) {
-        let product = products.find(p => p.id === productId);
-        if (product) {
-            product.stock += addStock;
-            persist();
-            return true;
-        }
-        return false;
-    }
-
-    // ==================== ORDER & PAYMENT ====================
-    function createOrder(userId, productId, quantity, paymentMethod) {
-        let product = products.find(p => p.id === productId);
-        if (!product) return { success: false, msg: "Produk tidak ditemukan" };
-        if (product.stock < quantity) return { success: false, msg: "Stock tidak mencukupi" };
-        
-        const total = product.price * quantity;
-        const orderId = "AM" + Date.now() + Math.floor(Math.random() * 1000);
-        
-        let order = {
-            id: orderId,
-            userId: userId,
-            productId: productId,
-            productName: product.name,
-            quantity: quantity,
-            total: total,
-            paymentMethod: paymentMethod,
-            status: 'pending',
-            createdAt: new Date().toISOString()
-        };
-        orders.push(order);
+    function logout() {
+        currentUser = null;
         persist();
-        return { success: true, orderId: orderId, total: total };
+        render();
     }
 
-    function confirmPayment(orderId, paymentProof) {
-        let order = orders.find(o => o.id === orderId);
-        if (!order) return { success: false, msg: "Order tidak ditemukan" };
-        if (order.status !== 'pending') return { success: false, msg: "Order sudah diproses" };
-        
-        order.status = 'paid';
-        order.paymentProof = paymentProof;
-        order.paidAt = new Date().toISOString();
-        
-        // Kurangi stock
-        let product = products.find(p => p.id === order.productId);
-        if (product) {
-            product.stock -= order.quantity;
-        }
-        
-        // Tambah transaksi
-        transactions.push({
-            id: "TRX" + Date.now(),
-            orderId: orderId,
-            amount: order.total,
-            status: 'completed',
-            createdAt: new Date().toISOString()
-        });
-        
-        persist();
-        return { success: true, msg: "Pembayaran dikonfirmasi" };
+    function checkApiKey(key) {
+        let apiKey = apiKeys.find(k => k.key === key);
+        if (!apiKey) return { valid: false, msg: "API Key tidak valid" };
+        let expired = new Date(apiKey.expired) < new Date();
+        if (expired) return { valid: false, msg: "API Key sudah kadaluarsa" };
+        return { valid: true, data: apiKey };
     }
 
-    function manualPayment(orderId) {
-        let order = orders.find(o => o.id === orderId);
-        if (!order) return false;
-        if (order.status === 'pending') {
-            order.status = 'completed';
-            order.completedAt = new Date().toISOString();
-            persist();
-            return true;
-        }
-        return false;
-    }
-
-    // ==================== BOT API WEBHOOK ====================
-    function generateBotToken() {
-        return "AM_" + Math.random().toString(36).substring(2, 15).toUpperCase();
-    }
-
-    function registerBot(userId, botName, webhookUrl) {
-        let token = generateBotToken();
-        botTokens.push({ userId, botName, token, webhookUrl, createdAt: new Date().toISOString() });
-        persist();
-        return token;
-    }
-
-    function processWebhook(token, action, data) {
-        let bot = botTokens.find(b => b.token === token);
-        if (!bot) return { success: false, msg: "Invalid token" };
-        
-        if (action === 'check_stock') {
-            let product = products.find(p => p.id == data.productId);
-            return { success: true, stock: product ? product.stock : 0 };
-        }
-        if (action === 'order') {
-            let result = createOrder(bot.userId, data.productId, data.quantity, 'bot');
-            return result;
-        }
-        if (action === 'status') {
-            let order = orders.find(o => o.id === data.orderId);
-            return { success: true, status: order ? order.status : 'not_found' };
-        }
-        return { success: false, msg: "Unknown action" };
-    }
-
-    // ==================== RENDER ====================
-    let currentPage = "products";
+    // ==================== RENDER ENGINE ====================
+    let currentPage = "dashboard";
 
     function render() {
         if (!currentUser) {
             document.getElementById('pageContent').innerHTML = renderAuth();
-            document.getElementById('loginBtn')?.addEventListener('click', () => {
-                let res = login(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
-                alert(res.msg || "Login berhasil");
-                if (res.success) render();
-            });
-            document.getElementById('regBtn')?.addEventListener('click', () => {
-                let res = register(document.getElementById('regUser').value, document.getElementById('regPass').value, document.getElementById('regEmail').value);
-                alert(res.msg || "Registrasi berhasil, silakan login");
-                if (res.success) render();
-            });
+            document.getElementById('pageTitle').innerText = "Login";
+            document.getElementById('userName').innerText = "Guest";
+            document.getElementById('logoutBtn').style.display = "none";
+            attachAuthEvents();
             return;
         }
 
-        document.querySelectorAll('.nav-links a').forEach(a => {
-            a.classList.remove('active');
-            if(a.dataset.page === currentPage) a.classList.add('active');
-        });
-
-        let html = currentPage === 'products' ? renderProducts() :
-                   currentPage === 'orders' ? renderOrders() :
-                   currentPage === 'profile' ? renderProfile() : renderBotAPI();
+        document.getElementById('userName').innerText = currentUser.username;
+        document.getElementById('logoutBtn').style.display = "inline-block";
+        
+        let html = '';
+        if (currentPage === 'dashboard') html = renderDashboard();
+        else if (currentPage === 'pricing') html = renderPricing();
+        else if (currentPage === 'documentation') html = renderDocumentation();
+        else html = renderCategoryPage(currentPage);
+        
         document.getElementById('pageContent').innerHTML = html;
+        document.getElementById('pageTitle').innerText = getPageTitle();
         attachEvents();
+    }
+
+    function getPageTitle() {
+        const titles = {
+            dashboard: 'Dashboard',
+            pricing: 'Pricing',
+            documentation: 'Documentation',
+            ai: 'Artificial Intelligence API',
+            anime: 'Anime API',
+            convert: 'Convert API',
+            database: 'Database API',
+            downloader: 'Downloader API',
+            games: 'Games API',
+            islami: 'Islami API',
+            maker: 'Maker API',
+            news: 'News API',
+            information: 'Information API',
+            primbon: 'Primbon API',
+            random: 'Random API',
+            search: 'Search API',
+            stalker: 'Stalker API',
+            tools: 'Tools API',
+            'text-manipulation': 'Text Manipulation API',
+            textpro: 'Textpro API',
+            'text-to-voice': 'Text To Voice API'
+        };
+        return titles[currentPage] || 'API Documentation';
     }
 
     function renderAuth() {
         return `
-        <div class="card" style="max-width:450px; margin:2rem auto">
-            <h2 style="text-align:center">AlightMotion Real API</h2>
-            <div style="display:flex; gap:10px; margin:20px 0">
-                <button class="btn" id="showLogin" style="flex:1">Login</button>
-                <button class="btn-outline" id="showReg" style="flex:1">Register</button>
+        <div class="stat-card" style="max-width:450px; margin:2rem auto">
+            <div style="text-align:center; margin-bottom:1.5rem">
+                <h2>Autoresbot API</h2>
+                <p>Login atau Register untuk mengakses API</p>
             </div>
+            <div style="display:flex; gap:10px; margin-bottom:1.5rem">
+                <button class="btn btn-primary" id="showLoginBtn" style="flex:1">Login</button>
+                <button class="btn" id="showRegBtn" style="flex:1; background:#1f2348">Register</button>
+            </div>
+            
             <div id="loginBox">
-                <input type="text" id="loginUser" placeholder="Username" style="margin:10px 0">
-                <input type="password" id="loginPass" placeholder="Password" style="margin:10px 0">
-                <button class="btn btn-block" id="loginBtn">Login</button>
+                <input type="text" id="loginUser" placeholder="Username" style="margin-bottom:10px">
+                <input type="password" id="loginPass" placeholder="Password" style="margin-bottom:10px">
+                <button class="btn btn-primary" id="doLoginBtn" style="width:100%">Login</button>
             </div>
+            
             <div id="regBox" class="hidden">
-                <input type="text" id="regUser" placeholder="Username" style="margin:10px 0">
-                <input type="email" id="regEmail" placeholder="Email" style="margin:10px 0">
-                <input type="password" id="regPass" placeholder="Password" style="margin:10px 0">
-                <button class="btn btn-block" id="regBtn">Daftar</button>
+                <input type="text" id="regUser" placeholder="Username (min 4)" style="margin-bottom:10px">
+                <input type="email" id="regEmail" placeholder="Email" style="margin-bottom:10px">
+                <input type="password" id="regPass" placeholder="Password (min 8)" style="margin-bottom:10px">
+                <button class="btn btn-primary" id="doRegBtn" style="width:100%">Register</button>
             </div>
         </div>
-        <script>
-            document.getElementById('showLogin')?.onclick = () => {
-                document.getElementById('loginBox').classList.remove('hidden');
-                document.getElementById('regBox').classList.add('hidden');
-            };
-            document.getElementById('showReg')?.onclick = () => {
-                document.getElementById('loginBox').classList.add('hidden');
-                document.getElementById('regBox').classList.remove('hidden');
-            };
-        <\/script>`;
+        `;
     }
 
-    function renderProducts() {
+    function renderDashboard() {
+        let userApiKey = apiKeys.find(k => k.owner === currentUser.username);
+        let expiresIn = userApiKey ? new Date(userApiKey.expired) : new Date();
+        
         return `
-        <div class="card">
-            <h2><i class="fas fa-box"></i> Produk AlightMotion</h2>
-            <p>Stock otomatis berkurang saat pembelian | Payment Gateway otomatis & manual</p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">YOUR IP ADDRESS</div>
+                <div class="stat-value">${getClientIP()}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">TOTAL USERS</div>
+                <div class="stat-value">${users.length}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">REQUEST TODAY</div>
+                <div class="stat-value">${requests.today.toLocaleString()}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">TOTAL REQUEST</div>
+                <div class="stat-value">${requests.total.toLocaleString()}</div>
+            </div>
         </div>
-        <div class="grid-3">
-            ${products.map(p => `
-            <div class="product-card">
-                <div style="font-size:3rem">${p.image}</div>
-                <h3>${p.name}</h3>
-                <p class="price">Rp ${p.price.toLocaleString()}</p>
-                <p>${p.description}</p>
-                <p>Stock: <span class="badge ${p.stock > 10 ? 'badge-stock' : p.stock > 0 ? 'badge-low' : 'badge-out'}">${p.stock}</span></p>
-                <div style="display:flex; gap:8px; margin-top:12px">
-                    <input type="number" id="qty_${p.id}" min="1" max="${p.stock}" value="1" style="width:80px">
-                    <button class="btn buy-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">Beli</button>
-                </div>
+        
+        <div class="api-check">
+            <h3>Check API Key</h3>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+                <input type="text" id="checkApiKey" placeholder="Enter your API key...">
+                <button id="checkApiBtn">Check</button>
+            </div>
+            <div id="checkResult" style="margin-top:1rem"></div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Welcome to Autoresbot API</h3>
+            <p>Thank you for using the services of Autoresbot API!! Please use an API key that is hard to guess, just like a strong password.</p>
+            <div style="margin-top:1rem">
+                <p><strong>API Key:</strong> <code>${userApiKey?.key || 'Belum ada'}</code></p>
+                <p><strong>Limit:</strong> ${userApiKey?.limit?.toLocaleString() || 0} requests</p>
+                <p><strong>Expiration:</strong> ${userApiKey ? new Date(userApiKey.expired).toLocaleDateString() : '-'}</p>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Feature Updates</h3>
+            <table class="feature-table">
+                <thead>
+                    <tr><th>FEATURE</th><th>DATE</th><th>NOTES</th><th>PREVIEW</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Add Features</td><td>2026-05-25 17:16:36</td><td>Sticker Circle</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
+                    <tr><td>Tebakan</td><td>2026-05-25 17:14:59</td><td>fix tebak hewan, bendera, pemain bola</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
+                    <tr><td>Anime</td><td>2026-05-03 14:20:54</td><td>Fix</td><td><a href="#" style="color:#6366f1">View</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+        `;
+    }
+
+    function renderPricing() {
+        return `
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Free Tier</h3>
+                <p class="stat-value">Rp 0</p>
+                <p>5000 requests/bulan</p>
+                <p>Basic endpoints</p>
+                <button class="btn btn-primary" style="margin-top:1rem">Current Plan</button>
+            </div>
+            <div class="stat-card">
+                <h3>Pro Tier</h3>
+                <p class="stat-value">Rp 99.000</p>
+                <p>Unlimited requests</p>
+                <p>All endpoints + Priority support</p>
+                <button class="btn btn-primary" style="margin-top:1rem">Upgrade</button>
+            </div>
+            <div class="stat-card">
+                <h3>Enterprise</h3>
+                <p class="stat-value">Custom</p>
+                <p>Dedicated server</p>
+                <p>SLA 99.9%</p>
+                <button class="btn btn-primary" style="margin-top:1rem">Contact Us</button>
+            </div>
+        </div>
+        `;
+    }
+
+    function renderDocumentation() {
+        return `
+        <div class="stat-card">
+            <h3>API Documentation</h3>
+            <p>Base URL: <code>https://api.autoresbot.com/v1</code></p>
+            <p>Authentication: <code>X-API-Key: YOUR_API_KEY</code></p>
+            <hr style="margin:1rem 0">
+            <h4>Example Request</h4>
+            <pre style="background:#0a0e27; padding:1rem; border-radius:16px; overflow-x:auto">
+curl -X GET "https://api.autoresbot.com/v1/ai/chat?message=halo" \\
+  -H "X-API-Key: AR_XXXXX"
+            </pre>
+            <hr style="margin:1rem 0">
+            <h4>Available Endpoints</h4>
+            <table class="feature-table">
+                <tr><th>Endpoint</th><th>Method</th><th>Description</th></tr>
+                <tr><td>/ai/chat</td><td>GET/POST</td><td>AI Chatbot</td></tr>
+                <tr><td>/downloader/ytmp3</td><td>GET</td><td>Download YouTube Audio</td></tr>
+                <tr><td>/anime/random</td><td>GET</td><td>Random Anime</td></tr>
+                <tr><td>/islami/jadwal-sholat</td><td>GET</td><td>Jadwal Sholat</td></tr>
+                <tr><td>/tools/shorturl</td><td>POST</td><td>Short URL</td></tr>
+            </table>
+        </div>
+        `;
+    }
+
+    function renderCategoryPage(category) {
+        const endpoints = {
+            ai: [{ name: "ChatGPT", endpoint: "/ai/chat" }, { name: "Gemini AI", endpoint: "/ai/gemini" }, { name: "Image Generation", endpoint: "/ai/image" }],
+            downloader: [{ name: "YouTube MP3", endpoint: "/downloader/ytmp3" }, { name: "YouTube MP4", endpoint: "/downloader/ytmp4" }, { name: "TikTok", endpoint: "/downloader/tiktok" }, { name: "Instagram", endpoint: "/downloader/ig" }],
+            islami: [{ name: "Jadwal Sholat", endpoint: "/islami/jadwal" }, { name: "Al-Quran", endpoint: "/islami/quran" }, { name: "Doa Harian", endpoint: "/islami/doa" }, { name: "Asmaul Husna", endpoint: "/islami/asmaul" }],
+            maker: [{ name: "Sticker Maker", endpoint: "/maker/sticker" }, { name: "Circle Sticker", endpoint: "/maker/circle" }, { name: "Text to Image", endpoint: "/maker/text2img" }],
+            stalker: [{ name: "Instagram Stalk", endpoint: "/stalker/ig" }, { name: "TikTok Stalk", endpoint: "/stalker/tiktok" }, { name: "GitHub Stalk", endpoint: "/stalker/github" }],
+            tools: [{ name: "Short URL", endpoint: "/tools/shorturl" }, { name: "QR Code", endpoint: "/tools/qrcode" }, { name: "Weather", endpoint: "/tools/weather" }]
+        };
+        
+        let items = endpoints[category] || [{ name: "Coming Soon", endpoint: "/coming-soon" }];
+        
+        return `
+        <div class="stats-grid">
+            ${items.map(item => `
+            <div class="stat-card">
+                <h3>${item.name}</h3>
+                <code>${item.endpoint}</code>
+                <p style="margin-top:0.5rem">Method: GET/POST</p>
+                <button class="btn btn-primary" style="margin-top:1rem; width:100%">Try Now</button>
             </div>
             `).join('')}
         </div>
-        <div class="card" id="paymentModal" class="hidden">
-            <h3>Pilih Metode Pembayaran</h3>
-            <button class="btn btn-success" id="payAuto">💳 Auto Payment (Midtrans/QRIS)</button>
-            <button class="btn btn-outline" id="payManual">📝 Manual Transfer</button>
-        </div>`;
+        `;
     }
 
-    function renderOrders() {
-        let myOrders = orders.filter(o => o.userId === currentUser.username);
-        return `
-        <div class="card">
-            <h2><i class="fas fa-shopping-cart"></i> Pesanan Saya</h2>
-            ${myOrders.length === 0 ? '<p>Belum ada pesanan</p>' : `
-            <table style="width:100%; border-collapse:collapse">
-                <tr style="border-bottom:1px solid var(--border)">
-                    <th>ID</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th><th>Aksi</th>
-                </tr>
-                ${myOrders.map(o => `
-                <tr style="border-bottom:1px solid var(--border)">
-                    <td>${o.id}</td><td>${o.productName}</td><td>${o.quantity}</td><td>Rp ${o.total.toLocaleString()}</td>
-                    <td><span class="badge ${o.status === 'completed' ? 'badge-stock' : 'badge-warning'}">${o.status}</span></td>
-                    <td>${o.status === 'pending' ? `<button class="btn-outline confirm-manual" data-id="${o.id}">Konfirmasi Manual</button>` : '-'}</td>
-                </tr>
-                `).join('')}
-            </table>
-            `}
-        </div>`;
+    function attachAuthEvents() {
+        document.getElementById('showLoginBtn')?.addEventListener('click', () => {
+            document.getElementById('loginBox').classList.remove('hidden');
+            document.getElementById('regBox').classList.add('hidden');
+        });
+        document.getElementById('showRegBtn')?.addEventListener('click', () => {
+            document.getElementById('loginBox').classList.add('hidden');
+            document.getElementById('regBox').classList.remove('hidden');
+        });
+        document.getElementById('doLoginBtn')?.addEventListener('click', () => {
+            let user = document.getElementById('loginUser').value;
+            let pass = document.getElementById('loginPass').value;
+            let res = login(user, pass);
+            alert(res.msg);
+            if (res.success) render();
+        });
+        document.getElementById('doRegBtn')?.addEventListener('click', () => {
+            let user = document.getElementById('regUser').value;
+            let email = document.getElementById('regEmail').value;
+            let pass = document.getElementById('regPass').value;
+            let res = register(user, pass, email);
+            alert(res.msg || `Registrasi berhasil! API Key: ${res.apiKey}`);
+            if (res.success) render();
+        });
     }
-
-    function renderProfile() {
-        return `
-        <div class="card">
-            <h2><i class="fas fa-user"></i> Profile</h2>
-            <p><strong>Username:</strong> ${currentUser.username}</p>
-            <p><strong>Email:</strong> ${currentUser.email || '-'}</p>
-            <p><strong>Saldo:</strong> Rp ${(currentUser.balance || 0).toLocaleString()}</p>
-            <button class="btn btn-danger" id="logoutBtn">Logout</button>
-        </div>
-        <div class="card">
-            <h3>Bot API Token</h3>
-            ${botTokens.filter(b => b.userId === currentUser.username).map(b => `
-                <div class="badge" style="background:var(--primary); color:white; margin:5px">Token: ${b.token} | Bot: ${b.botName}</div>
-            `).join('') || '<p>Belum punya token bot</p>'}
-            <input type="text" id="botName" placeholder="Nama Bot"><br><br>
-            <input type="text" id="webhookUrl" placeholder="Webhook URL (opsional)">
-            <button class="btn" id="createBotBtn">Buat Token Bot</button>
-        </div>`;
-    }
-
-    function renderBotAPI() {
-        return `
-        <div class="card">
-            <h2><i class="fab fa-whatsapp"></i> Bot API Webhook</h2>
-            <p>Konekkan bot WhatsApp/Telegram Anda ke API ini</p>
-            <div class="grid-2">
-                <div>
-                    <h3>Endpoint API</h3>
-                    <code style="background:var(--bg-body); padding:8px; display:block; border-radius:12px">POST /api/webhook</code>
-                    <p style="margin-top:10px">Headers: <code>Authorization: Bearer YOUR_TOKEN</code></p>
-                    <p>Body JSON: <code>{"action":"check_stock","productId":1}</code></p>
-                </div>
-                <div>
-                    <h3>Contoh Request</h3>
-                    <pre style="background:var(--bg-body); padding:12px; border-radius:12px; font-size:12px">
-curl -X POST https://amapi.vercel.app/api/webhook \
-  -H "Authorization: Bearer AM_XXXXX" \
-  -H "Content-Type: application/json" \
-  -d '{"action":"check_stock","productId":1}'
-                    </pre>
-                </div>
-            </div>
-            <hr style="margin:1rem 0">
-            <h3>Test Webhook</h3>
-            <input type="text" id="testToken" placeholder="Masukkan Token Bot">
-            <select id="testAction">
-                <option value="check_stock">Cek Stock</option>
-                <option value="order">Buat Order</option>
-                <option value="status">Cek Status</option>
-            </select>
-            <input type="text" id="testProductId" placeholder="Product ID (1-6)">
-            <button class="btn" id="testWebhookBtn">Test Request</button>
-            <div id="testResult" class="card" style="margin-top:1rem"></div>
-        </div>`;
-    }
-
-    let selectedProduct = null;
-    let selectedQty = null;
 
     function attachEvents() {
-        document.querySelectorAll('.buy-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                let id = parseInt(btn.dataset.id);
-                let qty = parseInt(document.getElementById(`qty_${id}`)?.value || 1);
-                let product = products.find(p => p.id === id);
-                if (!product || product.stock < qty) return alert("Stock tidak mencukupi");
-                selectedProduct = product;
-                selectedQty = qty;
-                showPaymentOptions(product, qty);
-            });
-        });
-
-        document.getElementById('payAuto')?.addEventListener('click', () => {
-            if (!selectedProduct) return;
-            let total = selectedProduct.price * selectedQty;
-            let orderRes = createOrder(currentUser.username, selectedProduct.id, selectedQty, 'auto');
-            if (orderRes.success) {
-                alert(`Pesanan dibuat! ID: ${orderRes.orderId}\nTotal: Rp ${total.toLocaleString()}\nSilakan transfer ke rekening yang tersedia.`);
-                // Simulasi auto payment (di real integrasi Midtrans)
-                setTimeout(() => {
-                    confirmPayment(orderRes.orderId, "auto_success");
-                    render();
-                }, 2000);
-            } else alert(orderRes.msg);
-        });
-
-        document.getElementById('payManual')?.addEventListener('click', () => {
-            if (!selectedProduct) return;
-            let orderRes = createOrder(currentUser.username, selectedProduct.id, selectedQty, 'manual');
-            if (orderRes.success) {
-                alert(`Pesanan dibuat! ID: ${orderRes.orderId}\nTotal: Rp {(selectedProduct.price * selectedQty).toLocaleString()}\nTransfer ke BCA 1234567890 a.n AlightMotion\nSetelah transfer, konfirmasi di menu Pesanan`);
-                render();
-            } else alert(orderRes.msg);
-        });
-
-        document.querySelectorAll('.confirm-manual').forEach(btn => {
-            btn.addEventListener('click', () => {
-                let orderId = btn.dataset.id;
-                if (manualPayment(orderId)) alert("Pesanan selesai! Produk akan dikirim.");
-                else alert("Gagal");
-                render();
-            });
-        });
-
-        document.getElementById('logoutBtn')?.addEventListener('click', () => {
-            currentUser = null;
-            persist();
-            render();
-        });
-
-        document.getElementById('createBotBtn')?.addEventListener('click', () => {
-            let botName = document.getElementById('botName')?.value || "MyBot";
-            let webhook = document.getElementById('webhookUrl')?.value || "";
-            let token = registerBot(currentUser.username, botName, webhook);
-            alert(`Token Bot: ${token}\nSimpan token ini untuk koneksi bot Anda!`);
-            render();
-        });
-
-        document.getElementById('testWebhookBtn')?.addEventListener('click', () => {
-            let token = document.getElementById('testToken')?.value;
-            let action = document.getElementById('testAction')?.value;
-            let productId = parseInt(document.getElementById('testProductId')?.value);
-            if (!token) return alert("Masukkan token");
-            let result = processWebhook(token, action, { productId, quantity: 1 });
-            document.getElementById('testResult').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        document.getElementById('logoutBtn')?.addEventListener('click', logout);
+        document.getElementById('checkApiBtn')?.addEventListener('click', () => {
+            let key = document.getElementById('checkApiKey').value;
+            let result = checkApiKey(key);
+            document.getElementById('checkResult').innerHTML = result.valid ? 
+                `<span style="color:#10b981">✅ API Key valid! Limit: ${result.data.limit}</span>` :
+                `<span style="color:#ef4444">❌ ${result.msg}</span>`;
         });
     }
 
-    function showPaymentOptions(product, qty) {
-        let modal = document.getElementById('paymentModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-            modal.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
+    // Sidebar navigation
+    document.querySelectorAll('.nav-item').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             currentPage = link.dataset.page;
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            link.classList.add('active');
             render();
         });
     });
 
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    document.getElementById('upgradeBtn')?.addEventListener('click', () => {
+        currentPage = 'pricing';
+        render();
     });
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
 
     render();
 </script>
