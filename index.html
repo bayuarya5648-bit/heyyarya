@@ -2,623 +2,512 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AlightMotion Real API | Xyrooo Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NexusSMM | Panel Media Social & API Real</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN untuk statistik dashboard -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* Anti salin teks */
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Anti salin - teks tidak bisa dipilih */
-        body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
-        /* Tapi simbol copy tetap bisa diklik */
-        .copy-icon, .copy-btn, [data-copy] {
-            user-select: none;
-            cursor: pointer;
-        }
-
-        :root {
-            --bg-body: #0a0e27;
-            --bg-card: #0f1235;
-            --text-primary: #e0e4f0;
-            --text-secondary: #8b9ab0;
-            --border: #1f2348;
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 0.8rem 0;
-        }
-
-        .nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        /* Hamburger Menu (Simbol 3 Garis) */
-        .menu-toggle {
-            background: var(--primary);
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: 0.2s;
-        }
-
-        .menu-toggle:hover {
-            background: var(--primary-dark);
-            transform: scale(1.02);
-        }
-
-        .menu-toggle span {
-            width: 24px;
-            height: 2px;
-            background: white;
-            border-radius: 4px;
-            transition: 0.2s;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--primary), #a855f7);
+        body {
+            background: linear-gradient(135deg, #0B0F1C 0%, #0A0E1A 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: white;
-        }
-
-        .brand {
-            font-weight: 800;
-            font-size: 1.3rem;
-            background: linear-gradient(135deg, var(--primary), #a855f7);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .theme-toggle {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            color: white;
-        }
-
-        /* Sidebar Menu (Muncul dari kiri) */
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 200;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-        }
-
-        .sidebar-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .sidebar-menu {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100%;
-            background: linear-gradient(180deg, #0f1235 0%, #0a0e27 100%);
-            border-right: 1px solid var(--border);
-            z-index: 201;
-            transition: 0.3s;
-            overflow-y: auto;
-            padding: 1.5rem 0;
-        }
-
-        .sidebar-menu.active {
-            left: 0;
-        }
-
-        .sidebar-header {
-            padding: 0 1.5rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            margin-bottom: 1.5rem;
-        }
-
-        .sidebar-menu .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1.5rem;
-            color: #8b9ab0;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .sidebar-menu .nav-item:hover, .sidebar-menu .nav-item.active {
-            background: rgba(99,102,241,0.15);
-            color: var(--primary-light);
-        }
-
-        .sidebar-menu .nav-section-title {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #5b6e8c;
-            padding: 0 1.5rem;
-            margin: 1rem 0 0.5rem;
-        }
-
-        .close-sidebar {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Card */
-        .card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 1.8rem;
-            border: 1px solid var(--border);
-            margin-bottom: 1.5rem;
-        }
-
-        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .btn-block { width: 100%; justify-content: center; }
-
-        input {
-            background: var(--bg-body);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 24px;
-            width: 100%;
-            color: white;
-        }
-
-        .badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            background: var(--primary);
-        }
-
-        .copy-icon {
-            cursor: pointer;
-            color: var(--primary-light);
-            margin-left: 8px;
-        }
-
-        .copy-icon:hover { color: white; }
-
-        footer {
-            text-align: center;
             padding: 1.5rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
         }
 
-        .hidden { display: none; }
+        /* Glassmorphic Container */
+        .glass-panel {
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(0, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
 
-        @media (max-width: 768px) {
-            .container { padding: 0 1rem; }
-            .brand { font-size: 1rem; }
-            .logo-img { width: 36px; height: 36px; font-size: 1rem; }
+        /* Forms & Cards */
+        .auth-container, .dashboard-container {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .card-bg {
+            background: rgba(12, 18, 32, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 1.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #0EA5E9, #3B82F6);
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(90deg, #3B82F6, #0EA5E9);
+        }
+        .btn-outline-cyber {
+            border: 1px solid #0EA5E9;
+            background: transparent;
+            color: #0EA5E9;
+        }
+        .btn-outline-cyber:hover {
+            background: rgba(14, 165, 233, 0.1);
+            box-shadow: 0 0 8px rgba(14,165,233,0.5);
+        }
+
+        input, select, textarea {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #2D3A5E;
+            color: #E2E8F0;
+            border-radius: 1rem;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0EA5E9;
+            box-shadow: 0 0 0 2px rgba(14,165,233,0.3);
+        }
+
+        .table-custom {
+            background: rgba(0,0,0,0.3);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .table-custom th {
+            background: #0F172A;
+            color: #94A3B8;
+            font-weight: 500;
+            border-bottom: 1px solid #1E293B;
+        }
+        .table-custom td {
+            border-color: #1E293B;
+            color: #CBD5E1;
+        }
+
+        .badge-success {
+            background: #10B98120;
+            color: #34D399;
+            border-radius: 40px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-warning {
+            background: #F59E0B20;
+            color: #FBBF24;
+        }
+
+        .sidebar-mini {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .stat-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 1.2rem;
+            border-left: 4px solid #0EA5E9;
+            transition: all 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-3px); background: rgba(30, 41, 59, 0.7);}
+
+        /* animasi */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .animate-fade { animation: fadeInUp 0.5s ease-out; }
+
+        .toast-custom {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<div class="navbar">
-    <div class="container nav-inner">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <button class="menu-toggle" id="menuToggleBtn">
-                <span></span><span></span><span></span>
-            </button>
-            <div class="logo-area">
-                <div class="logo-img">AM</div>
-                <span class="brand">AlightMotion Real API</span>
-            </div>
-        </div>
-        <div style="display: flex; gap: 10px;">
-            <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i> Mode</button>
-        </div>
-    </div>
-</div>
-
-<!-- Sidebar Menu All -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-<div class="sidebar-menu" id="sidebarMenu">
-    <button class="close-sidebar" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
-    <div class="sidebar-header">
-        <div style="font-weight:800; font-size:1.2rem">Xyrooo Studio</div>
-        <div style="font-size:0.7rem; color:#8b9ab0">AlightMotion API</div>
-    </div>
-    
-    <div class="nav-section-title">MAIN MENU</div>
-    <a href="#" class="nav-item" data-page="products"><i class="fas fa-box"></i> Produk</a>
-    <a href="#" class="nav-item" data-page="orders"><i class="fas fa-shopping-cart"></i> Pesanan</a>
-    <a href="#" class="nav-item" data-page="profile"><i class="fas fa-user"></i> Profile</a>
-    <a href="#" class="nav-item" data-page="bot"><i class="fab fa-whatsapp"></i> Bot API</a>
-    
-    <div class="nav-section-title">XYROOO API SERVICES</div>
-    <a href="#" class="nav-item" data-page="xyrooo-api"><i class="fas fa-globe"></i> Xyrooo Web API</a>
-    <a href="#" class="nav-item" data-page="xyrooo-docs"><i class="fas fa-book"></i> API Documentation</a>
-    <a href="#" class="nav-item" data-page="xyrooo-pricing"><i class="fas fa-tag"></i> Pricing</a>
-    
-    <div class="nav-section-title">ALIGHTMOTION STOCK</div>
-    <a href="#" class="nav-item" data-page="alight-stock"><i class="fas fa-database"></i> Stock Produk</a>
-    <a href="#" class="nav-item" data-page="alight-template"><i class="fas fa-palette"></i> Template</a>
-    <a href="#" class="nav-item" data-page="alight-font"><i class="fas fa-font"></i> Fonts Pack</a>
-    
-    <div class="nav-section-title">SUPPORT</div>
-    <a href="#" class="nav-item" data-page="contact"><i class="fab fa-whatsapp"></i> Contact</a>
-    <a href="#" class="nav-item" data-page="upgrade"><i class="fas fa-gem"></i> Upgrade Premium</a>
-</div>
-
-<main class="container" id="appRoot">
-    <div id="pageContent"></div>
-</main>
-
-<footer>© 2026 AlightMotion Real API | Xyrooo Studio | Real API No Demo</footer>
+<div id="appRoot" class="w-full"></div>
 
 <script>
-    // ==================== DATA STORAGE ====================
-    let users = JSON.parse(localStorage.getItem('am_users')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('am_current')) || null;
-    let products = JSON.parse(localStorage.getItem('am_products')) || [
-        { id: 1, name: "AlightMotion Pro Lifetime", price: 85000, stock: 25, image: "🎬" },
-        { id: 2, name: "Template Premium Pack", price: 25000, stock: 100, image: "🎨" },
-        { id: 3, name: "Fonts Pack Pro", price: 15000, stock: 50, image: "✍️" },
-        { id: 4, name: "Green Screen Pack", price: 20000, stock: 75, image: "🎥" },
-        { id: 5, name: "Sound Effects Pro", price: 18000, stock: 40, image: "🎵" },
-        { id: 6, name: "Transition Pack", price: 30000, stock: 30, image: "🔄" }
+    // ---------- STORAGE KEYS (Simulasi Database) ----------
+    const STORAGE_USERS = 'smm_users';
+    const STORAGE_SESSION = 'smm_session';
+    const STORAGE_PRODUCTS = 'smm_products';
+    const STORAGE_ORDERS = 'smm_orders';
+
+    // Data dummy produk awal (API Real SMM)
+    const defaultProducts = [
+        { id: 'prod_1', name: 'Instagram Followers', category: 'Instagram', price: 2500, min: 100, max: 50000, speed: 'High', status: 'active' },
+        { id: 'prod_2', name: 'TikTok Views', category: 'TikTok', price: 1200, min: 500, max: 100000, speed: 'Instant', status: 'active' },
+        { id: 'prod_3', name: 'YouTube Subscribers', category: 'YouTube', price: 3500, min: 50, max: 10000, speed: 'Medium', status: 'active' },
+        { id: 'prod_4', name: 'Facebook Likes', category: 'Facebook', price: 800, min: 100, max: 25000, speed: 'Fast', status: 'active' },
+        { id: 'prod_5', name: 'Twitter Retweets', category: 'Twitter', price: 1800, min: 10, max: 5000, status: 'active' },
     ];
-    let orders = JSON.parse(localStorage.getItem('am_orders')) || [];
-    let apiKeys = JSON.parse(localStorage.getItem('am_apikeys')) || [];
 
-    function persist() {
-        localStorage.setItem('am_users', JSON.stringify(users));
-        localStorage.setItem('am_current', JSON.stringify(currentUser));
-        localStorage.setItem('am_products', JSON.stringify(products));
-        localStorage.setItem('am_orders', JSON.stringify(orders));
-        localStorage.setItem('am_apikeys', JSON.stringify(apiKeys));
-    }
+    // Helper functions
+    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]'); }
+    function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
+    function getProducts() { return JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || JSON.stringify(defaultProducts)); }
+    function saveProducts(products) { localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products)); }
+    function getOrders() { return JSON.parse(localStorage.getItem(STORAGE_ORDERS) || '[]'); }
+    function saveOrders(orders) { localStorage.setItem(STORAGE_ORDERS, JSON.stringify(orders)); }
+    function getCurrentUser() { return JSON.parse(sessionStorage.getItem(STORAGE_SESSION)); }
+    function setCurrentUser(user) { sessionStorage.setItem(STORAGE_SESSION, JSON.stringify(user)); }
+    function clearSession() { sessionStorage.removeItem(STORAGE_SESSION); }
 
-    // ==================== AUTH ====================
-    function register(username, password) {
-        if (username.length < 3) return { success: false, msg: "Username minimal 3 karakter" };
-        if (password.length < 6) return { success: false, msg: "Password minimal 6 karakter" };
-        if (users.find(u => u.username === username)) return { success: false, msg: "Username sudah ada" };
-        
-        let apiKey = "AM_" + Math.random().toString(36).substring(2, 15).toUpperCase();
-        users.push({ username, password: btoa(password), balance: 0, apiKey, role: 'user', createdAt: new Date().toISOString() });
-        apiKeys.push({ key: apiKey, owner: username, createdAt: new Date().toISOString() });
-        persist();
-        return { success: true, apiKey };
-    }
-
-    function login(username, password) {
-        let user = users.find(u => u.username === username && u.password === btoa(password));
-        if (!user) return { success: false, msg: "Username/password salah" };
-        currentUser = user;
-        persist();
-        return { success: true };
-    }
-
-    function logout() { currentUser = null; persist(); render(); }
-
-    // ==================== FUNGSI COPY (HANYA SIMBOL YANG BISA COPY) ====================
-    window.copyToClipboard = function(text) {
-        navigator.clipboard.writeText(text);
-        alert("✅ Tersalin: " + text);
-    };
-
-    // ==================== RENDER ====================
-    let currentPage = "products";
-
-    function render() {
-        if (!currentUser) {
-            document.getElementById('pageContent').innerHTML = renderAuth();
-            attachAuthEvents();
-            return;
+    // inisialisasi default user admin & demo
+    function initDatabase() {
+        let users = getUsers();
+        if(users.length === 0) {
+            users = [
+                { id: 'u1', username: 'admin', email: 'admin@smm.com', password: 'admin123', role: 'admin', balance: 150000, createdAt: new Date().toISOString() },
+                { id: 'u2', username: 'richie', email: 'richie@example.com', password: 'richie123', role: 'user', balance: 87500, createdAt: new Date().toISOString() },
+            ];
+            saveUsers(users);
         }
+        let products = getProducts();
+        if(products.length === 0) saveProducts(defaultProducts);
+        if(getOrders().length === 0){
+            saveOrders([]);
+        }
+    }
+    initDatabase();
 
-        let html = '';
-        if (currentPage === 'products') html = renderProducts();
-        else if (currentPage === 'orders') html = renderOrders();
-        else if (currentPage === 'profile') html = renderProfile();
-        else if (currentPage === 'bot') html = renderBotAPI();
-        else if (currentPage === 'xyrooo-api') html = renderXyroooAPI();
-        else if (currentPage === 'xyrooo-docs') html = renderXyroooDocs();
-        else if (currentPage === 'xyrooo-pricing') html = renderPricing();
-        else if (currentPage === 'alight-stock') html = renderStock();
-        else if (currentPage === 'alight-template') html = renderTemplate();
-        else if (currentPage === 'alight-font') html = renderFonts();
-        else if (currentPage === 'contact') html = renderContact();
-        else if (currentPage === 'upgrade') html = renderUpgrade();
-        else html = renderProducts();
-        
-        document.getElementById('pageContent').innerHTML = html;
-        attachEvents();
+    // Toast notification
+    function showToast(message, type = 'success') {
+        let toastDiv = document.createElement('div');
+        toastDiv.className = `fixed bottom-5 right-5 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl backdrop-blur-md text-sm font-medium animate-fade transition-all duration-300 ${type === 'error' ? 'bg-red-600/80 text-white border-l-4 border-red-300' : 'bg-emerald-600/80 text-white border-l-4 border-emerald-300'}`;
+        toastDiv.innerHTML = `<i class="fas ${type === 'error' ? 'fa-circle-exclamation' : 'fa-check-circle'} mr-1"></i> ${message}`;
+        document.body.appendChild(toastDiv);
+        setTimeout(() => { toastDiv.remove(); }, 3500);
     }
 
-    function renderAuth() {
+    // Router Sederhana: state UI (auth, dashboard)
+    let currentView = 'login'; // login, register, dashboard
+    let currentUser = getCurrentUser();
+
+    // API Real Simulasi (Endpoint Internal) -> untuk order produk
+    function apiCreateOrder(productId, quantity, link) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const products = getProducts();
+                const product = products.find(p => p.id === productId);
+                if(!product) reject({error: 'Produk tidak ditemukan'});
+                const totalCost = product.price * quantity;
+                const user = getCurrentUser();
+                if(!user) reject({error: 'Sesi habis, login ulang'});
+                let users = getUsers();
+                const userDb = users.find(u => u.id === user.id);
+                if(!userDb) reject({error: 'User invalid'});
+                if(userDb.balance < totalCost) reject({error: 'Saldo tidak mencukupi'});
+                // proses order
+                const newOrder = {
+                    id: 'ORD-' + Date.now() + Math.floor(Math.random()*1000),
+                    userId: userDb.id,
+                    productId: productId,
+                    productName: product.name,
+                    quantity: quantity,
+                    link: link,
+                    price: product.price,
+                    total: totalCost,
+                    status: 'Processing',
+                    createdAt: new Date().toISOString()
+                };
+                // kurangi saldo
+                userDb.balance -= totalCost;
+                saveUsers(users);
+                setCurrentUser(userDb); // update session
+                let orders = getOrders();
+                orders.unshift(newOrder);
+                saveOrders(orders);
+                resolve({order: newOrder, newBalance: userDb.balance});
+            }, 500);
+        });
+    }
+
+    // Render utama
+    function render() {
+        const sessionUser = getCurrentUser();
+        if(sessionUser && currentView !== 'dashboard') currentView = 'dashboard';
+        if(!sessionUser && currentView === 'dashboard') currentView = 'login';
+        const root = document.getElementById('appRoot');
+        if(currentView === 'login') root.innerHTML = renderLogin();
+        else if(currentView === 'register') root.innerHTML = renderRegister();
+        else if(currentView === 'dashboard') root.innerHTML = renderDashboard(sessionUser);
+        attachEventListeners();
+    }
+
+    // Komponen Login
+    function renderLogin() {
         return `
-        <div class="card" style="max-width:450px; margin:2rem auto; text-align:center">
-            <div class="logo-img" style="margin:0 auto 1rem; width:60px; height:60px; font-size:2rem">AM</div>
-            <h2>AlightMotion Real API</h2>
-            <p>Login | Register</p>
-            <div style="display:flex; gap:10px; margin:1.5rem 0">
-                <button class="btn" id="showLoginBtn" style="flex:1">Login</button>
-                <button class="btn-outline" id="showRegBtn" style="flex:1">Register</button>
+        <div class="auth-container glass-panel max-w-md mx-auto p-8 animate-fade">
+            <div class="text-center mb-8">
+                <i class="fas fa-bolt text-4xl text-cyan-400 bg-cyan-500/20 p-3 rounded-2xl"></i>
+                <h2 class="text-3xl font-bold mt-4 bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">NexusSMM</h2>
+                <p class="text-slate-400 mt-1">Real API • Social Media Panel</p>
             </div>
-            <div id="loginBox">
-                <input type="text" id="loginUser" placeholder="Username" style="margin-bottom:10px">
-                <input type="password" id="loginPass" placeholder="Password" style="margin-bottom:10px">
-                <button class="btn btn-block" id="doLoginBtn">Login</button>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-slate-300 text-sm mb-1">Username atau Email</label>
+                    <input type="text" id="loginUsername" class="w-full px-4 py-3 rounded-xl" placeholder="admin / admin@smm.com" autocomplete="off">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-slate-300 text-sm mb-1">Kata Sandi</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-3 rounded-xl" placeholder="••••••">
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold text-white">Masuk Dashboard</button>
+            </form>
+            <div class="text-center mt-6">
+                <p class="text-slate-400">Belum punya akun? <button id="toRegisterBtn" class="text-cyan-400 hover:underline font-semibold">Daftar Sekarang</button></p>
             </div>
-            <div id="regBox" class="hidden">
-                <input type="text" id="regUser" placeholder="Username (min 3)" style="margin-bottom:10px">
-                <input type="password" id="regPass" placeholder="Password (min 6)" style="margin-bottom:10px">
-                <button class="btn btn-block" id="doRegBtn">Register</button>
+            <div class="mt-5 text-xs text-center text-slate-500 border-t border-slate-700 pt-4">Demo: admin/admin123 | richie/richie123</div>
+        </div>
+        `;
+    }
+
+    function renderRegister() {
+        return `
+        <div class="auth-container glass-panel max-w-md mx-auto p-8 animate-fade">
+            <div class="text-center mb-6">
+                <i class="fas fa-user-plus text-3xl text-cyan-400"></i>
+                <h2 class="text-2xl font-bold text-white mt-2">Daftar Akun Baru</h2>
+            </div>
+            <form id="registerForm">
+                <div class="mb-3"><input type="text" id="regUsername" placeholder="Username" class="w-full px-4 py-3 rounded-xl"></div>
+                <div class="mb-3"><input type="email" id="regEmail" placeholder="Email" class="w-full px-4 py-3 rounded-xl"></div>
+                <div class="mb-3"><input type="password" id="regPassword" placeholder="Password (min. 6 karakter)" class="w-full px-4 py-3 rounded-xl"></div>
+                <div class="mb-5"><input type="password" id="regConfirm" placeholder="Konfirmasi Password" class="w-full px-4 py-3 rounded-xl"></div>
+                <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">Buat Akun</button>
+            </form>
+            <div class="text-center mt-5"><button id="toLoginBtn" class="text-cyan-400 text-sm hover:underline">← Kembali ke Login</button></div>
+        </div>
+        `;
+    }
+
+    // Dashboard lengkap dengan produk & API order
+    function renderDashboard(user) {
+        const products = getProducts();
+        const orders = getOrders().filter(o => o.userId === user.id).slice(0, 10);
+        const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
+        const activeOrders = orders.filter(o => o.status === 'Processing').length;
+        // Grafik sederhana
+        const chartId = 'statsChart';
+        return `
+        <div class="dashboard-container animate-fade">
+            <div class="glass-panel p-5 md:p-7">
+                <!-- header -->
+                <div class="flex flex-wrap justify-between items-center border-b border-slate-700 pb-4 mb-6">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-chart-line text-2xl text-cyan-400"></i>
+                        <h1 class="text-2xl font-bold text-white">Dashboard SMM <span class="text-cyan-400">| Real API</span></h1>
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        <div class="bg-slate-800/60 rounded-full px-4 py-2"><i class="fas fa-coins text-yellow-400"></i> <span class="font-mono font-bold text-white">${user.balance.toLocaleString()}</span> <span class="text-slate-300">Saldo</span></div>
+                        <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 px-4 py-2 rounded-xl transition"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+                    </div>
+                </div>
+                
+                <!-- Stat Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Total Pesanan</p><p class="text-3xl font-bold text-white">${orders.length}</p></div><i class="fas fa-shopping-cart text-3xl text-cyan-400/60"></i></div>
+                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Saldo Tersisa</p><p class="text-3xl font-bold text-green-400">${user.balance.toLocaleString()}</p></div><i class="fas fa-wallet text-3xl text-green-400/60"></i></div>
+                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Order Aktif</p><p class="text-3xl font-bold text-yellow-300">${activeOrders}</p></div><i class="fas fa-spinner fa-pulse text-2xl text-yellow-300/70"></i></div>
+                </div>
+
+                <!-- Chart & Layanan Produk -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="lg:col-span-2 card-bg p-4 rounded-2xl">
+                        <h3 class="text-white font-semibold mb-3"><i class="fas fa-cubes mr-2"></i> Layanan SMM (Real API)</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm table-custom">
+                                <thead><tr><th>Produk</th><th>Kategori</th><th>Harga/Unit</th><th>Min/Max</th><th>Aksi</th></tr></thead>
+                                <tbody id="productListBody">
+                                    ${products.map(prod => `
+                                        <tr><td class="py-2 font-medium">${prod.name}</td><td>${prod.category}</td><td>Rp ${prod.price.toLocaleString()}</td><td>${prod.min} - ${prod.max}</td>
+                                        <td><button class="orderBtn text-cyan-400 bg-cyan-950/40 px-3 py-1 rounded-lg text-xs hover:bg-cyan-800/60" data-id="${prod.id}" data-name="${prod.name}" data-price="${prod.price}">Order</button></td></tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-bg p-4 rounded-2xl">
+                        <h3 class="text-white font-semibold mb-2"><i class="fas fa-chart-pie"></i> Statistik Pengeluaran</h3>
+                        <canvas id="${chartId}" style="max-height: 200px;"></canvas>
+                        <p class="text-slate-400 text-xs mt-2">Total spent: Rp ${totalSpent.toLocaleString()}</p>
+                    </div>
+                </div>
+
+                <!-- Riwayat Order -->
+                <div class="card-bg p-4 rounded-2xl">
+                    <h3 class="text-white font-semibold mb-3"><i class="fas fa-history"></i> Riwayat Order (10 terbaru)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm table-custom">
+                            <thead><tr><th>ID Order</th><th>Produk</th><th>Jumlah</th><th>Total</th><th>Link/Target</th><th>Status</th><th>Tanggal</th></tr></thead>
+                            <tbody>
+                                ${orders.length === 0 ? '<tr><td colspan="7" class="text-center py-4 text-slate-500">Belum ada order</td></tr>' : 
+                                    orders.map(o => `<tr><td class="py-2">${o.id}</td><td>${o.productName}</td><td>${o.quantity}</td><td>Rp ${o.total.toLocaleString()}</td><td class="max-w-[150px] truncate">${o.link || '-'}</td>
+                                    <td><span class="${o.status === 'Processing' ? 'badge-warning' : 'badge-success'} px-2 py-0.5 rounded-full text-xs">${o.status}</span></td><td>${new Date(o.createdAt).toLocaleDateString()}</td></tr>`).join('')
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Order -->
+        <div id="orderModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all">
+            <div class="bg-slate-800 rounded-2xl max-w-md w-full p-6 border border-cyan-500/30 shadow-2xl">
+                <div class="flex justify-between"><h3 class="text-xl font-bold text-white" id="modalProductTitle">Order Produk</h3><button id="closeModalBtn" class="text-slate-400 text-2xl">&times;</button></div>
+                <div class="mt-4 space-y-4">
+                    <input type="text" id="orderLink" class="w-full rounded-xl px-4 py-2" placeholder="Masukkan URL / Username target">
+                    <input type="number" id="orderQuantity" class="w-full rounded-xl px-4 py-2" placeholder="Jumlah (min-max sesuai produk)">
+                    <div class="text-cyan-300 text-sm" id="orderPreview">Total: Rp 0</div>
+                    <button id="confirmOrderBtn" class="btn-primary w-full py-2 rounded-xl">Konfirmasi Order & Gunakan API</button>
+                </div>
             </div>
         </div>
         `;
     }
 
-    function renderProducts() {
-        return `
-        <div class="card">
-            <h2><i class="fas fa-box"></i> Produk AlightMotion</h2>
-            <p>Stock otomatis berkurang saat pembelian | <i class="fas fa-copy copy-icon" onclick="copyToClipboard('AlightMotion API Ready')">📋 Copy API Info</i></p>
-        </div>
-        <div class="grid-3">
-            ${products.map(p => `
-            <div class="card">
-                <div style="font-size:3rem">${p.image}</div>
-                <h3>${p.name}</h3>
-                <p class="badge">Rp ${p.price.toLocaleString()}</p>
-                <p>Stock: ${p.stock}</p>
-                <div style="display:flex; gap:8px; margin-top:12px">
-                    <input type="number" id="qty_${p.id}" min="1" max="${p.stock}" value="1" style="width:80px">
-                    <button class="btn buy-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">Beli</button>
-                </div>
-            </div>
-            `).join('')}
-        </div>`;
-    }
-
-    function renderOrders() {
-        let myOrders = orders.filter(o => o.userId === currentUser.username);
-        return `
-        <div class="card">
-            <h2><i class="fas fa-shopping-cart"></i> Pesanan Saya</h2>
-            ${myOrders.length === 0 ? '<p>Belum ada pesanan</p>' : myOrders.map(o => `
-                <div class="card" style="margin-bottom:10px">
-                    <p><strong>${o.productName}</strong> x${o.quantity} = Rp ${o.total.toLocaleString()}</p>
-                    <p>Status: <span class="badge">${o.status}</span></p>
-                    ${o.status === 'pending' ? `<button class="btn-outline confirm-btn" data-id="${o.id}">Konfirmasi Manual</button>` : ''}
-                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('Order ID: ${o.id}')"> Copy ID</i>
-                </div>
-            `).join('')}
-        </div>`;
-    }
-
-    function renderProfile() {
-        return `
-        <div class="card">
-            <h2><i class="fas fa-user"></i> Profile</h2>
-            <p><strong>Username:</strong> ${currentUser.username} <i class="fas fa-copy copy-icon" onclick="copyToClipboard('${currentUser.username}')"></i></p>
-            <p><strong>API Key:</strong> <code>${currentUser.apiKey || 'Belum'}</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('${currentUser.apiKey}')"></i></p>
-            <p><strong>Saldo:</strong> Rp ${(currentUser.balance || 0).toLocaleString()}</p>
-            <button class="btn" id="logoutBtn">Logout</button>
-        </div>`;
-    }
-
-    function renderBotAPI() {
-        return `
-        <div class="card">
-            <h2><i class="fab fa-whatsapp"></i> Bot API Webhook</h2>
-            <p>Endpoint: <code>https://amapi.vercel.app/webhook</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('https://amapi.vercel.app/webhook')"></i></p>
-            <p>Method: POST | Header: Authorization: Bearer YOUR_TOKEN</p>
-            <div class="grid-2">
-                <div>
-                    <h3>Cek Stock</h3>
-                    <pre style="background:#0a0e27; padding:12px; border-radius:16px">{"action":"stock","product_id":1}</pre>
-                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('{\"action\":\"stock\",\"product_id\":1}')"> Copy</i>
-                </div>
-                <div>
-                    <h3>Buat Order</h3>
-                    <pre style="background:#0a0e27; padding:12px; border-radius:16px">{"action":"order","product_id":1,"qty":1}</pre>
-                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard('{\"action\":\"order\",\"product_id\":1,\"qty\":1}')"> Copy</i>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    function renderXyroooAPI() {
-        return `
-        <div class="card">
-            <h2><i class="fas fa-globe"></i> Xyrooo Web API MD</h2>
-            <p>Base URL: <code>https://xyrooo.vercel.app/api</code> <i class="fas fa-copy copy-icon" onclick="copyToClipboard('https://xyrooo.vercel.app/api')"></i></p>
-            <div class="grid-2">
-                <div><h3>WhatsApp Bot</h3><p>Multi Device 20.0.4+</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Xyrooo WhatsApp Bot Ready')"></i></div>
-                <div><h3>Telegram Bot</h3><p>Support MD</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Xyrooo Telegram Bot Ready')"></i></div>
-                <div><h3>6655K+ Menu</h3><p>Downloader, AI, Games</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('6655K Menu Active')"></i></div>
-                <div><h3>Real API</h3><p>No Demo</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Real API Active')"></i></div>
-            </div>
-        </div>`;
-    }
-
-    function renderXyroooDocs() {
-        return `<div class="card"><h2>Documentation</h2><pre>GET /api/menu → Daftar menu\nGET /api/download?url=... → Downloader\nPOST /api/whatsapp/send → Kirim pesan</pre><i class="fas fa-copy copy-icon" onclick="copyToClipboard('GET /api/menu')"> Copy Endpoint</i></div>`;
-    }
-
-    function renderPricing() {
-        return `<div class="grid-2"><div class="card"><h3>Free</h3><p>Rp 0</p><p>5000 request</p></div><div class="card"><h3>Pro</h3><p>Rp 99k</p><p>Unlimited</p></div></div>`;
-    }
-
-    function renderStock() { return `<div class="card"><h2>Stock Produk</h2>${products.map(p => `<p>${p.name}: ${p.stock} left</p>`).join('')}</div>`; }
-    function renderTemplate() { return `<div class="card"><h2>Template Pack</h2><p>500+ template AlightMotion</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Template Pack Ready')"></i></div>`; }
-    function renderFonts() { return `<div class="card"><h2>Fonts Pack</h2><p>1000+ fonts premium</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('Fonts Pack 1000+')"></i></div>`; }
-    function renderContact() { return `<div class="card"><h2>Contact</h2><p>WhatsApp: 6283805385608</p><i class="fas fa-copy copy-icon" onclick="copyToClipboard('6283805385608')"> Copy Number</i></div>`; }
-    function renderUpgrade() { return `<div class="card"><h2>Upgrade Premium</h2><p>Hubungi owner untuk upgrade</p><button class="btn">Hubungi WA</button></div>`; }
-
-    function attachAuthEvents() {
-        document.getElementById('showLoginBtn')?.addEventListener('click', () => {
-            document.getElementById('loginBox').classList.remove('hidden');
-            document.getElementById('regBox').classList.add('hidden');
-        });
-        document.getElementById('showRegBtn')?.addEventListener('click', () => {
-            document.getElementById('loginBox').classList.add('hidden');
-            document.getElementById('regBox').classList.remove('hidden');
-        });
-        document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-            let res = login(document.getElementById('loginUser').value, document.getElementById('loginPass').value);
-            alert(res.msg); if (res.success) render();
-        });
-        document.getElementById('doRegBtn')?.addEventListener('click', () => {
-            let res = register(document.getElementById('regUser').value, document.getElementById('regPass').value);
-            alert(res.msg || `Registrasi berhasil! API Key: ${res.apiKey}`);
-            if (res.success) render();
-        });
-    }
-
-    function attachEvents() {
-        document.getElementById('logoutBtn')?.addEventListener('click', logout);
-        document.querySelectorAll('.buy-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                let id = parseInt(btn.dataset.id);
-                let qty = parseInt(document.getElementById(`qty_${id}`)?.value || 1);
-                let product = products.find(p => p.id === id);
-                if (!product || product.stock < qty) return alert("Stock tidak cukup");
-                let orderId = "ORD" + Date.now();
-                orders.push({ id: orderId, userId: currentUser.username, productName: product.name, quantity: qty, total: product.price * qty, status: 'pending' });
-                product.stock -= qty;
-                persist();
-                alert(`Pesanan dibuat! ID: ${orderId}\nTotal: Rp ${(product.price * qty).toLocaleString()}`);
+    function attachEventListeners() {
+        // Login
+        const loginForm = document.getElementById('loginForm');
+        if(loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value.trim();
+                const pass = document.getElementById('loginPassword').value.trim();
+                const users = getUsers();
+                const found = users.find(u => (u.username === username || u.email === username) && u.password === pass);
+                if(found) {
+                    setCurrentUser(found);
+                    showToast(`Selamat datang, ${found.username}!`);
+                    currentView = 'dashboard';
+                    render();
+                } else {
+                    showToast('Username/email atau password salah!', 'error');
+                }
+            });
+        }
+        const toRegister = document.getElementById('toRegisterBtn');
+        if(toRegister) toRegister.onclick = () => { currentView = 'register'; render(); };
+        const toLogin = document.getElementById('toLoginBtn');
+        if(toLogin) toLogin.onclick = () => { currentView = 'login'; render(); };
+        
+        // Register
+        const regForm = document.getElementById('registerForm');
+        if(regForm) {
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('regUsername').value.trim();
+                const email = document.getElementById('regEmail').value.trim();
+                const pass = document.getElementById('regPassword').value.trim();
+                const confirm = document.getElementById('regConfirm').value.trim();
+                if(!username || !email || !pass) return showToast('Semua field harus diisi', 'error');
+                if(pass !== confirm) return showToast('Password tidak cocok', 'error');
+                if(pass.length < 6) return showToast('Password minimal 6 karakter', 'error');
+                const users = getUsers();
+                if(users.find(u => u.username === username || u.email === email)) return showToast('Username atau Email sudah terdaftar', 'error');
+                const newUser = { id: 'u'+Date.now(), username, email, password: pass, role: 'user', balance: 50000, createdAt: new Date().toISOString() };
+                users.push(newUser);
+                saveUsers(users);
+                showToast('Pendaftaran berhasil! Silakan login.');
+                currentView = 'login';
                 render();
             });
-        });
-        document.querySelectorAll('.confirm-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                let order = orders.find(o => o.id === btn.dataset.id);
-                if (order) { order.status = 'completed'; persist(); alert("Pesanan selesai!"); render(); }
+        }
+        // logout
+        const logoutBtn = document.getElementById('logoutBtn');
+        if(logoutBtn) logoutBtn.onclick = () => { clearSession(); currentView = 'login'; render(); showToast('Berhasil logout'); };
+
+        // Order modal logic
+        let selectedProduct = null;
+        const orderBtns = document.querySelectorAll('.orderBtn');
+        const modal = document.getElementById('orderModal');
+        const closeModal = document.getElementById('closeModalBtn');
+        if(orderBtns.length) {
+            orderBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const prodId = btn.dataset.id;
+                    const prodName = btn.dataset.name;
+                    const prodPrice = parseInt(btn.dataset.price);
+                    selectedProduct = { id: prodId, name: prodName, price: prodPrice };
+                    document.getElementById('modalProductTitle').innerText = `Order ${prodName}`;
+                    const qtyInput = document.getElementById('orderQuantity');
+                    const previewSpan = document.getElementById('orderPreview');
+                    const updatePreview = () => {
+                        let qty = parseInt(qtyInput.value) || 0;
+                        previewSpan.innerText = `Total: Rp ${(prodPrice * qty).toLocaleString()}`;
+                    };
+                    qtyInput.oninput = updatePreview;
+                    updatePreview();
+                    modal.classList.remove('hidden');
+                });
             });
-        });
+        }
+        if(closeModal) closeModal.onclick = () => modal.classList.add('hidden');
+        window.onclick = (e) => { if(e.target === modal) modal.classList.add('hidden'); };
+        const confirmOrder = document.getElementById('confirmOrderBtn');
+        if(confirmOrder) {
+            confirmOrder.onclick = async () => {
+                if(!selectedProduct) return;
+                const quantity = parseInt(document.getElementById('orderQuantity').value);
+                const link = document.getElementById('orderLink').value.trim();
+                if(!quantity || quantity <= 0) return showToast('Masukkan jumlah yang valid', 'error');
+                if(!link) return showToast('Masukkan URL target', 'error');
+                // validasi min max produk
+                const products = getProducts();
+                const prodValid = products.find(p => p.id === selectedProduct.id);
+                if(quantity < prodValid.min || quantity > prodValid.max) return showToast(`Minimal ${prodValid.min} dan maksimal ${prodValid.max}`, 'error');
+                try {
+                    const result = await apiCreateOrder(selectedProduct.id, quantity, link);
+                    showToast(`Order berhasil! Sisa saldo: Rp ${result.newBalance.toLocaleString()}`);
+                    modal.classList.add('hidden');
+                    render(); // refresh dashboard
+                } catch(err) {
+                    showToast(err.error || 'Gagal order, cek saldo atau koneksi', 'error');
+                }
+            };
+        }
+
+        // chart jika ada canvas
+        const canvasChart = document.getElementById('statsChart');
+        if(canvasChart && currentView === 'dashboard') {
+            const userNow = getCurrentUser();
+            if(userNow) {
+                const userOrders = getOrders().filter(o => o.userId === userNow.id);
+                const last7 = userOrders.slice(0,7).map(o => o.total).reverse();
+                const labels = userOrders.slice(0,7).map((_,idx) => `Order ${idx+1}`).reverse();
+                new Chart(canvasChart, {
+                    type: 'doughnut',
+                    data: { labels: labels.length?labels:['Belum Order'], datasets: [{ data: last7.length?last7:[1], backgroundColor: ['#0EA5E9', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'], borderWidth: 0 }] },
+                    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#CBD5E1' } } } }
+                });
+            } else {
+                canvasChart.style.display = 'none';
+            }
+        }
     }
 
-    // SIDEBAR TOGGLE
-    const menuToggle = document.getElementById('menuToggleBtn');
-    const sidebar = document.getElementById('sidebarMenu');
-    const overlay = document.getElementById('sidebarOverlay');
-    const closeSidebar = document.getElementById('closeSidebarBtn');
-
-    function openSidebar() { sidebar.classList.add('active'); overlay.classList.add('active'); }
-    function closeSidebarFunc() { sidebar.classList.remove('active'); overlay.classList.remove('active'); }
-    menuToggle?.addEventListener('click', openSidebar);
-    closeSidebar?.addEventListener('click', closeSidebarFunc);
-    overlay?.addEventListener('click', closeSidebarFunc);
-
-    // Sidebar navigation
-    document.querySelectorAll('.sidebar-menu .nav-item').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentPage = link.dataset.page;
-            closeSidebarFunc();
-            render();
-        });
-    });
-
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-        document.body.style.setProperty('--bg-body', document.body.classList.contains('dark') ? '#0a0e27' : '#f0f4f8');
-        document.body.style.setProperty('--bg-card', document.body.classList.contains('dark') ? '#0f1235' : '#ffffff');
-        document.body.style.setProperty('--text-primary', document.body.classList.contains('dark') ? '#e0e4f0' : '#1a2a3a');
-    });
-
+    // pertama render
     render();
 </script>
 </body>
