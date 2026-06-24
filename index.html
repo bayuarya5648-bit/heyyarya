@@ -1,514 +1,1574 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>NexusSMM | Panel Media Social & API Real</title>
-    <!-- Google Fonts & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Chart.js CDN untuk statistik dashboard -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xyrooo MD — API Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            background: linear-gradient(135deg, #0B0F1C 0%, #0A0E1A 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-        }
+  :root {
+    --bg:       #080C14;
+    --surface:  #0D1420;
+    --border:   #1A2540;
+    --border2:  #243050;
+    --accent:   #00C9FF;
+    --accent2:  #7B5EA7;
+    --green:    #00E5A0;
+    --red:      #FF4D6A;
+    --yellow:   #FFD166;
+    --text:     #E2E8F0;
+    --muted:    #64748B;
+    --card:     #101827;
+    --glow:     rgba(0,201,255,0.18);
+    --glow2:    rgba(123,94,167,0.15);
+  }
 
-        /* Glassmorphic Container */
-        .glass-panel {
-            background: rgba(18, 25, 45, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            border: 1px solid rgba(72, 187, 255, 0.2);
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(0, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
+  html { scroll-behavior: smooth; }
 
-        /* Forms & Cards */
-        .auth-container, .dashboard-container {
-            width: 100%;
-            max-width: 1320px;
-            margin: 0 auto;
-        }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
 
-        .card-bg {
-            background: rgba(12, 18, 32, 0.7);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            border-radius: 1.5rem;
-        }
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 
-        .btn-primary {
-            background: linear-gradient(90deg, #0EA5E9, #3B82F6);
-            border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4);
-            background: linear-gradient(90deg, #3B82F6, #0EA5E9);
-        }
-        .btn-outline-cyber {
-            border: 1px solid #0EA5E9;
-            background: transparent;
-            color: #0EA5E9;
-        }
-        .btn-outline-cyber:hover {
-            background: rgba(14, 165, 233, 0.1);
-            box-shadow: 0 0 8px rgba(14,165,233,0.5);
-        }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(8,12,20,0.85);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px; height: 60px;
+  }
 
-        input, select, textarea {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #2D3A5E;
-            color: #E2E8F0;
-            border-radius: 1rem;
-            transition: all 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #0EA5E9;
-            box-shadow: 0 0 0 2px rgba(14,165,233,0.3);
-        }
+  .nav-logo {
+    font-size: 1.2rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
 
-        .table-custom {
-            background: rgba(0,0,0,0.3);
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-        .table-custom th {
-            background: #0F172A;
-            color: #94A3B8;
-            font-weight: 500;
-            border-bottom: 1px solid #1E293B;
-        }
-        .table-custom td {
-            border-color: #1E293B;
-            color: #CBD5E1;
-        }
+  .nav-links {
+    display: flex; gap: 6px; list-style: none;
+  }
 
-        .badge-success {
-            background: #10B98120;
-            color: #34D399;
-            border-radius: 40px;
-            padding: 0.25rem 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500;
+    padding: 5px 11px; border-radius: 6px;
+    transition: all .2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--border); }
 
-        .badge-warning {
-            background: #F59E0B20;
-            color: #FBBF24;
-        }
+  .btn-nav {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff !important;
+    padding: 6px 16px !important; border-radius: 8px !important;
+    font-weight: 600 !important;
+    -webkit-text-fill-color: #fff !important;
+  }
+  .btn-nav:hover { opacity: 0.85; background: var(--border) !important; }
 
-        .sidebar-mini {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-        }
+  /* HERO */
+  .hero {
+    padding: 120px 28px 70px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
 
-        .stat-card {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 1.2rem;
-            border-left: 4px solid #0EA5E9;
-            transition: all 0.2s;
-        }
-        .stat-card:hover { transform: translateY(-3px); background: rgba(30, 41, 59, 0.7);}
+  .hero::before {
+    content: '';
+    position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
-        /* animasi */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        .animate-fade { animation: fadeInUp 0.5s ease-out; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 20px; padding: 5px 14px; font-size: 0.78rem;
+    color: var(--accent); margin-bottom: 22px; font-weight: 500;
+  }
 
-        .toast-custom {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-    </style>
+  .hero-badge span { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s infinite; }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700; line-height: 1.1;
+    letter-spacing: -1.5px; margin-bottom: 20px;
+  }
+
+  .hero h1 .x {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 1.05rem; color: var(--muted); max-width: 560px;
+    margin: 0 auto 36px; font-weight: 400;
+  }
+
+  .hero-btns {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 24px; border-radius: 10px;
+    font-weight: 600; font-size: 0.92rem; cursor: pointer;
+    border: none; text-decoration: none; transition: all .2s;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--glow); }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--text);
+  }
+  .btn-outline:hover { background: var(--surface); border-color: var(--accent); color: var(--accent); }
+
+  /* STATS */
+  .stats {
+    display: flex; gap: 0; justify-content: center;
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; max-width: 680px; margin: 50px auto 0;
+    background: var(--surface);
+  }
+
+  .stat {
+    flex: 1; padding: 20px 0; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-val {
+    font-size: 1.7rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .stat-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* APIKEY SECTION */
+  .apikey-section {
+    max-width: 860px; margin: 70px auto; padding: 0 28px;
+  }
+
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--accent); margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+
+  .section-sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 32px; }
+
+  .apikey-box {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 28px;
+  }
+
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 7px; }
+  .form-group label { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
+
+  .form-group input, .form-group select {
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: 9px; padding: 10px 14px;
+    color: var(--text); font-family: inherit; font-size: 0.9rem;
+    outline: none; transition: border-color .2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,201,255,0.1);
+  }
+  .form-group select option { background: var(--card); }
+
+  .apikey-result {
+    display: none; margin-top: 20px;
+    background: var(--card); border: 1px solid var(--green);
+    border-radius: 10px; padding: 16px;
+  }
+
+  .apikey-result.show { display: block; }
+
+  .apikey-result-label { font-size: 0.75rem; color: var(--green); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+  .apikey-val-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .apikey-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem; color: var(--accent);
+    flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .copy-btn {
+    background: var(--border2); border: none; color: var(--text);
+    border-radius: 6px; padding: 5px 12px; cursor: pointer;
+    font-size: 0.78rem; font-family: inherit; font-weight: 600; transition: all .2s;
+  }
+  .copy-btn:hover { background: var(--accent); color: #000; }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1100px; margin: 0 auto; padding: 0 28px 80px;
+    display: grid; grid-template-columns: 230px 1fr; gap: 32px;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: sticky; top: 72px; align-self: start;
+    max-height: calc(100vh - 90px); overflow-y: auto;
+    padding-right: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+
+  .sidebar-section { margin-bottom: 22px; }
+  .sidebar-cat {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; padding: 0 4px;
+  }
+
+  .sidebar-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 10px; border-radius: 8px;
+    cursor: pointer; font-size: 0.85rem; font-weight: 500;
+    color: var(--muted); transition: all .15s;
+    border: none; background: none; width: 100%; text-align: left;
+  }
+
+  .sidebar-item:hover { color: var(--text); background: var(--surface); }
+  .sidebar-item.active { color: var(--accent); background: rgba(0,201,255,0.08); }
+
+  .sidebar-item .icon { font-size: 1rem; }
+
+  .sidebar-count {
+    margin-left: auto; font-size: 0.7rem;
+    background: var(--border); color: var(--muted);
+    border-radius: 5px; padding: 1px 6px; font-weight: 600;
+  }
+
+  /* CONTENT */
+  .content { min-width: 0; }
+
+  .cat-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px; padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-icon {
+    width: 44px; height: 44px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .cat-header h2 { font-size: 1.35rem; font-weight: 700; }
+  .cat-header p { font-size: 0.83rem; color: var(--muted); }
+
+  /* ENDPOINT CARDS */
+  .endpoint-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; margin-bottom: 14px; overflow: hidden;
+    transition: border-color .2s;
+  }
+  .endpoint-card:hover { border-color: var(--border2); }
+
+  .ep-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 18px; cursor: pointer; user-select: none;
+  }
+
+  .method {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; font-weight: 700; padding: 3px 9px;
+    border-radius: 5px; min-width: 46px; text-align: center;
+  }
+
+  .method.GET  { background: rgba(0,229,160,0.12); color: var(--green); }
+  .method.POST { background: rgba(0,201,255,0.12); color: var(--accent); }
+
+  .ep-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--text); font-weight: 500; flex: 1;
+  }
+
+  .ep-desc { font-size: 0.8rem; color: var(--muted); margin-left: auto; }
+
+  .ep-arrow {
+    font-size: 0.7rem; color: var(--muted); margin-left: 8px;
+    transition: transform .2s;
+  }
+  .ep-arrow.open { transform: rotate(180deg); }
+
+  .ep-body {
+    display: none; border-top: 1px solid var(--border);
+    padding: 18px;
+  }
+  .ep-body.show { display: block; }
+
+  .ep-tabs {
+    display: flex; gap: 4px; margin-bottom: 16px;
+  }
+
+  .ep-tab {
+    font-size: 0.78rem; font-weight: 600; padding: 5px 12px;
+    border-radius: 6px; cursor: pointer; border: none;
+    background: transparent; color: var(--muted); font-family: inherit;
+    transition: all .15s;
+  }
+  .ep-tab.active { background: var(--border2); color: var(--text); }
+
+  .ep-panel { display: none; }
+  .ep-panel.show { display: block; }
+
+  .params-table {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem;
+  }
+  .params-table th {
+    text-align: left; font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px; color: var(--muted);
+    padding: 0 0 10px; border-bottom: 1px solid var(--border);
+  }
+  .params-table td {
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .params-table tr:last-child td { border-bottom: none; }
+
+  .param-name {
+    font-family: 'JetBrains Mono', monospace; color: var(--accent);
+    font-size: 0.8rem;
+  }
+  .param-type { color: var(--yellow); font-size: 0.78rem; }
+  .param-req { color: var(--red); font-size: 0.72rem; }
+  .param-opt { color: var(--muted); font-size: 0.72rem; }
+
+  .code-block {
+    background: #060A12; border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; line-height: 1.7; color: #94A3B8;
+    overflow-x: auto; position: relative;
+  }
+
+  .code-block .k { color: var(--accent); }
+  .code-block .s { color: var(--green); }
+  .code-block .n { color: var(--yellow); }
+  .code-block .c { color: var(--muted); }
+
+  /* TRY IT */
+  .try-it-area { display: flex; flex-direction: column; gap: 10px; }
+
+  .try-input-row {
+    display: flex; gap: 8px; align-items: center;
+  }
+
+  .try-input {
+    flex: 1; background: var(--card); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 9px 13px;
+    color: var(--text); font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; outline: none;
+  }
+  .try-input:focus { border-color: var(--accent); }
+
+  .try-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; border: none; border-radius: 8px;
+    padding: 9px 18px; font-family: inherit; font-weight: 600;
+    font-size: 0.82rem; cursor: pointer; transition: all .2s;
+    white-space: nowrap;
+  }
+  .try-btn:hover { opacity: 0.85; }
+  .try-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .try-resp {
+    display: none; background: #060A12; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+    line-height: 1.7; color: #94A3B8; max-height: 260px;
+    overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+  }
+  .try-resp.show { display: block; }
+  .try-resp.ok { border-color: rgba(0,229,160,0.3); }
+  .try-resp.err { border-color: rgba(255,77,106,0.3); color: var(--red); }
+
+  .try-loader {
+    display: none; text-align: center; padding: 20px;
+    color: var(--muted); font-size: 0.82rem;
+  }
+  .try-loader.show { display: block; }
+
+  /* CATEGORY SECTIONS */
+  .cat-section { display: none; }
+  .cat-section.show { display: block; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border); padding: 28px;
+    text-align: center; color: var(--muted); font-size: 0.82rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* MOBILE NAV */
+  .mobile-menu-btn {
+    display: none; background: none; border: none;
+    color: var(--text); font-size: 1.3rem; cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: block; }
+    .main { grid-template-columns: 1fr; }
+    .sidebar {
+      position: static; max-height: none;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+      margin-bottom: 24px;
+    }
+    .sidebar-cat { display: none; }
+    .sidebar-section { margin-bottom: 0; }
+    .form-row { grid-template-columns: 1fr; }
+    .stats { flex-wrap: wrap; }
+    .stat { min-width: 120px; }
+    .ep-desc { display: none; }
+  }
+</style>
 </head>
 <body>
 
-<div id="appRoot" class="w-full"></div>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ Xyrooo MD</div>
+  <ul class="nav-links">
+    <li><a href="#docs">Docs</a></li>
+    <li><a href="#apikey">API Key</a></li>
+    <li><a href="https://wa.me/628xxxxxxxxx" target="_blank">Support</a></li>
+    <li><a href="#" class="btn-nav">Get Started</a></li>
+  </ul>
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <span></span> API v1.0 — Online & Ready
+  </div>
+  <h1><span class="x">Xyrooo</span> MD<br>Bot API</h1>
+  <p>REST API lengkap untuk WhatsApp Bot — AI, Download, Stalk, Tools, dan 200+ endpoint siap pakai.</p>
+  <div class="hero-btns">
+    <a href="#docs" class="btn btn-primary">📚 Lihat Dokumentasi</a>
+    <a href="#apikey" class="btn btn-outline">🔑 Generate API Key</a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">200+</div>
+      <div class="stat-lbl">Endpoints</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">15</div>
+      <div class="stat-lbl">Kategori</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">99.9%</div>
+      <div class="stat-lbl">Uptime</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">Free</div>
+      <div class="stat-lbl">Basic Plan</div>
+    </div>
+  </div>
+</section>
+
+<!-- API KEY GENERATOR -->
+<section id="apikey" class="apikey-section">
+  <div class="section-label">🔑 Generate</div>
+  <h2 class="section-title">Dapatkan API Key</h2>
+  <p class="section-sub">Buat API Key gratis untuk mulai menggunakan semua endpoint Xyrooo MD.</p>
+
+  <div class="apikey-box">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nama / Username</label>
+        <input type="text" id="gen-name" placeholder="contoh: Xyrooo"/>
+      </div>
+      <div class="form-group">
+        <label>WhatsApp / Email</label>
+        <input type="text" id="gen-contact" placeholder="628xxxxxxxxx"/>
+      </div>
+      <div class="form-group">
+        <label>Tipe Plan</label>
+        <select id="gen-plan">
+          <option value="free">🆓 Free — 100 req/hari</option>
+          <option value="basic">⭐ Basic — 1.000 req/hari</option>
+          <option value="pro">🚀 Pro — Unlimited</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Penggunaan</label>
+        <select id="gen-use">
+          <option>WhatsApp Bot</option>
+          <option>Personal Project</option>
+          <option>Aplikasi Komersial</option>
+          <option>Testing / Development</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="generateApiKey()" style="width:100%">
+      ⚡ Generate API Key Sekarang
+    </button>
+
+    <div class="apikey-result" id="apikey-result">
+      <div class="apikey-result-label">✅ API Key Berhasil Dibuat</div>
+      <div class="apikey-val-row">
+        <span class="apikey-val" id="apikey-val"></span>
+        <button class="copy-btn" onclick="copyApiKey()">Copy</button>
+      </div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-top:10px;">
+        Simpan API Key ini dengan aman. Gunakan sebagai query parameter <code style="color:var(--accent)">?apikey=YOUR_KEY</code> di setiap request.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section id="docs" style="max-width:1100px;margin:0 auto;padding:0 28px 24px;">
+  <div class="section-label">📖 Documentation</div>
+  <h2 class="section-title">API Endpoints</h2>
+  <p class="section-sub">Base URL: <code style="color:var(--accent);font-family:'JetBrains Mono',monospace;">https://api.xyrooomd.my.id/v1</code></p>
+</section>
+
+<!-- MAIN LAYOUT -->
+<div class="main">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-cat">Kategori</div>
+      <button class="sidebar-item active" onclick="showCat('ai',this)">
+        <span class="icon">🤖</span> AI <span class="sidebar-count">12</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('admin',this)">
+        <span class="icon">🛡️</span> Admin <span class="sidebar-count">8</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('cache',this)">
+        <span class="icon">⚡</span> Cache <span class="sidebar-count">4</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('download',this)">
+        <span class="icon">📥</span> Download <span class="sidebar-count">18</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('fun',this)">
+        <span class="icon">🎉</span> Fun <span class="sidebar-count">15</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('leaderboard',this)">
+        <span class="icon">🏆</span> Leaderboard <span class="sidebar-count">6</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('library',this)">
+        <span class="icon">📚</span> Library <span class="sidebar-count">10</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('random',this)">
+        <span class="icon">🎲</span> Random <span class="sidebar-count">14</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('maker',this)">
+        <span class="icon">🎨</span> Maker <span class="sidebar-count">11</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('news',this)">
+        <span class="icon">📰</span> News <span class="sidebar-count">7</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('search',this)">
+        <span class="icon">🔍</span> Search <span class="sidebar-count">9</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('stalk',this)">
+        <span class="icon">👁️</span> Stalk <span class="sidebar-count">8</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('tools',this)">
+        <span class="icon">🔧</span> Tools <span class="sidebar-count">20</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('nsfw',this)">
+        <span class="icon">🔞</span> NSFW <span class="sidebar-count">5</span>
+      </button>
+      <button class="sidebar-item" onclick="showCat('others',this)">
+        <span class="icon">✨</span> Others <span class="sidebar-count">13</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- AI -->
+    <div class="cat-section show" id="cat-ai">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,201,255,0.1)">🤖</div>
+        <div>
+          <h2>AI — Kecerdasan Buatan</h2>
+          <p>ChatGPT, Gemini, Llama, dan berbagai model AI terkini</p>
+        </div>
+      </div>
+      <!-- ChatGPT -->
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/ai/chatgpt</span>
+          <span class="ep-desc">Chat dengan GPT-4</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr>
+                <td><span class="param-name">text</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="param-req">required</span></td>
+                <td style="color:var(--muted)">Pertanyaan atau pesan untuk AI</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">apikey</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="param-req">required</span></td>
+                <td style="color:var(--muted)">API Key anda</td>
+              </tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block"><span class="c">// 200 OK</span>
+{
+  <span class="k">"status"</span>: <span class="s">true</span>,
+  <span class="k">"creator"</span>: <span class="s">"Xyrooo MD"</span>,
+  <span class="k">"result"</span>: {
+    <span class="k">"reply"</span>: <span class="s">"Halo! Saya ChatGPT, ada yang bisa saya bantu?"</span>,
+    <span class="k">"model"</span>: <span class="s">"gpt-4"</span>
+  }
+}</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Masukkan pertanyaan..." id="try-chatgpt-text"/>
+                <button class="try-btn" onclick="tryApi('/ai/chatgpt','chatgpt',{text:'try-chatgpt-text'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-chatgpt-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-chatgpt-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Gemini -->
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/ai/gemini</span>
+          <span class="ep-desc">Google Gemini AI</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">text</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Pesan untuk Gemini</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"reply"</span>: <span class="s">"..."</span>, <span class="k">"model"</span>: <span class="s">"gemini-pro"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Tanya Gemini..." id="try-gemini-text"/>
+                <button class="try-btn" onclick="tryApi('/ai/gemini','gemini',{text:'try-gemini-text'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-gemini-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-gemini-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Llama -->
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/ai/llama</span>
+          <span class="ep-desc">Meta Llama 3</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">text</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Pesan</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"reply"</span>: <span class="s">"..."</span>, <span class="k">"model"</span>: <span class="s">"llama-3-70b"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Tanya Llama..." id="try-llama-text"/>
+                <button class="try-btn" onclick="tryApi('/ai/llama','llama',{text:'try-llama-text'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-llama-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-llama-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- More endpoints hint -->
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 9 endpoint AI lainnya: <code style="color:var(--accent)">claude</code>, <code style="color:var(--accent)">dalle</code>, <code style="color:var(--accent)">stability</code>, <code style="color:var(--accent)">midjourney</code>, <code style="color:var(--accent)">roleplay</code>, <code style="color:var(--accent)">voice</code>, <code style="color:var(--accent)">translate</code>, <code style="color:var(--accent)">summarize</code>, <code style="color:var(--accent)">code-review</code>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD -->
+    <div class="cat-section" id="cat-download">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,229,160,0.1)">📥</div>
+        <div>
+          <h2>Download</h2>
+          <p>Download video, audio, dan media dari berbagai platform</p>
+        </div>
+      </div>
+      <!-- TikTok -->
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/download/tiktok</span>
+          <span class="ep-desc">TikTok no watermark</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">url</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">URL video TikTok</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{
+  <span class="k">"status"</span>: <span class="s">true</span>,
+  <span class="k">"result"</span>: {
+    <span class="k">"title"</span>: <span class="s">"Judul video..."</span>,
+    <span class="k">"author"</span>: <span class="s">"@username"</span>,
+    <span class="k">"video"</span>: <span class="s">"https://cdn.example.com/video.mp4"</span>,
+    <span class="k">"audio"</span>: <span class="s">"https://cdn.example.com/audio.mp3"</span>,
+    <span class="k">"thumbnail"</span>: <span class="s">"https://..."</span>
+  }
+}</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="https://vt.tiktok.com/..." id="try-tiktok-url"/>
+                <button class="try-btn" onclick="tryApi('/download/tiktok','tiktok',{url:'try-tiktok-url'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-tiktok-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-tiktok-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- YouTube -->
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/download/youtube</span>
+          <span class="ep-desc">YouTube video/audio</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">url</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">URL YouTube</td></tr>
+              <tr><td><span class="param-name">type</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">video / audio (default: video)</td></tr>
+              <tr><td><span class="param-name">quality</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">144p / 360p / 720p / 1080p</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"title"</span>: <span class="s">"..."</span>, <span class="k">"download"</span>: <span class="s">"https://..."</span>, <span class="k">"duration"</span>: <span class="s">"4:32"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="https://youtu.be/..." id="try-yt-url"/>
+                <button class="try-btn" onclick="tryApi('/download/youtube','yt',{url:'try-yt-url'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-yt-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-yt-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 16 endpoint: <code style="color:var(--accent)">instagram</code> <code style="color:var(--accent)">facebook</code> <code style="color:var(--accent)">twitter</code> <code style="color:var(--accent)">spotify</code> <code style="color:var(--accent)">soundcloud</code> <code style="color:var(--accent)">capcut</code> <code style="color:var(--accent)">gdrive</code> <code style="color:var(--accent)">mediafire</code> ...
+      </div>
+    </div>
+
+    <!-- STALK -->
+    <div class="cat-section" id="cat-stalk">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,209,102,0.1)">👁️</div>
+        <div>
+          <h2>Stalk</h2>
+          <p>Cari informasi profil sosial media secara publik</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/stalk/instagram</span>
+          <span class="ep-desc">Profil Instagram</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">username</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Username Instagram</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{
+  <span class="k">"status"</span>: <span class="s">true</span>,
+  <span class="k">"result"</span>: {
+    <span class="k">"username"</span>: <span class="s">"xyrooo"</span>,
+    <span class="k">"full_name"</span>: <span class="s">"Xyrooo MD"</span>,
+    <span class="k">"followers"</span>: <span class="n">12500</span>,
+    <span class="k">"following"</span>: <span class="n">340</span>,
+    <span class="k">"posts"</span>: <span class="n">87</span>,
+    <span class="k">"bio"</span>: <span class="s">"..."</span>,
+    <span class="k">"avatar"</span>: <span class="s">"https://..."</span>,
+    <span class="k">"verified"</span>: <span class="s">false</span>
+  }
+}</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="username (tanpa @)" id="try-ig-user"/>
+                <button class="try-btn" onclick="tryApi('/stalk/instagram','ig',{username:'try-ig-user'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-ig-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-ig-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 7 endpoint: <code style="color:var(--accent)">tiktok</code> <code style="color:var(--accent)">github</code> <code style="color:var(--accent)">twitter</code> <code style="color:var(--accent)">facebook</code> <code style="color:var(--accent)">youtube</code> <code style="color:var(--accent)">npm</code> <code style="color:var(--accent)">spotify-user</code>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="cat-section" id="cat-search">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(123,94,167,0.1)">🔍</div>
+        <div>
+          <h2>Search</h2>
+          <p>Pencarian informasi dari berbagai sumber</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/search/google</span>
+          <span class="ep-desc">Pencarian Google</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">q</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Query pencarian</td></tr>
+              <tr><td><span class="param-name">limit</span></td><td><span class="param-type">number</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Jumlah hasil (default: 5)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: [ { <span class="k">"title"</span>: <span class="s">"..."</span>, <span class="k">"url"</span>: <span class="s">"https://..."</span>, <span class="k">"snippet"</span>: <span class="s">"..."</span> } ] }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Cari sesuatu..." id="try-google-q"/>
+                <button class="try-btn" onclick="tryApi('/search/google','google',{q:'try-google-q'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-google-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-google-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 8 endpoint: <code style="color:var(--accent)">youtube-search</code> <code style="color:var(--accent)">pinterest</code> <code style="color:var(--accent)">wikipedia</code> <code style="color:var(--accent)">anime</code> <code style="color:var(--accent)">movie</code> <code style="color:var(--accent)">npm</code> <code style="color:var(--accent)">wallpaper</code> <code style="color:var(--accent)">github-search</code>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div class="cat-section" id="cat-tools">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,77,106,0.1)">🔧</div>
+        <div>
+          <h2>Tools</h2>
+          <p>Berbagai alat bantu: konverter, checker, generator</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/tools/qrcode</span>
+          <span class="ep-desc">Generate QR Code</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">text</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Teks yang akan di-encode</td></tr>
+              <tr><td><span class="param-name">size</span></td><td><span class="param-type">number</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Ukuran QR (default: 200)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"url"</span>: <span class="s">"https://cdn.xyrooomd.my.id/qr/xxx.png"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Teks atau URL..." id="try-qr-text"/>
+                <button class="try-btn" onclick="tryApi('/tools/qrcode','qr',{text:'try-qr-text'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-qr-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-qr-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/tools/translate</span>
+          <span class="ep-desc">Terjemahkan teks</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">text</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Teks yang diterjemahkan</td></tr>
+              <tr><td><span class="param-name">to</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Kode bahasa tujuan (en, id, ja, dll)</td></tr>
+              <tr><td><span class="param-name">from</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Kode bahasa asal (auto detect)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"original"</span>: <span class="s">"Hello"</span>, <span class="k">"translated"</span>: <span class="s">"Halo"</span>, <span class="k">"from"</span>: <span class="s">"en"</span>, <span class="k">"to"</span>: <span class="s">"id"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="Hello, how are you?" id="try-tl-text" style="flex:2"/>
+                <input class="try-input" placeholder="id" id="try-tl-to" style="width:60px;flex:none"/>
+                <button class="try-btn" onclick="tryApi('/tools/translate','tl',{text:'try-tl-text',to:'try-tl-to'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-tl-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-tl-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 18 endpoint: <code style="color:var(--accent)">shortlink</code> <code style="color:var(--accent)">carbon</code> <code style="color:var(--accent)">ocr</code> <code style="color:var(--accent)">tts</code> <code style="color:var(--accent)">qr-decode</code> <code style="color:var(--accent)">whois</code> <code style="color:var(--accent)">ip-info</code> <code style="color:var(--accent)">json-format</code> ...
+      </div>
+    </div>
+
+    <!-- FUN -->
+    <div class="cat-section" id="cat-fun">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,209,102,0.12)">🎉</div>
+        <div>
+          <h2>Fun</h2>
+          <p>Hiburan dan konten seru untuk WhatsApp Bot</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/fun/joke</span>
+          <span class="ep-desc">Jokes random</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">lang</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">id / en (default: id)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"setup"</span>: <span class="s">"Kenapa..."</span>, <span class="k">"punchline"</span>: <span class="s">"Karena..."</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="id" id="try-joke-lang"/>
+                <button class="try-btn" onclick="tryApi('/fun/joke','joke',{lang:'try-joke-lang'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-joke-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-joke-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 14 endpoint: <code style="color:var(--accent)">meme</code> <code style="color:var(--accent)">quote</code> <code style="color:var(--accent)">truth-dare</code> <code style="color:var(--accent)">riddle</code> <code style="color:var(--accent)">iqtest</code> <code style="color:var(--accent)">roast</code> <code style="color:var(--accent)">compliment</code> <code style="color:var(--accent)">waifu</code> ...
+      </div>
+    </div>
+
+    <!-- MAKER -->
+    <div class="cat-section" id="cat-maker">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(123,94,167,0.12)">🎨</div>
+        <div>
+          <h2>Maker</h2>
+          <p>Buat gambar, stiker, dan konten kreatif</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/maker/welcome</span>
+          <span class="ep-desc">Kartu Welcome/Goodbye</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">avatar</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">URL foto profil</td></tr>
+              <tr><td><span class="param-name">name</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Nama pengguna</td></tr>
+              <tr><td><span class="param-name">type</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">welcome / goodbye (default: welcome)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"image"</span>: <span class="s">"https://cdn.xyrooomd.my.id/maker/welcome-xxx.png"</span> } }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="https://...avatar.jpg" id="try-wlc-avatar"/>
+                <input class="try-input" placeholder="Nama" id="try-wlc-name" style="width:100px;flex:none"/>
+                <button class="try-btn" onclick="tryApi('/maker/welcome','wlc',{avatar:'try-wlc-avatar',name:'try-wlc-name'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-wlc-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-wlc-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 10 endpoint: <code style="color:var(--accent)">waifu-sticker</code> <code style="color:var(--accent)">text-to-sticker</code> <code style="color:var(--accent)">rank-card</code> <code style="color:var(--accent)">meme-maker</code> <code style="color:var(--accent)">twitter-card</code> <code style="color:var(--accent)">youtube-card</code> ...
+      </div>
+    </div>
+
+    <!-- NEWS -->
+    <div class="cat-section" id="cat-news">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,201,255,0.08)">📰</div>
+        <div>
+          <h2>News</h2>
+          <p>Berita terkini dari berbagai sumber terpercaya</p>
+        </div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span>
+          <span class="ep-path">/news/cnn</span>
+          <span class="ep-desc">Berita CNN Indonesia</span>
+          <span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">limit</span></td><td><span class="param-type">number</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Jumlah berita (default: 5)</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: [ { <span class="k">"title"</span>: <span class="s">"..."</span>, <span class="k">"url"</span>: <span class="s">"https://..."</span>, <span class="k">"date"</span>: <span class="s">"..."</span> } ] }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <input class="try-input" placeholder="5" id="try-cnn-limit"/>
+                <button class="try-btn" onclick="tryApi('/news/cnn','cnn',{limit:'try-cnn-limit'})">Kirim ▶</button>
+              </div>
+              <div class="try-loader" id="try-cnn-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-cnn-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 6 endpoint: <code style="color:var(--accent)">kompas</code> <code style="color:var(--accent)">detik</code> <code style="color:var(--accent)">tribun</code> <code style="color:var(--accent)">liputan6</code> <code style="color:var(--accent)">tempo</code> <code style="color:var(--accent)">bbc-id</code>
+      </div>
+    </div>
+
+    <!-- RANDOM -->
+    <div class="cat-section" id="cat-random">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,229,160,0.08)">🎲</div>
+        <div><h2>Random</h2><p>Konten dan data acak untuk bot kamu</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span><span class="ep-path">/random/anime-quote</span>
+          <span class="ep-desc">Quote anime random</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"quote"</span>: <span class="s">"..."</span>, <span class="k">"author"</span>: <span class="s">"..."</span>, <span class="k">"anime"</span>: <span class="s">"Naruto"</span> } }</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 13 endpoint: <code style="color:var(--accent)">waifu</code> <code style="color:var(--accent)">neko</code> <code style="color:var(--accent)">cat</code> <code style="color:var(--accent)">dog</code> <code style="color:var(--accent)">fact</code> <code style="color:var(--accent)">motivation</code> <code style="color:var(--accent)">color</code> <code style="color:var(--accent)">password</code> ...
+      </div>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div class="cat-section" id="cat-leaderboard">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,209,102,0.1)">🏆</div>
+        <div><h2>Leaderboard</h2><p>Sistem peringkat dan poin untuk grup WhatsApp</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method POST">POST</span><span class="ep-path">/leaderboard/add-xp</span>
+          <span class="ep-desc">Tambah XP user</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">groupId</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">ID Grup WhatsApp</td></tr>
+              <tr><td><span class="param-name">userId</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Nomor WA user (628xxx)</td></tr>
+              <tr><td><span class="param-name">xp</span></td><td><span class="param-type">number</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Jumlah XP ditambahkan</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"userId"</span>: <span class="s">"628xxx"</span>, <span class="k">"totalXp"</span>: <span class="n">250</span>, <span class="k">"level"</span>: <span class="n">3</span>, <span class="k">"rank"</span>: <span class="n">1</span> } }</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 5 endpoint: <code style="color:var(--accent)">get-rank</code> <code style="color:var(--accent)">top-members</code> <code style="color:var(--accent)">reset-xp</code> <code style="color:var(--accent)">set-level</code> <code style="color:var(--accent)">leaderboard-image</code>
+      </div>
+    </div>
+
+    <!-- LIBRARY -->
+    <div class="cat-section" id="cat-library">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,201,255,0.1)">📚</div>
+        <div><h2>Library</h2><p>Database referensi: anime, film, music, coding</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span><span class="ep-path">/library/anime</span>
+          <span class="ep-desc">Info anime dari MyAnimeList</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">title</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Judul anime</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"result"</span>: { <span class="k">"title"</span>: <span class="s">"Naruto"</span>, <span class="k">"score"</span>: <span class="n">8.2</span>, <span class="k">"episodes"</span>: <span class="n">720</span>, <span class="k">"status"</span>: <span class="s">"Finished"</span>, <span class="k">"synopsis"</span>: <span class="s">"..."</span> } }</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 9 endpoint: <code style="color:var(--accent)">movie</code> <code style="color:var(--accent)">kpop</code> <code style="color:var(--accent)">lyrics</code> <code style="color:var(--accent)">chord</code> <code style="color:var(--accent)">recipe</code> <code style="color:var(--accent)">kbbi</code> <code style="color:var(--accent)">sinonim</code> <code style="color:var(--accent)">npm-info</code> ...
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="cat-section" id="cat-admin">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,77,106,0.1)">🛡️</div>
+        <div><h2>Admin</h2><p>Fitur manajemen dan moderasi bot</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method POST">POST</span><span class="ep-path">/admin/ban-user</span>
+          <span class="ep-desc">Ban user dari bot</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">userId</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Nomor WA yang akan diblokir</td></tr>
+              <tr><td><span class="param-name">reason</span></td><td><span class="param-type">string</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Alasan ban</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"message"</span>: <span class="s">"User 628xxx berhasil dibanned"</span> }</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 7 endpoint: <code style="color:var(--accent)">unban</code> <code style="color:var(--accent)">ban-list</code> <code style="color:var(--accent)">set-premium</code> <code style="color:var(--accent)">bot-stats</code> <code style="color:var(--accent)">broadcast</code> <code style="color:var(--accent)">restart-bot</code> <code style="color:var(--accent)">log-usage</code>
+      </div>
+    </div>
+
+    <!-- CACHE -->
+    <div class="cat-section" id="cat-cache">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(0,229,160,0.1)">⚡</div>
+        <div><h2>Cache</h2><p>Manajemen cache dan penyimpanan sementara</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method POST">POST</span><span class="ep-path">/cache/set</span>
+          <span class="ep-desc">Simpan data ke cache</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td><span class="param-name">key</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Key identifikasi data</td></tr>
+              <tr><td><span class="param-name">value</span></td><td><span class="param-type">any</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">Nilai yang disimpan</td></tr>
+              <tr><td><span class="param-name">ttl</span></td><td><span class="param-type">number</span></td><td><span class="param-opt">optional</span></td><td style="color:var(--muted)">Time-to-live dalam detik</td></tr>
+              <tr><td><span class="param-name">apikey</span></td><td><span class="param-type">string</span></td><td><span class="param-req">required</span></td><td style="color:var(--muted)">API Key</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"message"</span>: <span class="s">"Cache berhasil disimpan"</span>, <span class="k">"expires"</span>: <span class="n">1720000000</span> }</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 3 endpoint: <code style="color:var(--accent)">get</code> <code style="color:var(--accent)">delete</code> <code style="color:var(--accent)">flush-all</code>
+      </div>
+    </div>
+
+    <!-- NSFW (18+) -->
+    <div class="cat-section" id="cat-nsfw">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(255,77,106,0.1)">🔞</div>
+        <div>
+          <h2>NSFW <span style="font-size:0.75rem;color:var(--red);font-weight:400;">(18+ only)</span></h2>
+          <p>Konten dewasa — hanya untuk grup 18+. Pastikan bot & grup sudah diverifikasi.</p>
+        </div>
+      </div>
+      <div style="background:rgba(255,77,106,0.07);border:1px solid rgba(255,77,106,0.2);border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:0.83rem;color:var(--red);">
+        ⚠️ Endpoint ini hanya tersedia untuk akun terverifikasi 18+. Endpoint NSFW dinonaktifkan secara default dan memerlukan pengajuan form verifikasi.
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        5 endpoint tersedia setelah verifikasi: <code style="color:var(--red)">hentai</code> <code style="color:var(--red)">ecchi</code> <code style="color:var(--red)">lewdo</code> <code style="color:var(--red)">nsfwcheck</code> <code style="color:var(--red)">nsfw-detect</code>
+      </div>
+    </div>
+
+    <!-- OTHERS -->
+    <div class="cat-section" id="cat-others">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:rgba(123,94,167,0.1)">✨</div>
+        <div><h2>Others</h2><p>Endpoint serbaguna yang belum dikategorikan</p></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="ep-header" onclick="toggleEp(this)">
+          <span class="method GET">GET</span><span class="ep-path">/ping</span>
+          <span class="ep-desc">Health check API</span><span class="ep-arrow">▼</span>
+        </div>
+        <div class="ep-body">
+          <div class="ep-tabs">
+            <button class="ep-tab active" onclick="switchTab(this,'params')">Parameter</button>
+            <button class="ep-tab" onclick="switchTab(this,'response')">Response</button>
+            <button class="ep-tab" onclick="switchTab(this,'tryit')">Try It</button>
+          </div>
+          <div class="ep-panel show" data-panel="params">
+            <table class="params-table">
+              <tr><th>Param</th><th>Tipe</th><th>Status</th><th>Deskripsi</th></tr>
+              <tr><td colspan="4" style="color:var(--muted);padding-top:12px;">Tidak memerlukan parameter</td></tr>
+            </table>
+          </div>
+          <div class="ep-panel" data-panel="response">
+            <div class="code-block">{ <span class="k">"status"</span>: <span class="s">true</span>, <span class="k">"message"</span>: <span class="s">"pong 🏓"</span>, <span class="k">"latency"</span>: <span class="n">12</span>, <span class="k">"uptime"</span>: <span class="s">"99.9%"</span> }</div>
+          </div>
+          <div class="ep-panel" data-panel="tryit">
+            <div class="try-it-area">
+              <div class="try-input-row">
+                <button class="try-btn" onclick="tryApi('/ping','ping',{})">Ping ▶</button>
+              </div>
+              <div class="try-loader" id="try-ping-loader">⏳ Memproses...</div>
+              <div class="try-resp" id="try-ping-resp"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:18px 0;color:var(--muted);font-size:0.83rem;">
+        + 12 endpoint: <code style="color:var(--accent)">azan</code> <code style="color:var(--accent)">prayer-time</code> <code style="color:var(--accent)">covid-stats</code> <code style="color:var(--accent)">currency</code> <code style="color:var(--accent)">weather</code> <code style="color:var(--accent)">zodiac</code> <code style="color:var(--accent)">primbon</code> ...
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<footer>
+  <p>⚡ <strong>Xyrooo MD API</strong> — Built with ❤️ by <a href="#">Xyrooo</a></p>
+  <p style="margin-top:6px;font-size:0.75rem;">© 2025 Xyrooo MD · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="https://wa.me/628xxxxxxxxx">WhatsApp Support</a></p>
+</footer>
 
 <script>
-    // ---------- STORAGE KEYS (Simulasi Database) ----------
-    const STORAGE_USERS = 'smm_users';
-    const STORAGE_SESSION = 'smm_session';
-    const STORAGE_PRODUCTS = 'smm_products';
-    const STORAGE_ORDERS = 'smm_orders';
+// ─── CATEGORY SWITCHER ───────────────────────────────────────────
+function showCat(cat, btn) {
+  document.querySelectorAll('.cat-section').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('cat-' + cat);
+  if (sec) sec.classList.add('show');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: document.getElementById('docs').offsetTop - 80, behavior: 'smooth' });
+}
 
-    // Data dummy produk awal (API Real SMM)
-    const defaultProducts = [
-        { id: 'prod_1', name: 'Instagram Followers', category: 'Instagram', price: 2500, min: 100, max: 50000, speed: 'High', status: 'active' },
-        { id: 'prod_2', name: 'TikTok Views', category: 'TikTok', price: 1200, min: 500, max: 100000, speed: 'Instant', status: 'active' },
-        { id: 'prod_3', name: 'YouTube Subscribers', category: 'YouTube', price: 3500, min: 50, max: 10000, speed: 'Medium', status: 'active' },
-        { id: 'prod_4', name: 'Facebook Likes', category: 'Facebook', price: 800, min: 100, max: 25000, speed: 'Fast', status: 'active' },
-        { id: 'prod_5', name: 'Twitter Retweets', category: 'Twitter', price: 1800, min: 10, max: 5000, status: 'active' },
-    ];
+// ─── ENDPOINT TOGGLE ─────────────────────────────────────────────
+function toggleEp(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.ep-arrow');
+  const isOpen = body.classList.contains('show');
+  // close all in same card container
+  body.classList.toggle('show', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
 
-    // Helper functions
-    function getUsers() { return JSON.parse(localStorage.getItem(STORAGE_USERS) || '[]'); }
-    function saveUsers(users) { localStorage.setItem(STORAGE_USERS, JSON.stringify(users)); }
-    function getProducts() { return JSON.parse(localStorage.getItem(STORAGE_PRODUCTS) || JSON.stringify(defaultProducts)); }
-    function saveProducts(products) { localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products)); }
-    function getOrders() { return JSON.parse(localStorage.getItem(STORAGE_ORDERS) || '[]'); }
-    function saveOrders(orders) { localStorage.setItem(STORAGE_ORDERS, JSON.stringify(orders)); }
-    function getCurrentUser() { return JSON.parse(sessionStorage.getItem(STORAGE_SESSION)); }
-    function setCurrentUser(user) { sessionStorage.setItem(STORAGE_SESSION, JSON.stringify(user)); }
-    function clearSession() { sessionStorage.removeItem(STORAGE_SESSION); }
+// ─── TABS ────────────────────────────────────────────────────────
+function switchTab(btn, panel) {
+  const card = btn.closest('.ep-body');
+  card.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.ep-panel').forEach(p => p.classList.remove('show'));
+  btn.classList.add('active');
+  card.querySelector(`[data-panel="${panel}"]`).classList.add('show');
+}
 
-    // inisialisasi default user admin & demo
-    function initDatabase() {
-        let users = getUsers();
-        if(users.length === 0) {
-            users = [
-                { id: 'u1', username: 'admin', email: 'admin@smm.com', password: 'admin123', role: 'admin', balance: 150000, createdAt: new Date().toISOString() },
-                { id: 'u2', username: 'richie', email: 'richie@example.com', password: 'richie123', role: 'user', balance: 87500, createdAt: new Date().toISOString() },
-            ];
-            saveUsers(users);
-        }
-        let products = getProducts();
-        if(products.length === 0) saveProducts(defaultProducts);
-        if(getOrders().length === 0){
-            saveOrders([]);
-        }
-    }
-    initDatabase();
+// ─── API KEY GENERATOR ───────────────────────────────────────────
+function generateApiKey() {
+  const name = document.getElementById('gen-name').value.trim();
+  const contact = document.getElementById('gen-contact').value.trim();
+  if (!name || !contact) {
+    alert('Isi nama dan kontak terlebih dahulu!');
+    return;
+  }
+  const plan = document.getElementById('gen-plan').value;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let key = 'xmdr_';
+  for (let i = 0; i < 32; i++) key += chars[Math.floor(Math.random() * chars.length)];
+  const suffix = { free: '_free', basic: '_basic', pro: '_pro' }[plan] || '';
+  key += suffix;
+  document.getElementById('apikey-val').textContent = key;
+  document.getElementById('apikey-result').classList.add('show');
+  document.getElementById('apikey-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
-    // Toast notification
-    function showToast(message, type = 'success') {
-        let toastDiv = document.createElement('div');
-        toastDiv.className = `fixed bottom-5 right-5 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl backdrop-blur-md text-sm font-medium animate-fade transition-all duration-300 ${type === 'error' ? 'bg-red-600/80 text-white border-l-4 border-red-300' : 'bg-emerald-600/80 text-white border-l-4 border-emerald-300'}`;
-        toastDiv.innerHTML = `<i class="fas ${type === 'error' ? 'fa-circle-exclamation' : 'fa-check-circle'} mr-1"></i> ${message}`;
-        document.body.appendChild(toastDiv);
-        setTimeout(() => { toastDiv.remove(); }, 3500);
-    }
+function copyApiKey() {
+  const val = document.getElementById('apikey-val').textContent;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1800);
+  });
+}
 
-    // Router Sederhana: state UI (auth, dashboard)
-    let currentView = 'login'; // login, register, dashboard
-    let currentUser = getCurrentUser();
+// ─── TRY IT ──────────────────────────────────────────────────────
+async function tryApi(path, id, paramMap) {
+  const loaderEl = document.getElementById(`try-${id}-loader`);
+  const respEl   = document.getElementById(`try-${id}-resp`);
 
-    // API Real Simulasi (Endpoint Internal) -> untuk order produk
-    function apiCreateOrder(productId, quantity, link) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const products = getProducts();
-                const product = products.find(p => p.id === productId);
-                if(!product) reject({error: 'Produk tidak ditemukan'});
-                const totalCost = product.price * quantity;
-                const user = getCurrentUser();
-                if(!user) reject({error: 'Sesi habis, login ulang'});
-                let users = getUsers();
-                const userDb = users.find(u => u.id === user.id);
-                if(!userDb) reject({error: 'User invalid'});
-                if(userDb.balance < totalCost) reject({error: 'Saldo tidak mencukupi'});
-                // proses order
-                const newOrder = {
-                    id: 'ORD-' + Date.now() + Math.floor(Math.random()*1000),
-                    userId: userDb.id,
-                    productId: productId,
-                    productName: product.name,
-                    quantity: quantity,
-                    link: link,
-                    price: product.price,
-                    total: totalCost,
-                    status: 'Processing',
-                    createdAt: new Date().toISOString()
-                };
-                // kurangi saldo
-                userDb.balance -= totalCost;
-                saveUsers(users);
-                setCurrentUser(userDb); // update session
-                let orders = getOrders();
-                orders.unshift(newOrder);
-                saveOrders(orders);
-                resolve({order: newOrder, newBalance: userDb.balance});
-            }, 500);
-        });
-    }
+  // Build fake response (demo mode — no real backend)
+  const params = {};
+  for (const [key, inputId] of Object.entries(paramMap)) {
+    const el = document.getElementById(inputId);
+    if (el) params[key] = el.value || '';
+  }
 
-    // Render utama
-    function render() {
-        const sessionUser = getCurrentUser();
-        if(sessionUser && currentView !== 'dashboard') currentView = 'dashboard';
-        if(!sessionUser && currentView === 'dashboard') currentView = 'login';
-        const root = document.getElementById('appRoot');
-        if(currentView === 'login') root.innerHTML = renderLogin();
-        else if(currentView === 'register') root.innerHTML = renderRegister();
-        else if(currentView === 'dashboard') root.innerHTML = renderDashboard(sessionUser);
-        attachEventListeners();
-    }
+  if (loaderEl) { loaderEl.classList.add('show'); }
+  if (respEl)   { respEl.classList.remove('show','ok','err'); }
 
-    // Komponen Login
-    function renderLogin() {
-        return `
-        <div class="auth-container glass-panel max-w-md mx-auto p-8 animate-fade">
-            <div class="text-center mb-8">
-                <i class="fas fa-bolt text-4xl text-cyan-400 bg-cyan-500/20 p-3 rounded-2xl"></i>
-                <h2 class="text-3xl font-bold mt-4 bg-gradient-to-r from-white to-cyan-300 bg-clip-text text-transparent">NexusSMM</h2>
-                <p class="text-slate-400 mt-1">Real API • Social Media Panel</p>
-            </div>
-            <form id="loginForm">
-                <div class="mb-4">
-                    <label class="block text-slate-300 text-sm mb-1">Username atau Email</label>
-                    <input type="text" id="loginUsername" class="w-full px-4 py-3 rounded-xl" placeholder="admin / admin@smm.com" autocomplete="off">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-slate-300 text-sm mb-1">Kata Sandi</label>
-                    <input type="password" id="loginPassword" class="w-full px-4 py-3 rounded-xl" placeholder="••••••">
-                </div>
-                <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold text-white">Masuk Dashboard</button>
-            </form>
-            <div class="text-center mt-6">
-                <p class="text-slate-400">Belum punya akun? <button id="toRegisterBtn" class="text-cyan-400 hover:underline font-semibold">Daftar Sekarang</button></p>
-            </div>
-            <div class="mt-5 text-xs text-center text-slate-500 border-t border-slate-700 pt-4">Demo: admin/admin123 | richie/richie123</div>
-        </div>
-        `;
-    }
+  await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
 
-    function renderRegister() {
-        return `
-        <div class="auth-container glass-panel max-w-md mx-auto p-8 animate-fade">
-            <div class="text-center mb-6">
-                <i class="fas fa-user-plus text-3xl text-cyan-400"></i>
-                <h2 class="text-2xl font-bold text-white mt-2">Daftar Akun Baru</h2>
-            </div>
-            <form id="registerForm">
-                <div class="mb-3"><input type="text" id="regUsername" placeholder="Username" class="w-full px-4 py-3 rounded-xl"></div>
-                <div class="mb-3"><input type="email" id="regEmail" placeholder="Email" class="w-full px-4 py-3 rounded-xl"></div>
-                <div class="mb-3"><input type="password" id="regPassword" placeholder="Password (min. 6 karakter)" class="w-full px-4 py-3 rounded-xl"></div>
-                <div class="mb-5"><input type="password" id="regConfirm" placeholder="Konfirmasi Password" class="w-full px-4 py-3 rounded-xl"></div>
-                <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold">Buat Akun</button>
-            </form>
-            <div class="text-center mt-5"><button id="toLoginBtn" class="text-cyan-400 text-sm hover:underline">← Kembali ke Login</button></div>
-        </div>
-        `;
-    }
+  if (loaderEl) loaderEl.classList.remove('show');
 
-    // Dashboard lengkap dengan produk & API order
-    function renderDashboard(user) {
-        const products = getProducts();
-        const orders = getOrders().filter(o => o.userId === user.id).slice(0, 10);
-        const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
-        const activeOrders = orders.filter(o => o.status === 'Processing').length;
-        // Grafik sederhana
-        const chartId = 'statsChart';
-        return `
-        <div class="dashboard-container animate-fade">
-            <div class="glass-panel p-5 md:p-7">
-                <!-- header -->
-                <div class="flex flex-wrap justify-between items-center border-b border-slate-700 pb-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <i class="fas fa-chart-line text-2xl text-cyan-400"></i>
-                        <h1 class="text-2xl font-bold text-white">Dashboard SMM <span class="text-cyan-400">| Real API</span></h1>
-                    </div>
-                    <div class="flex gap-4 items-center">
-                        <div class="bg-slate-800/60 rounded-full px-4 py-2"><i class="fas fa-coins text-yellow-400"></i> <span class="font-mono font-bold text-white">${user.balance.toLocaleString()}</span> <span class="text-slate-300">Saldo</span></div>
-                        <button id="logoutBtn" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 px-4 py-2 rounded-xl transition"><i class="fas fa-sign-out-alt"></i> Keluar</button>
-                    </div>
-                </div>
-                
-                <!-- Stat Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Total Pesanan</p><p class="text-3xl font-bold text-white">${orders.length}</p></div><i class="fas fa-shopping-cart text-3xl text-cyan-400/60"></i></div>
-                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Saldo Tersisa</p><p class="text-3xl font-bold text-green-400">${user.balance.toLocaleString()}</p></div><i class="fas fa-wallet text-3xl text-green-400/60"></i></div>
-                    <div class="stat-card p-4 flex justify-between"><div><p class="text-slate-400 text-sm">Order Aktif</p><p class="text-3xl font-bold text-yellow-300">${activeOrders}</p></div><i class="fas fa-spinner fa-pulse text-2xl text-yellow-300/70"></i></div>
-                </div>
+  const demoResp = getDemoResponse(path, params);
+  if (respEl) {
+    respEl.textContent = JSON.stringify(demoResp, null, 2);
+    respEl.classList.add('show', demoResp.status ? 'ok' : 'err');
+  }
+}
 
-                <!-- Chart & Layanan Produk -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <div class="lg:col-span-2 card-bg p-4 rounded-2xl">
-                        <h3 class="text-white font-semibold mb-3"><i class="fas fa-cubes mr-2"></i> Layanan SMM (Real API)</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm table-custom">
-                                <thead><tr><th>Produk</th><th>Kategori</th><th>Harga/Unit</th><th>Min/Max</th><th>Aksi</th></tr></thead>
-                                <tbody id="productListBody">
-                                    ${products.map(prod => `
-                                        <tr><td class="py-2 font-medium">${prod.name}</td><td>${prod.category}</td><td>Rp ${prod.price.toLocaleString()}</td><td>${prod.min} - ${prod.max}</td>
-                                        <td><button class="orderBtn text-cyan-400 bg-cyan-950/40 px-3 py-1 rounded-lg text-xs hover:bg-cyan-800/60" data-id="${prod.id}" data-name="${prod.name}" data-price="${prod.price}">Order</button></td></tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-bg p-4 rounded-2xl">
-                        <h3 class="text-white font-semibold mb-2"><i class="fas fa-chart-pie"></i> Statistik Pengeluaran</h3>
-                        <canvas id="${chartId}" style="max-height: 200px;"></canvas>
-                        <p class="text-slate-400 text-xs mt-2">Total spent: Rp ${totalSpent.toLocaleString()}</p>
-                    </div>
-                </div>
+function getDemoResponse(path, p) {
+  const base = { status: true, creator: "Xyrooo MD" };
+  if (path.includes('chatgpt') || path.includes('gemini') || path.includes('llama')) {
+    return { ...base, result: { reply: p.text ? `[Demo] Saya menerima pesan: "${p.text}". Ini adalah demo — hubungkan ke backend nyata!` : "Masukkan teks terlebih dahulu.", model: path.split('/').pop() } };
+  }
+  if (path.includes('tiktok') || path.includes('youtube')) {
+    return { ...base, result: { title: "Demo Video Title", author: "@xyrooo_md", download: "https://cdn.demo.com/video.mp4", duration: "3:45", thumbnail: "https://picsum.photos/320/180" } };
+  }
+  if (path.includes('instagram')) {
+    return { ...base, result: { username: p.username || "demo_user", followers: 12345, following: 500, posts: 87, verified: false } };
+  }
+  if (path.includes('google')) {
+    return { ...base, result: [{ title: "Demo Search Result 1", url: "https://example.com", snippet: "Ini adalah demo hasil pencarian..." }, { title: "Demo Search Result 2", url: "https://example.org", snippet: "Hasil pencarian kedua..." }] };
+  }
+  if (path.includes('qrcode')) {
+    return { ...base, result: { url: `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(p.text || 'demo')}&size=200x200` } };
+  }
+  if (path.includes('translate')) {
+    return { ...base, result: { original: p.text || "Hello", translated: "[Terjemahan demo]", from: "auto", to: p.to || "id" } };
+  }
+  if (path.includes('joke')) {
+    return { ...base, result: { setup: "Kenapa programer suka gelap?", punchline: "Karena light attracts bugs! 🐛" } };
+  }
+  if (path.includes('ping')) {
+    return { ...base, message: "pong 🏓", latency: Math.floor(Math.random() * 30 + 5), uptime: "99.9%" };
+  }
+  if (path.includes('cnn')) {
+    return { ...base, result: [{ title: "Demo Berita Terkini", url: "https://cnnindonesia.com", date: new Date().toLocaleDateString('id') }] };
+  }
+  return { ...base, message: "Demo response dari Xyrooo MD API!" };
+}
 
-                <!-- Riwayat Order -->
-                <div class="card-bg p-4 rounded-2xl">
-                    <h3 class="text-white font-semibold mb-3"><i class="fas fa-history"></i> Riwayat Order (10 terbaru)</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm table-custom">
-                            <thead><tr><th>ID Order</th><th>Produk</th><th>Jumlah</th><th>Total</th><th>Link/Target</th><th>Status</th><th>Tanggal</th></tr></thead>
-                            <tbody>
-                                ${orders.length === 0 ? '<tr><td colspan="7" class="text-center py-4 text-slate-500">Belum ada order</td></tr>' : 
-                                    orders.map(o => `<tr><td class="py-2">${o.id}</td><td>${o.productName}</td><td>${o.quantity}</td><td>Rp ${o.total.toLocaleString()}</td><td class="max-w-[150px] truncate">${o.link || '-'}</td>
-                                    <td><span class="${o.status === 'Processing' ? 'badge-warning' : 'badge-success'} px-2 py-0.5 rounded-full text-xs">${o.status}</span></td><td>${new Date(o.createdAt).toLocaleDateString()}</td></tr>`).join('')
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Order -->
-        <div id="orderModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-all">
-            <div class="bg-slate-800 rounded-2xl max-w-md w-full p-6 border border-cyan-500/30 shadow-2xl">
-                <div class="flex justify-between"><h3 class="text-xl font-bold text-white" id="modalProductTitle">Order Produk</h3><button id="closeModalBtn" class="text-slate-400 text-2xl">&times;</button></div>
-                <div class="mt-4 space-y-4">
-                    <input type="text" id="orderLink" class="w-full rounded-xl px-4 py-2" placeholder="Masukkan URL / Username target">
-                    <input type="number" id="orderQuantity" class="w-full rounded-xl px-4 py-2" placeholder="Jumlah (min-max sesuai produk)">
-                    <div class="text-cyan-300 text-sm" id="orderPreview">Total: Rp 0</div>
-                    <button id="confirmOrderBtn" class="btn-primary w-full py-2 rounded-xl">Konfirmasi Order & Gunakan API</button>
-                </div>
-            </div>
-        </div>
-        `;
-    }
-
-    function attachEventListeners() {
-        // Login
-        const loginForm = document.getElementById('loginForm');
-        if(loginForm) {
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('loginUsername').value.trim();
-                const pass = document.getElementById('loginPassword').value.trim();
-                const users = getUsers();
-                const found = users.find(u => (u.username === username || u.email === username) && u.password === pass);
-                if(found) {
-                    setCurrentUser(found);
-                    showToast(`Selamat datang, ${found.username}!`);
-                    currentView = 'dashboard';
-                    render();
-                } else {
-                    showToast('Username/email atau password salah!', 'error');
-                }
-            });
-        }
-        const toRegister = document.getElementById('toRegisterBtn');
-        if(toRegister) toRegister.onclick = () => { currentView = 'register'; render(); };
-        const toLogin = document.getElementById('toLoginBtn');
-        if(toLogin) toLogin.onclick = () => { currentView = 'login'; render(); };
-        
-        // Register
-        const regForm = document.getElementById('registerForm');
-        if(regForm) {
-            regForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('regUsername').value.trim();
-                const email = document.getElementById('regEmail').value.trim();
-                const pass = document.getElementById('regPassword').value.trim();
-                const confirm = document.getElementById('regConfirm').value.trim();
-                if(!username || !email || !pass) return showToast('Semua field harus diisi', 'error');
-                if(pass !== confirm) return showToast('Password tidak cocok', 'error');
-                if(pass.length < 6) return showToast('Password minimal 6 karakter', 'error');
-                const users = getUsers();
-                if(users.find(u => u.username === username || u.email === email)) return showToast('Username atau Email sudah terdaftar', 'error');
-                const newUser = { id: 'u'+Date.now(), username, email, password: pass, role: 'user', balance: 50000, createdAt: new Date().toISOString() };
-                users.push(newUser);
-                saveUsers(users);
-                showToast('Pendaftaran berhasil! Silakan login.');
-                currentView = 'login';
-                render();
-            });
-        }
-        // logout
-        const logoutBtn = document.getElementById('logoutBtn');
-        if(logoutBtn) logoutBtn.onclick = () => { clearSession(); currentView = 'login'; render(); showToast('Berhasil logout'); };
-
-        // Order modal logic
-        let selectedProduct = null;
-        const orderBtns = document.querySelectorAll('.orderBtn');
-        const modal = document.getElementById('orderModal');
-        const closeModal = document.getElementById('closeModalBtn');
-        if(orderBtns.length) {
-            orderBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const prodId = btn.dataset.id;
-                    const prodName = btn.dataset.name;
-                    const prodPrice = parseInt(btn.dataset.price);
-                    selectedProduct = { id: prodId, name: prodName, price: prodPrice };
-                    document.getElementById('modalProductTitle').innerText = `Order ${prodName}`;
-                    const qtyInput = document.getElementById('orderQuantity');
-                    const previewSpan = document.getElementById('orderPreview');
-                    const updatePreview = () => {
-                        let qty = parseInt(qtyInput.value) || 0;
-                        previewSpan.innerText = `Total: Rp ${(prodPrice * qty).toLocaleString()}`;
-                    };
-                    qtyInput.oninput = updatePreview;
-                    updatePreview();
-                    modal.classList.remove('hidden');
-                });
-            });
-        }
-        if(closeModal) closeModal.onclick = () => modal.classList.add('hidden');
-        window.onclick = (e) => { if(e.target === modal) modal.classList.add('hidden'); };
-        const confirmOrder = document.getElementById('confirmOrderBtn');
-        if(confirmOrder) {
-            confirmOrder.onclick = async () => {
-                if(!selectedProduct) return;
-                const quantity = parseInt(document.getElementById('orderQuantity').value);
-                const link = document.getElementById('orderLink').value.trim();
-                if(!quantity || quantity <= 0) return showToast('Masukkan jumlah yang valid', 'error');
-                if(!link) return showToast('Masukkan URL target', 'error');
-                // validasi min max produk
-                const products = getProducts();
-                const prodValid = products.find(p => p.id === selectedProduct.id);
-                if(quantity < prodValid.min || quantity > prodValid.max) return showToast(`Minimal ${prodValid.min} dan maksimal ${prodValid.max}`, 'error');
-                try {
-                    const result = await apiCreateOrder(selectedProduct.id, quantity, link);
-                    showToast(`Order berhasil! Sisa saldo: Rp ${result.newBalance.toLocaleString()}`);
-                    modal.classList.add('hidden');
-                    render(); // refresh dashboard
-                } catch(err) {
-                    showToast(err.error || 'Gagal order, cek saldo atau koneksi', 'error');
-                }
-            };
-        }
-
-        // chart jika ada canvas
-        const canvasChart = document.getElementById('statsChart');
-        if(canvasChart && currentView === 'dashboard') {
-            const userNow = getCurrentUser();
-            if(userNow) {
-                const userOrders = getOrders().filter(o => o.userId === userNow.id);
-                const last7 = userOrders.slice(0,7).map(o => o.total).reverse();
-                const labels = userOrders.slice(0,7).map((_,idx) => `Order ${idx+1}`).reverse();
-                new Chart(canvasChart, {
-                    type: 'doughnut',
-                    data: { labels: labels.length?labels:['Belum Order'], datasets: [{ data: last7.length?last7:[1], backgroundColor: ['#0EA5E9', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'], borderWidth: 0 }] },
-                    options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: '#CBD5E1' } } } }
-                });
-            } else {
-                canvasChart.style.display = 'none';
-            }
-        }
-    }
-
-    // pertama render
-    render();
+// ─── MOBILE MENU ─────────────────────────────────────────────────
+function toggleMobileMenu() { /* placeholder */ }
 </script>
 </body>
 </html>
